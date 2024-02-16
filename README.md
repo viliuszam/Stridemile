@@ -10,3 +10,4 @@ Tech stack:
 - PostgreSQL
 - Docker
 
+`main` branch - dedicated to latest and tested features, only merge when everything is alright. `dev` branch - for all the work-in-progress features. If two or more users are working on the same feature, a new, seperate development branch should be created.

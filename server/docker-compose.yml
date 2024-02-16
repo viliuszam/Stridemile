@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  pvp-db:
+    image: postgres:13
+    ports:
+      - 5434:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123321123566
+      POSTGRES_DB: PVPDB
+    networks:
+      - PVP
+networks:
+  PVP:

@@ -15,6 +15,10 @@ export default function App() {
           <Route index element={<Home />} />
         </Route>
 
+        <Route element={<AuthLayout />}>
+          <Route path="/register" element={<Register />} />
+        </Route>
+
       </Routes>
   );
 }

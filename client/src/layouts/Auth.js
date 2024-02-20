@@ -15,13 +15,13 @@ export default () => {
       backgroundSize: "cover",
     }}>
 
-      <div className="m-auto">
+      <div className="m-auto sm:w-[26rem]">
 
         <Alert text={alert.text} type={alert.type} />
 
-        <div className="mx-auto p-10 sm:w-[26rem] bg-white rounded] rounded-lg">
+        <div className="mx-auto p-10 bg-white rounded] rounded-lg">
             <Outlet context={{ setAlert }} />
-            <Link to="/" className="block text-center mt-3 text-blue-500 hover:text-blue-700">Grįžti į pagrindinį puslapį</Link>
+            <Link to="/" className="block text-center mt-3 text-blue-500 hover:text-blue-700">Back to home</Link>
         </div>
       </div>
 

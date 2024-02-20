@@ -5,7 +5,9 @@ import AuthLayout from "./layouts/Auth";
 
 // Views
 import Home from './views/Home'
+import Login from './views/Login'
 import Register from './views/Register'
+import PasswordRecovery from "./views/PasswordRecovery";
 
 export default function App() {
   return (
@@ -16,6 +18,8 @@ export default function App() {
         </Route>
 
         <Route element={<AuthLayout />}>
+          <Route path="/password-recovery" element={<PasswordRecovery />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Route>
 

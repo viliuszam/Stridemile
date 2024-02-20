@@ -89,9 +89,7 @@ export default () => {
         <i className="fa-solid fa-user-plus"></i> Login
       </Link>
 
-      <button className="w-full p-3 bg-white border-[1px] border-gray-400 rounded-lg hover:bg-gray-100">
-      <i className="fa-solid fa-user-injured"></i> Remind password
-      </button>
+      
     </div>
   );
 };

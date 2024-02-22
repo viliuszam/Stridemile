@@ -1,9 +1,9 @@
 import { IsEmail, IsNotEmpty, IsString } from "class-validator";
 
 export class AuthlogDto {
-    @IsEmail()
+    @IsString()
     @IsNotEmpty()
-    email: string;
+    username: string;
 
     @IsString()
     @IsNotEmpty()

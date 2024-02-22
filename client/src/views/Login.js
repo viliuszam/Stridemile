@@ -22,17 +22,25 @@ export default () => {
   const login = () => {
     if(!validate()) return
 
-    axios.post('localhost/api/login', {
+    axios.post('http://localhost:3333/auth/signin', {
       username: username,
       password: password,
     })
       .then(function (response) {
+        const { access_token } = response.data
+        localStorage.setItem('accessToken', access_token)
         setAlert({ text: 'Successful login', type: AlertTypes.success })
       })
       .catch(function (error) {
-        console.log(error)
-        setAlert({ text: `An error has occurred (${error.message})`, type: AlertTypes.error })
-      }); 
+        console.log(error);
+        if (error.response.status === 403) {
+            if(error.response.data.message == "Incorrect credentials"){
+              setAlert({ text: 'Incorrect credentials', type: AlertTypes.error });
+            }
+        } else {
+            setAlert({ text: `An error has occurred (${error.message})`, type: AlertTypes.error });
+        }
+    }); 
   }
 
   return (

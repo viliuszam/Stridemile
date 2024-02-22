@@ -26,5 +26,7 @@ model User{
   address String?
   phoneNumber String?
 
+  resetPassToken String @default("")
+
   @@map("users")
 }

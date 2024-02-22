@@ -39,19 +39,27 @@ export default () => {
   const submit = () => {
     if(!validate()) return
 
-    axios.post('localhos/api/register', {
+    axios.post('http://localhost:3333/auth/signup', {
       name: name,
       email: email,
       password: password,
-      reRapssword: rePassword
     })
       .then(function (response) {
         setAlert({ text: 'Successful registration', type: AlertTypes.success })
       })
       .catch(function (error) {
-        console.log(error)
-        setAlert({ text: `An error has occurred (${error.message})`, type: AlertTypes.error })
-      }); 
+        console.log(error);
+        if (error.response.status === 403) {
+            if(error.response.data.message == "Email is already taken"){
+              setAlert({ text: 'Email is already taken', type: AlertTypes.error });
+            }
+            else if(error.response.data.message == "Username is already taken"){
+              setAlert({ text: 'Username is already taken', type: AlertTypes.error });
+            }
+        } else {
+            setAlert({ text: `An error has occurred (${error.message})`, type: AlertTypes.error });
+        }
+    });  
   }
 
   return (

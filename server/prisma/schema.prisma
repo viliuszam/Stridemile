@@ -42,7 +42,7 @@ model Role {
   creation_date DateTime?
   is_active     Boolean?
   id            Int      @id @default(autoincrement())
-  user User[]
+  //user User[]
   permission Permission[]
 
   @@map("roles")
@@ -155,8 +155,9 @@ model User {
   hash String
   resetPassToken String @default("")
 
-  role             Role     @relation(fields: [fk_Roleid], references: [id])
-  fk_Roleid        Int     
+  //role             Role?     @relation(fields: [fk_Roleid], references: [id])
+  role              String?
+  //fk_Roleid        Int     
   persons Person[]
   mentors Mentor[]
   administrators Administrator[]

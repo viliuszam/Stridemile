@@ -8,6 +8,7 @@ import Home from './views/Home'
 import Login from './views/Login'
 import Register from './views/Register'
 import PasswordRecovery from "./views/PasswordRecovery";
+import PasswordChange from "./views/PasswordChange";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
 
         <Route element={<AuthLayout />}>
           <Route path="/password-recovery" element={<PasswordRecovery />} />
+          <Route path="/password-change" element={<PasswordChange />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Route>

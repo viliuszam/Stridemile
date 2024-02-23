@@ -4,6 +4,9 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+//npx prisma migrate dev --name initial_database
+//npx prisma migrate deploy
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,20 +16,313 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  id Int @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Announcement {
+  title      String?
+  message    String?
+  date_time  DateTime?
+  id         Int      @id @default(autoincrement())
+  reminders Reminder[]
 
-  username String @unique
-  email String @unique
+  @@map("announcements")
+}
+
+model Organization {
+  name                 String?
+  responsible_employee String?
+  department           String?
+  id                   Int      @id @default(autoincrement())
+  events Event[]
+
+  @@map("organizations")
+}
+
+model Role {
+  name          String?
+  description   String?
+  creation_date DateTime?
+  is_active     Boolean?
+  id            Int      @id @default(autoincrement())
+  user User[]
+  permission Permission[]
+
+  @@map("roles")
+}
+
+model ActivityType {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  @@map("activity_types")
+}
+
+model EventCategory {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  @@map("event_categories")
+}
+
+model GoalCategory {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  @@map("goal_categories")
+}
+
+model GoalStatus {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  @@map("goal_statuses")
+}
+
+model GroupVisibility {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  @@map("group_visibilities")
+}
+
+model InvitationStatus {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  @@map("invitation_statuses")
+}
+
+model PersonGender {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  @@map("person_genders")
+}
+
+model Event {
+  title           String?
+  description     String?
+  date            DateTime?
+  location        String?
+  id              Int      @id @default(autoincrement())
+  fk_Organization Int     
+  organization    Organization @relation(fields: [fk_Organization], references: [id])
+  category        Int?     // Scalar field representing the foreign key to EventCategory
+  activities Activity[]
+  groupEvents GroupEvent[]
+
+  @@map("events")
+}
+
+model Group {
+  member_count  Int?
+  type          String?
+  name          String?
+  description   String?
+  id            Int      @id @default(autoincrement())
+  visibility    Int?     // Scalar field representing the foreign key to GroupVisibility
+  invitations Invitation[]
+  groupEvents GroupEvent[]
+  goals Goal[]
+  challenges Challenge[]
+
+  @@map("groups")
+}
+
+model Permission {
+  name        String?
+  description String?
+  is_active   Boolean?
+  id          Int      @id @default(autoincrement())
+  role        Role     @relation(fields: [fk_Roleid], references: [id])
+  fk_Roleid   Int      
+
+  @@map("permissions")
+}
+
+model User {
+  username         String? @unique
+  password         String?
+  email            String? @unique
+  birthDate        DateTime?
+  gender           String?
+  address          String?
+  phoneNumber      String?
+  profile_picture  String?
+  registration_date DateTime?
+
+  id               Int      @id @default(autoincrement())
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
   hash String
-  birthDate DateTime?
-  gender String?
-  address String?
-  phoneNumber String?
-
   resetPassToken String @default("")
 
+  role             Role     @relation(fields: [fk_Roleid], references: [id])
+  fk_Roleid        Int     
+  persons Person[]
+  mentors Mentor[]
+  administrators Administrator[]
+
   @@map("users")
+}
+
+model Administrator {
+  role        String?
+  permissions String?
+  access_level Int?
+  last_login  DateTime?
+  id          Int      @id @default(autoincrement())
+  user        User     @relation(fields: [id], references: [id])
+
+  @@map("administrators")
+}
+
+model Challenge {
+  title       String?
+  description String?
+  start_date  DateTime?
+  end_date    DateTime?
+  id          Int      @id @default(autoincrement())
+  group       Group    @relation(fields: [fk_Groupid], references: [id])
+  fk_Groupid  Int     
+
+  @@map("challenges")
+}
+
+model Goal {
+  description  String?
+  title        String?
+  start_date   DateTime?
+  end_date     DateTime?
+  target_value String?
+  current_value String?
+  progress     String?
+  id           Int      @id @default(autoincrement())
+  group        Group    @relation(fields: [fk_Groupid], references: [id])
+  fk_Groupid   Int      
+  status    Int?     // Scalar field representing the foreign key to GoalStatus
+  category    Int?     // Scalar field representing the foreign key to GoalCategory
+
+  @@map("goals")
+}
+
+model GroupEvent {
+  id       Int     @id @default(autoincrement())
+  event    Event   @relation(fields: [fk_Eventid], references: [id])
+  fk_Eventid Int  
+  group    Group   @relation(fields: [fk_Groupid], references: [id])
+  fk_Groupid Int  
+
+  @@map("group_events")
+}
+
+model Mentor {
+  expertise_area String?
+  experience     String?
+  specialization String?
+  certification  String?
+  id             Int      @id @default(autoincrement())
+  user           User     @relation(fields: [id], references: [id])
+  persons Person[]
+  activities Activity[]
+
+  @@map("mentors")
+}
+
+model Activity {
+  name         String?
+  duration     Int?
+  type         Int?
+  id           Int      @id @default(autoincrement())
+  mentor       Mentor   @relation(fields: [fk_Mentorid], references: [id])
+  fk_Mentorid  Int     
+  event        Event    @relation(fields: [fk_Eventid], references: [id])
+  fk_Eventid   Int     
+  activityType Int?     // Scalar field representing the foreign key
+
+  @@map("activities")
+}
+
+model Person {
+  first_name    String?
+  last_name     String?
+  weight        Float?
+  height        Float?
+  age           Int?
+  date_of_birth DateTime?
+  phone_number  String?
+  id            Int      @id @default(autoincrement())
+  mentor        Mentor?  @relation(fields: [fk_Mentorid], references: [id])
+  fk_Mentorid   Int?    
+  gender        Int?     // Scalar field representing the foreign key to PersonGender
+  user          User     @relation(fields: [id], references: [id])
+  statistics Statistics[]
+  reminders Reminder[]
+  invitations Invitation[]
+  achievements Achievement[]
+
+  @@map("persons")
+}
+
+model Achievement {
+  title         String?
+  description   String?
+  date_achieved DateTime?
+  points_count  Int?
+  id            Int      @id @default(autoincrement())
+  person        Person   @relation(fields: [fk_Personid], references: [id])
+  fk_Personid   Int      
+
+  @@map("achievements")
+}
+
+model Invitation {
+  date_sent      DateTime?
+  date_responded DateTime?
+  message        String?
+  status         Int?
+  id             Int      @id @default(autoincrement())
+  group          Group    @relation(fields: [fk_Groupid], references: [id])
+  fk_Groupid     Int      
+  person         Person   @relation(fields: [fk_Personid], references: [id])
+  fk_Personid    Int      
+  invitationStatus  Int?
+
+  @@map("invitations")
+}
+
+model Reminder {
+  title       String?
+  description String?
+  date_time   DateTime?
+  id          Int      @id @default(autoincrement())
+  person      Person   @relation(fields: [fk_Personid], references: [id])
+  fk_Personid Int     
+  announcement Announcement @relation(fields: [fk_Announcementid], references: [id])
+  fk_Announcementid Int      
+
+  @@map("reminders")
+}
+
+model Statistics {
+  date            DateTime?
+  weight          Float?
+  calories_intake String?
+  macroelements_intake String?
+  water_intake    String?
+  sleep_duration  Int?
+  id              Int      @id @default(autoincrement())
+  person          Person   @relation(fields: [fk_Personid], references: [id])
+  fk_Personid     Int     
+  trackingRecords TrackingRecord[]
+
+  @@map("statistics")
+}
+
+model TrackingRecord {
+  date        DateTime?
+  metric_data String?
+  id          Int      @id @default(autoincrement())
+  statistics  Statistics @relation(fields: [fk_Statisticsid], references: [id])
+  fk_Statisticsid Int   
+
+  @@map("tracking_records")
 }

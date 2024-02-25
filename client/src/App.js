@@ -9,6 +9,8 @@ import Login from './views/Login'
 import Register from './views/Register'
 import PasswordRecovery from "./views/PasswordRecovery";
 import PasswordChange from "./views/PasswordChange";
+import HomePage from "./views/HomePage";
+
 
 export default function App() {
   return (
@@ -25,6 +27,8 @@ export default function App() {
           <Route path="/register" element={<Register />} />
         </Route>
 
+        <Route path="/HomePage" element={<HomePage />} />
+        
       </Routes>
   );
 }

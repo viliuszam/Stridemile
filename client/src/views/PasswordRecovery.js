@@ -29,7 +29,11 @@ export default () => {
       })
       .catch(function (error) {
         console.log(error)
-        setAlert({ text: `An error has occurred (${error.message})`, type: AlertTypes.error })
+        if(error.response.data.message == "Email does not exist"){
+          setAlert({ text: 'Email does not exist', type: AlertTypes.error });
+        }else{
+          setAlert({ text: `An error has occurred (${error.message})`, type: AlertTypes.error })
+        }
       }); 
   }
 

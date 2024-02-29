@@ -154,6 +154,7 @@ model User {
   updatedAt        DateTime @updatedAt
   hash String
   resetPassToken String @default("")
+  isResetValid Boolean @default(false)
 
   //role             Role?     @relation(fields: [fk_Roleid], references: [id])
   role              String?

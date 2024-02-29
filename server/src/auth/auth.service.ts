@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
-import { AuthDto, AuthlogDto, AuthForgDto } from "./dto";
+import { AuthDto, AuthlogDto, AuthForgDto, AuthpassDto } from "./dto";
 import * as argon from 'argon2'
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { JwtService } from "@nestjs/jwt";
@@ -87,15 +87,43 @@ export class AuthService{
             const token = await this.resetToken(user.id, user.email);
             await this.prisma.user.update({
               where: { id: user.id },
-              data: { resetPassToken: token },
+              data: { resetPassToken: token,
+                      isResetValid: true },
             });
             await this.mailService.sendForgotPass(user, await token);
             return true;
+          }else{
+            throw new ForbiddenException('Email does not exist');
           }
-          return false;
+          
         } catch (e) {
           throw e;
         }
+    }
+
+    async passReset(dto: AuthpassDto, email) {
+      const hash = await argon.hash(dto.newPassword);
+
+      const user = await this.prisma.user.findFirst({
+        where: {
+          email: email
+        }
+      })
+
+      if(!user.isResetValid){
+        throw new ForbiddenException('Password could not be updated')
+      }
+
+      await this.prisma.user.update({
+        where: {
+          email: email,
+        },
+        data: {
+          hash: hash,
+          resetPassToken: "",
+          isResetValid: false
+        },
+      });
     }
 
     async resetToken(userId: number, email: string) {
@@ -111,5 +139,5 @@ export class AuthService{
         });
     
         return token;
-      }
+    }
 }

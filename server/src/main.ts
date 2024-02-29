@@ -14,6 +14,13 @@ async function bootstrap() {
     whitelist: true,
   }))
   await app.listen(3333);
+
+  process.on('SIGINT', async () => {
+    console.log('\nShutting down server gracefully...');
+    await app.close();
+    console.log('Server has been gracefully shut down');
+    process.exit(0);
+  });
 }
 bootstrap();
 

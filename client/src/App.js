@@ -22,7 +22,7 @@ export default function App() {
 
         <Route element={<AuthLayout />}>
           <Route path="/password-recovery" element={<PasswordRecovery />} />
-          <Route path="/password-change" element={<PasswordChange />} />
+          <Route path={'/resetPassword/:token'} element={<PasswordChange/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Route>

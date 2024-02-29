@@ -1,4 +1,4 @@
-import { useOutletContext, Link } from "react-router-dom";
+import { useOutletContext, Link, useParams } from "react-router-dom";
 import { useState } from 'react'
 import { AlertTypes } from "../styles/modules/AlertStyles";
 import axios from 'axios';
@@ -6,6 +6,7 @@ import axios from 'axios';
 export default () => {
   const { setAlert } = useOutletContext(); // from Auth layout
 
+  const {token}=useParams();
   // User data inputs
   const [newPassword, setNewPassword] = useState('')
   const [rePassword, setRePassword] = useState('')
@@ -32,16 +33,25 @@ export default () => {
   const passwordRecovery = () => {
     if(!validate()) return
 
-    axios.post('http://localhost:3333/auth/forgotPass', {
+    axios.post('http://localhost:3333/auth/passReset', {
       newPassword: newPassword,
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
     })
       .then(function (response) {
         setAlert({ text: 'Password is changed successfully', type: AlertTypes.success })
       })
       .catch(function (error) {
         console.log(error)
-        setAlert({ text: `An error has occurred (${error.message})`, type: AlertTypes.error })
-      }); 
+        if(error.response.data.message == "Password could not be updated"){
+          setAlert({ text: 'Password could not be updated', type: AlertTypes.error });
+        }else{
+          setAlert({ text: `An error has occurred (${error.message})`, type: AlertTypes.error })
+        }
+      });
   }
 
   return (

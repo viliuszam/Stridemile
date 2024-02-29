@@ -6,6 +6,9 @@
 
 //npx prisma migrate dev --name initial_database
 //npx prisma migrate deploy
+//npx prisma migrate reset // resets db
+// npx prisma migrate reset --skip-seed // // resets db without inserting seed records
+
 
 generator client {
   provider = "prisma-client-js"
@@ -42,7 +45,7 @@ model Role {
   creation_date DateTime?
   is_active     Boolean?
   id            Int      @id @default(autoincrement())
-  //user User[]
+  user User[]
   permission Permission[]
 
   @@map("roles")
@@ -156,9 +159,9 @@ model User {
   resetPassToken String @default("")
   isResetValid Boolean @default(false)
 
-  //role             Role?     @relation(fields: [fk_Roleid], references: [id])
-  role              String?
-  //fk_Roleid        Int     
+  role             Role?     @relation(fields: [fk_Roleid], references: [id])
+  //role              String?
+  fk_Roleid        Int     
   persons Person[]
   mentors Mentor[]
   administrators Administrator[]

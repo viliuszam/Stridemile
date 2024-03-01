@@ -3,6 +3,7 @@ package com.example.stracker;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -30,8 +31,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
-
-
 
 
 
@@ -91,6 +90,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Check if the user is authenticated before allowing him into the main activity
+        boolean authenticated = getIntent().getBooleanExtra("authenticated", false);
+
+        if (!authenticated) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish(); // Finish the MainActivity
+            return;
+        }
+
         setContentView(R.layout.activity_main);
 
         String[] perms = {Manifest.permission.ACTIVITY_RECOGNITION};

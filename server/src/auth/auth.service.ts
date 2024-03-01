@@ -41,7 +41,6 @@ export class AuthService{
                     username: dto.name,
                     email: dto.email,
                     hash,
-                    fk_Roleid: 3, // default role ID
                 },
             });
     

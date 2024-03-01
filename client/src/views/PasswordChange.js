@@ -48,6 +48,8 @@ export default () => {
         console.log(error)
         if(error.response.data.message == "Password could not be updated"){
           setAlert({ text: 'Password could not be updated', type: AlertTypes.error });
+        }else if(error.response && error.response.status === 401){
+          setAlert({ text: 'Link has expired', type: AlertTypes.error });
         }else{
           setAlert({ text: `An error has occurred (${error.message})`, type: AlertTypes.error })
         }

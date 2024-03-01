@@ -161,7 +161,7 @@ model User {
 
   role             Role?     @relation(fields: [fk_Roleid], references: [id])
   //role              String?
-  fk_Roleid        Int     
+  fk_Roleid        Int @default(3)
   persons Person[]
   mentors Mentor[]
   administrators Administrator[]

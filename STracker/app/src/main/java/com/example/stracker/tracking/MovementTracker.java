@@ -1,5 +1,6 @@
 package com.example.stracker.tracking;
 
+import android.content.Context;
 import android.widget.Toast;
 
 import com.example.stracker.MainActivity;
@@ -13,9 +14,9 @@ public class MovementTracker {
     private int bufferedSteps;
     private double bufferedDistance;
     private ScheduledExecutorService scheduler;
-    private final MainActivity view;
+    private final Context view;
 
-    public MovementTracker(MainActivity view){
+    public MovementTracker(Context view){
         this.reset();
         this.view = view;
 
@@ -23,11 +24,8 @@ public class MovementTracker {
 
         Runnable commitDataTask = () -> {
             // TODO: vietoj parodymo, issiust i API, also - pridet laika praleista tik judant
-            view.runOnUiThread(() -> {
-                Toast.makeText(view, bufferedSteps + ", " + bufferedDistance, Toast.LENGTH_SHORT).show();
-
-                this.reset();
-            });
+            System.out.println(bufferedSteps + ", " + bufferedDistance);
+            this.reset();
         };
 
         scheduler.scheduleAtFixedRate(commitDataTask, 0, 30, TimeUnit.SECONDS);
@@ -47,5 +45,17 @@ public class MovementTracker {
         if (scheduler != null && !scheduler.isShutdown()) {
             scheduler.shutdown();
         }
+    }
+
+    public int getBufferedSteps() {
+        return bufferedSteps;
+    }
+
+    public double getBufferedDistance() {
+        return bufferedDistance;
+    }
+
+    public float getStepLength() {
+        return 0.762f;
     }
 }

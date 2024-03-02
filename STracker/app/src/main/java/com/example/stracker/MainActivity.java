@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -16,6 +17,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.Manifest;
 import android.widget.Toast;
+
+import com.example.stracker.tracking.MovementTracker;
 
 import java.util.Locale;
 
@@ -32,21 +35,22 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
-
+    private MovementTracker movementTracker;
 
     private TextView stepCountTextView;
     private TextView distanceTextView;
     private TextView timeTextView;
     private TextView stepCountTargetTextView;
-    private Button pauseButton;
+    private TextView greetingTextView;
+    //private Button pauseButton;
 
     private SensorManager sensorManager;
     private Sensor stepCounterSensor;
 
     private int stepCount = 0;
     private ProgressBar progressBar;
-    private boolean isPaused = false;
-    private long timePaused = 0;
+    //private boolean isPaused = false;
+    //private long timePaused = 0;
     private float stepLengthInMeters = 0.762f;
     private long startTime;
     private int stepCountTarget = 5000;
@@ -91,19 +95,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Check if the user is authenticated before allowing him into the main activity
-        boolean authenticated = getIntent().getBooleanExtra("authenticated", false);
-
-        if (!authenticated) {
+        if (!isLoggedIn()) {
             startActivity(new Intent(this, LoginActivity.class));
-            finish(); // Finish the MainActivity
+            finish();
             return;
         }
 
         setContentView(R.layout.activity_main);
 
-        String[] perms = {Manifest.permission.ACTIVITY_RECOGNITION};
+        greetingTextView = findViewById(R.id.greeting);
+        greetingTextView.setText("Welcome, " + getUsername() + "!");
 
+        String[] perms = {Manifest.permission.ACTIVITY_RECOGNITION};
         if (EasyPermissions.hasPermissions(this, perms)) {
             stepCountTextView = findViewById(R.id.stepCountTextView);
             distanceTextView = findViewById(R.id.stepDistanceTextView);
@@ -112,11 +115,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
             progressBar = findViewById(R.id.progressBar);
 
-            pauseButton = findViewById(R.id.pauseButton);
+            //pauseButton = findViewById(R.id.pauseButton);
 
             startTime = System.currentTimeMillis();
 
             sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+
+            movementTracker = new MovementTracker(this);
+
             if(sensorManager == null){
                 Toast.makeText(this, "Sensor not found!", Toast.LENGTH_SHORT).show();
             }
@@ -131,10 +137,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
 
             progressBar.setMax(stepCountTarget);
-
             stepCountTargetTextView.setText("Step goal: " + stepCountTarget);
 
         } else {
+            // TODO: viskas luzta kai pirma kart paleidi ir suteiki permissionus
             EasyPermissions.requestPermissions(this, "Please grant activity permission",
                     1001, perms);
         }
@@ -148,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Sensor sensor = sensorEvent.sensor;
 
         if (sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
+            movementTracker.accumulate(1, stepLengthInMeters);
             numSteps++;
             stepCountTextView.setText("Steps: " + numSteps);
             float distanceInKm = numSteps * stepLengthInMeters / 1000;
@@ -161,6 +168,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
+    public void onLogoutButtonPressed(View view){
+        SharedPreferences sharedPreferences = getSharedPreferences("auth", Context.MODE_PRIVATE);
+        sharedPreferences.edit().clear().apply();
+        this.movementTracker.finalize();
+        this.movementTracker = null;
+        startActivity(new Intent(this, LoginActivity.class));
+        Toast.makeText(this, "Logged out", Toast.LENGTH_LONG).show();
+        finish();
+    }
+
+    /*
     public void onPauseButtonPressed(View view){
         if(isPaused){
             isPaused = false;
@@ -174,4 +192,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             timePaused = System.currentTimeMillis() - startTime;
         }
     }
+
+
+     */
+    private boolean isLoggedIn() {
+        SharedPreferences sharedPreferences = getSharedPreferences("auth", Context.MODE_PRIVATE);
+        String accessToken = sharedPreferences.getString("access_token", null);
+        return accessToken != null;
+    }
+
+    private String getUsername(){
+        SharedPreferences sharedPreferences = getSharedPreferences("auth", Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", null);
+        return username;
+    }
+
 }

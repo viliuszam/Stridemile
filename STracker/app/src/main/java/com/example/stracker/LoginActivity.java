@@ -94,10 +94,10 @@ public class LoginActivity extends AppCompatActivity {
 
                     SharedPreferences.Editor editor = getSharedPreferences("auth", MODE_PRIVATE).edit();
                     editor.putString("access_token", accessToken);
+                    editor.putString("username", username);
                     editor.apply();
                     showPopupNotification("Login successful!");
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    intent.putExtra("authenticated", true);
                     startActivity(intent);
                     finish();
                 } else {
@@ -113,19 +113,18 @@ public class LoginActivity extends AppCompatActivity {
                             String errorMessage = (String) message;
                             showPopupNotification(errorMessage);
                         } else {
-                            showPopupNotification("Unknown error occurred");
+                            showPopupNotification("Unknown error occurred.");
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        showPopupNotification("Login failed");
+                        showPopupNotification("Login failed.");
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<AuthTokenResponse> call, Throwable t) {
-                // Handle failure
-                showPopupNotification("Login failed");
+                showPopupNotification("Login failed.");
             }
         });
     }

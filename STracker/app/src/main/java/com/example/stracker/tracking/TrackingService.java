@@ -78,7 +78,7 @@ public class TrackingService extends Service implements SensorEventListener {
         Intent notificationIntent = new Intent(this, MainActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
 
         return new NotificationCompat.Builder(this, "tracking_channel")
                 .setContentTitle("Stracker Tracking")

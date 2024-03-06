@@ -10,6 +10,7 @@ import Register from './views/Register'
 import PasswordRecovery from "./views/PasswordRecovery";
 import PasswordChange from "./views/PasswordChange";
 import HomePage from "./views/HomePage";
+import Achievements from "./views/Achievements";
 
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
 
         <Route path="/">
           <Route index element={<Home />} />
+          <Route path="/achievements" element={<Achievements />} />
         </Route>
 
         <Route element={<AuthLayout />}>

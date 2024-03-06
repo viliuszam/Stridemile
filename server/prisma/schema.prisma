@@ -165,6 +165,7 @@ model User {
   persons Person[]
   mentors Mentor[]
   administrators Administrator[]
+  activityEntries ActivityEntry[]
 
   @@map("users")
 }
@@ -178,6 +179,18 @@ model Administrator {
   user        User     @relation(fields: [id], references: [id])
 
   @@map("administrators")
+}
+
+model ActivityEntry {
+    id          Int     @id @default(autoincrement())
+    fk_Userid   Int
+    user        User    @relation(fields: [fk_Userid], references: [id])
+    steps       Int?
+    distance    Float?
+    start_time  DateTime?
+    end_time    DateTime?
+
+    @@map("activity_entries")
 }
 
 model Challenge {

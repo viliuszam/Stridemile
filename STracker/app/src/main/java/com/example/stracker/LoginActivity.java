@@ -10,15 +10,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.stracker.authentication.AuthService;
+import com.example.stracker.authentication.AuthWebService;
 import com.example.stracker.authentication.AuthTokenResponse;
 import com.example.stracker.authentication.LoginRequest;
+import com.example.stracker.networking.RetrofitClient;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,10 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
 
     // Authentication service
-    private AuthService authService;
-
-    // HTTP client
-    private Retrofit retrofit;
+    private AuthWebService authService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +52,7 @@ public class LoginActivity extends AppCompatActivity {
                 .addInterceptor(loggingInterceptor)
                 .build();*/
 
-
-        // Vietoj "localhost" naudot savo privatu ip, localhost'u emuliatorius laiko save, o serveris gi ne emuliatoriuj
-        retrofit = new Retrofit.Builder().baseUrl("http://192.168.1.101:3333")
-                /*.client(client)*/.addConverterFactory(GsonConverterFactory.create()).build();
-        authService = retrofit.create(AuthService.class);
+        authService = RetrofitClient.getClient().create(AuthWebService.class);
 
         usernameEditText = findViewById(R.id.usernameEditText);
         passwordEditText = findViewById(R.id.passwordEditText);

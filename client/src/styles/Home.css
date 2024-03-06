@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1020px !important;
+    margin: 0 auto;
+  }
+}

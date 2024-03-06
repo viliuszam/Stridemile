@@ -1,9 +1,6 @@
 /* That nav stuff */
-nav {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
+/*nav {
+	/*position: fixed;
 	border-bottom: 1px solid hsl(0 0% 50%);
 	height: 52px;
 	background: hsl(0 0% 100% / 0.75);
@@ -36,4 +33,4 @@ nav a {
 nav img {
 	height: 50%;
 	justify-self: start;
-}
+}*/

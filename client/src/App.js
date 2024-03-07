@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
 // Layouts
+import MainLayout from "./layouts/Main";
 import AuthLayout from "./layouts/Auth";
 
 // Views
@@ -19,7 +20,7 @@ export default function App() {
   return (
       <Routes>
 
-        <Route path="/">
+        <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
           <Route path="/group/:id" element={<GroupPage />} />
           <Route path="/achievements" element={<Achievements />} />

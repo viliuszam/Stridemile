@@ -1,20 +1,19 @@
-import { useOutletContext, Link } from "react-router-dom";
+import { useOutletContext, Link, Navigate } from "react-router-dom";
 import { useState } from 'react'
 import { AlertTypes } from "../styles/modules/AlertStyles";
 import '../styles/Home.css';
 import axios from 'axios';
-import NavBar from "../components/NavBar";
 import { PieChart } from '@mui/x-charts/PieChart';
+import { isLoggedIn } from "../classes/Auth";
 
 export default () => {
 
-  return (
+  return isLoggedIn() ? (
     <div className="min-h-dvh" style={{
         background: "url(https://giffiles.alphacoders.com/220/220213.gif)",
         backgroundSize: "cover",
       }}>
-    <NavBar/>
-    <div className="container bg-white pt-24">
+    <div className="container bg-white pt-12">
         <div className="text-[#61E9B1]">
             <h2 className="text-center text-2xl">Achievements</h2>
         </div>
@@ -149,5 +148,7 @@ export default () => {
         </div>
     </div>
     </div>
+  ) : (
+    <Navigate to='/login' />
   );
 };

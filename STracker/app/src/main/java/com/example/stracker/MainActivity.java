@@ -27,7 +27,10 @@ import android.widget.Toast;
 
 import com.example.stracker.tracking.MovementTracker;
 import com.example.stracker.tracking.TrackingService;
+import com.example.stracker.utility.FormatUtil;
+import com.google.android.material.color.utilities.MathUtils;
 
+import java.text.DecimalFormat;
 import java.util.Locale;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -60,13 +63,16 @@ public class MainActivity extends AppCompatActivity /*implements SensorEventList
 
     private BroadcastReceiver stepCountReceiver;
 
+    private int totalStepCount = 0;
+    private float totalDistance = 0;
+    private int totalTimeSpent = 0;
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         stopService(new Intent(this, TrackingService.class));
         LocalBroadcastManager.getInstance(this).unregisterReceiver(stepCountReceiver);
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +84,6 @@ public class MainActivity extends AppCompatActivity /*implements SensorEventList
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
-
 
         if (!isLoggedIn()) {
             startActivity(new Intent(this, LoginActivity.class));
@@ -98,6 +103,7 @@ public class MainActivity extends AppCompatActivity /*implements SensorEventList
                 stepCountReceiver = new BroadcastReceiver() {
                     @Override
                     public void onReceive(Context context, Intent intent) {
+                        // TODO: padaryt kad visu situ eventu kodas nebutu toks scuffed
                         if ("step-count-event".equals(intent.getAction())) {
                             int steps = intent.getIntExtra("steps", 0);
                             numSteps += steps;
@@ -106,11 +112,32 @@ public class MainActivity extends AppCompatActivity /*implements SensorEventList
                             float distanceInKm = numSteps * 0.762f / 1000;
                             distanceTextView.setText(String.format(Locale.getDefault(), "Distance: %.2f km", distanceInKm));
                             progressBar.setProgress(numSteps);
+
+                            // Total count atnaujinimas
+                            totalStepCount += steps;
+                            totalDistance += 0.762f;
+                            ((TextView)findViewById(R.id.totalStepsDisplay)).setText("Total steps: " + totalStepCount);
+                            ((TextView)findViewById(R.id.totalDistanceDisplay)).setText("Total distance walked: " + new DecimalFormat("0.00").format(totalDistance) + "m");
+                        }else if("summary-event".equals(intent.getAction())) {
+                            totalStepCount = intent.getIntExtra("totalSteps", 0);
+                            totalDistance = intent.getFloatExtra("totalDistance", 0);
+                            totalTimeSpent = intent.getIntExtra("totalTimeSpent", 0);
+
+                            ((TextView)findViewById(R.id.totalStepsDisplay)).setText("Total steps: " + totalStepCount);
+                            ((TextView)findViewById(R.id.totalDistanceDisplay)).setText("Total distance walked: " + new DecimalFormat("0.00").format(totalDistance) + "m");
+                            ((TextView)findViewById(R.id.totalTimeDisplay)).setText("Total time spent: " + FormatUtil.formatTime(totalTimeSpent));
+                        } else if ("time-event".equals(intent.getAction())) {
+                            totalTimeSpent += 1;
+                            ((TextView)findViewById(R.id.totalTimeDisplay)).setText("Total time spent: " + FormatUtil.formatTime(totalTimeSpent));
                         }
                     }
                 };
+                IntentFilter intentFilter = new IntentFilter();
+                intentFilter.addAction("step-count-event");
+                intentFilter.addAction("summary-event");
+                intentFilter.addAction("time-event");
                 LocalBroadcastManager.getInstance(this).registerReceiver(stepCountReceiver,
-                        new IntentFilter("step-count-event"));
+                        intentFilter);
             }
             stepCountTextView = findViewById(R.id.stepCountTextView);
             distanceTextView = findViewById(R.id.stepDistanceTextView);

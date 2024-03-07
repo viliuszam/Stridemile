@@ -11,6 +11,7 @@ import com.example.stracker.networking.RetrofitClient;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -29,15 +30,22 @@ public class MovementTracker {
     private TrackingWebService trackingWebService;
 
     // Judejimo duomenu siuntimo intervalas sekundemis
-    private final int POLLING_INTERVAL = 5 * 60;
+    // Padaryt sita reiksme ateity didesne, kad siustu kas kelias minutes turbut
+    private final int POLLING_INTERVAL = 10;
 
     private PowerManager.WakeLock wakeLock;
+
+    private Date lastSendTime;
 
     public MovementTracker(Context context){
         this.reset();
         this.context = context;
         this.trackingWebService = RetrofitClient.getClient().create(TrackingWebService.class);
-        this.scheduler = Executors.newScheduledThreadPool(1);
+        this.scheduler = Executors.newScheduledThreadPool(2);
+
+        this.lastSendTime = Calendar.getInstance().getTime();
+
+        this.retrieveSummary();
 
         // Reikia kad trackintu kai telefonas uzrakintas
         PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
@@ -45,22 +53,51 @@ public class MovementTracker {
         wakeLock.acquire();
 
         scheduler.scheduleWithFixedDelay(this::postMovementData, POLLING_INTERVAL, POLLING_INTERVAL, TimeUnit.SECONDS);
+        scheduler.scheduleWithFixedDelay(this::sendTimeUpdate, 1, 1, TimeUnit.SECONDS);
     }
 
-    // I API issiuncia sukauptus judejimo duomenis
-    private void postMovementData(){
-        if(bufferedSteps <= 0 || bufferedDistance <= 0) return;
+    private void sendTimeUpdate(){
+        // Lokaliai atnaujinamas "total" time
+        ((TrackingService)context).updateTime();
+    }
+
+
+    private void retrieveSummary() {
         String accessToken = getAccessToken();
         // Atsijungiam, nera tokeno kazkodel lol
         if(accessToken == null){
             logout();
             return;
         }
+        trackingWebService.summary("Bearer " + accessToken).enqueue(new Callback<SummaryResponse>() {
+            @Override
+            public void onResponse(Call<SummaryResponse> call, Response<SummaryResponse> response) {
+                if (response.isSuccessful()) {
+                    ((TrackingService)context).broadcastSummary(response.body());
+                } else {
+                    logout();
+                }
+            }
+            @Override
+            public void onFailure(Call<SummaryResponse> call, Throwable t) {
+                logout();
+            }
+        });
+    }
+
+    // I API issiuncia sukauptus judejimo duomenis
+    private void postMovementData(){
+        //if(bufferedSteps <= 0 || bufferedDistance <= 0) return;
+        String accessToken = getAccessToken();
+        // Atsijungiam, nera tokeno kazkodel lol
+        if(accessToken == null){
+            logout();
+            return;
+        }
+        Date currentTime = Calendar.getInstance().getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        Calendar startTime = Calendar.getInstance(), endTime = Calendar.getInstance();
-        startTime.add(Calendar.SECOND, -POLLING_INTERVAL);
-        String formattedStartTime = sdf.format(startTime.getTime());
-        String formattedEndTime = sdf.format(endTime.getTime());
+        String formattedStartTime = sdf.format(lastSendTime);
+        String formattedEndTime = sdf.format(currentTime);
 
         TrackingRequest trackingRequest = new TrackingRequest(bufferedSteps, bufferedDistance,
                 formattedStartTime, formattedEndTime);
@@ -69,8 +106,8 @@ public class MovementTracker {
             @Override
             public void onResponse(Call<TrackingResponse> call, Response<TrackingResponse> response) {
                 if (response.isSuccessful()) {
-                    // TODO: gaut ir atnaujint sumuota informacija naudotojui
-
+                    //Atnaujinam last time
+                    lastSendTime = currentTime;
                     // Trinam sukauptus movement duomenis
                     reset();
                 } else {
@@ -97,7 +134,7 @@ public class MovementTracker {
         this.bufferedDistance = 0;
     }
 
-    public void finalize() {
+    public void shutdown() {
         if (scheduler != null && !scheduler.isShutdown()) {
             scheduler.shutdown();
         }
@@ -105,6 +142,7 @@ public class MovementTracker {
             wakeLock.release();
             wakeLock = null;
         }
+        postMovementData();
     }
 
     public int getBufferedSteps() {
@@ -127,7 +165,6 @@ public class MovementTracker {
 
     // TODO: iskelt visiskai viska kas turi kazko bendro su sesija i atskira manager klase
     private void logout(){
-        this.finalize();
         SharedPreferences sharedPreferences = context.getSharedPreferences("auth", Context.MODE_PRIVATE);
         sharedPreferences.edit().clear().apply();
         context.stopService(new Intent(context, TrackingService.class));

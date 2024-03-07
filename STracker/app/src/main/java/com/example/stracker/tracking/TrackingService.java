@@ -47,7 +47,7 @@ public class TrackingService extends Service implements SensorEventListener {
             sensorManager.unregisterListener(this);
         }
         if (movementTracker != null) {
-            movementTracker.finalize();
+            movementTracker.shutdown();
         }
     }
 
@@ -60,9 +60,21 @@ public class TrackingService extends Service implements SensorEventListener {
     public void onSensorChanged(SensorEvent sensorEvent) {
         if (sensorEvent.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
             movementTracker.accumulate(1, movementTracker.getStepLength());
-            // atsargiai, lengva misinput'int per daug duomenu
             broadcastStepCount();
         }
+    }
+
+    public void updateTime(){
+        Intent intent = new Intent("time-event");
+        localBroadcastManager.sendBroadcast(intent);
+    }
+
+    public void broadcastSummary(SummaryResponse summary){
+        Intent intent = new Intent("summary-event");
+        intent.putExtra("totalSteps", summary.getTotalSteps());
+        intent.putExtra("totalDistance", summary.getTotalDistance());
+        intent.putExtra("totalTimeSpent", summary.getTotalTimeSpent());
+        localBroadcastManager.sendBroadcast(intent);
     }
 
     private void broadcastStepCount() {

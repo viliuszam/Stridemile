@@ -2,9 +2,12 @@ import { useOutletContext, Link } from "react-router-dom";
 import { useState } from 'react'
 import { AlertTypes } from "../styles/modules/AlertStyles";
 import axios from 'axios';
+import { isLoggedIn, login as authLogin } from "../classes/Auth";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default () => {
   const { setAlert } = useOutletContext(); // from Auth layout
+  const navigate = useNavigate();
 
   // User data inputs
   const [username, setUsername] = useState('')
@@ -28,11 +31,13 @@ export default () => {
     })
       .then(function (response) {
         const { access_token } = response.data
-        localStorage.setItem('accessToken', access_token)
         setAlert({ text: 'Successful login', type: AlertTypes.success })
+        setTimeout(()=> { 
+          authLogin(access_token) 
+          navigate('/')
+        }, 2000)
       })
       .catch(function (error) {
-        console.log(error);
         if (error.response.status === 403) {
             if(error.response.data.message == "Incorrect credentials"){
               setAlert({ text: 'Incorrect credentials', type: AlertTypes.error });
@@ -43,7 +48,7 @@ export default () => {
     }); 
   }
 
-  return (
+  return !isLoggedIn() ? (
     <div>
       <h1 className="text-2xl text-center font-medium">Log in</h1>
       <hr className="my-6" />
@@ -72,5 +77,7 @@ export default () => {
       <i className="fa-solid fa-user-injured"></i> Recover a password
       </Link>
     </div>
+  ) : (
+    <Navigate to='/' />
   );
 };

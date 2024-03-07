@@ -67,7 +67,7 @@ export default () => {
       </div>
 
       <div className="mb-3">
-        <div className="text-base mb-2">Reapeat password</div>
+        <div className="text-base mb-2">Repeat password</div>
         <input value={rePassword} onChange={(e) => setRePassword(e.target.value)} type="password" placeholder="Password" className="w-full p-3 border-[1px] border-gray-400 rounded-lg" />
       </div>
 

@@ -1,7 +1,8 @@
-import { useOutletContext, Link } from "react-router-dom";
+import { useOutletContext, Link, Navigate } from "react-router-dom";
 import { useState } from 'react'
 import { AlertTypes } from "../styles/modules/AlertStyles";
 import axios from 'axios';
+import { isLoggedIn } from "../classes/Auth";
 
 export default () => {
   const { setAlert } = useOutletContext(); // from Auth layout
@@ -62,7 +63,7 @@ export default () => {
     });  
   }
 
-  return (
+  return !isLoggedIn() ? (
     <div>
       <h1 className="text-2xl text-center font-medium">Registration</h1>
       <hr className="my-6" />
@@ -83,7 +84,7 @@ export default () => {
       </div>
 
       <div className="mb-3">
-        <div className="text-base mb-2">Reapeat password</div>
+        <div className="text-base mb-2">Repeat password</div>
         <input value={rePassword} onChange={(e) => setRePassword(e.target.value)} type="password" placeholder="Password" className="w-full p-3 border-[1px] border-gray-400 rounded-lg" />
       </div>
 
@@ -96,8 +97,9 @@ export default () => {
       <Link to="/login" className="block w-full mb-3 p-3 bg-white text-center border-[1px] border-gray-400 rounded-lg hover:bg-gray-100">
         <i className="fa-solid fa-user-plus"></i> Login
       </Link>
-
       
     </div>
+  ) : (
+    <Navigate to='/' />
   );
 };

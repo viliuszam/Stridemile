@@ -28,7 +28,7 @@ public class RetrofitClient {
 
             retrofit = new Retrofit.Builder()
                     // Vietoj "localhost" naudot savo privatu ip, localhost'u emuliatorius laiko save, o serveris gi ne emuliatoriuj
-                    .baseUrl("http://192.168.1.101:3333")
+                    .baseUrl("http://0.0.0.0:3333")
                     /*.client(client)*/
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();

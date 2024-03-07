@@ -83,6 +83,22 @@ async function seed() {
       ],
     });
 
+    await prisma.achievement.createMany({
+      data: [
+        {
+          title: 'Begginer',
+          description: 'Achieve 30 steps',
+          steps_required: 30,
+        },
+        {
+          title: 'Pro',
+          description: 'Achieve 30 steps in 1min',
+          steps_required: 30,
+          time_required_s: 60,
+        }
+      ]
+    })
+
     await prisma.role.createMany({
       data: [
         {

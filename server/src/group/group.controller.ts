@@ -8,7 +8,7 @@ export class GroupController {
   constructor(private readonly groupService: GroupService) {}
 
   @UseGuards(AuthGuard('jwt'))
-  @Post()
+  @Post('createGroup')
   async createGroup(@Body() createGroupDto: CreateGroupDto, @Request() req) {
     try {
       const userId = req.user.id;

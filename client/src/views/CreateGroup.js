@@ -40,7 +40,7 @@ export default () => {
       return;
     }
   
-    axios.post('http://localhost:3333/groups', {
+    axios.post('http://localhost:3333/groups/createGroup', {
       name: groupName,
       description: groupDescription,
       mentorId: parseInt(-1),

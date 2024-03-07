@@ -168,8 +168,20 @@ model User {
   administrators Administrator[]
   activityEntries ActivityEntry[]
   groups Group[]
+  completedAchievements AchievementsOnUsers[]
 
   @@map("users")
+}
+
+model AchievementsOnUsers{
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  achievement Achievement @relation(fields: [achievementId], references: [id])
+  achievementId Int
+  completedAt DateTime @default(now())
+
+  @@id([userId, achievementId])
+  @@map("achievements_on_users")
 }
 
 model Administrator {
@@ -277,19 +289,22 @@ model Person {
   statistics Statistics[]
   reminders Reminder[]
   invitations Invitation[]
-  achievements Achievement[]
+  //achievements Achievement[]
 
   @@map("persons")
 }
 
 model Achievement {
-  title         String?
-  description   String?
-  date_achieved DateTime?
-  points_count  Int?
   id            Int      @id @default(autoincrement())
-  person        Person   @relation(fields: [fk_Personid], references: [id])
-  fk_Personid   Int      
+  title         String @unique
+  description   String?
+  steps_required Int
+  time_required_s Int?
+  users AchievementsOnUsers[]
+  //date_achieved DateTime?
+  //points_count  Int?
+  //person        Person   @relation(fields: [fk_Personid], references: [id])
+  //fk_Personid   Int      
 
   @@map("achievements")
 }

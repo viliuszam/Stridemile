@@ -11,6 +11,7 @@ import PasswordRecovery from "./views/PasswordRecovery";
 import PasswordChange from "./views/PasswordChange";
 import HomePage from "./views/HomePage";
 import Achievements from "./views/Achievements";
+import GroupPage from "./views/Group";
 import CreateGroup from "./views/CreateGroup";
 
 
@@ -20,6 +21,7 @@ export default function App() {
 
         <Route path="/">
           <Route index element={<Home />} />
+          <Route path="/group/:id" element={<GroupPage />} />
           <Route path="/achievements" element={<Achievements />} />
         </Route>
 

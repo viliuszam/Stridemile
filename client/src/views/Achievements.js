@@ -13,8 +13,8 @@ export default () => {
         background: "url(https://giffiles.alphacoders.com/220/220213.gif)",
         backgroundSize: "cover",
       }}>
-    
-    <div className="container bg-white">
+    <NavBar/>
+    <div className="container bg-white pt-24">
         <div className="text-[#61E9B1]">
             <h2 className="text-center text-2xl">Achievements</h2>
         </div>
@@ -23,7 +23,7 @@ export default () => {
         </div>
         <div className="flex">
         <div className="w-full grid grid-cols-3 gap-4 pl-5 pr-5">
-            <div className="bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-green-400 hover:bg-gray-200">
+            <div className="bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-[#61E9B1] hover:bg-gray-200">
                 <div className="rounded-4xl pb-3 flex">
                     <img src="https://cdn1.iconfinder.com/data/icons/ui-roundicons/480/circle_award-512.png" alt="steps" className="rounded-4xl mx-auto" height={100} width={100}/>
                 </div>
@@ -36,7 +36,7 @@ export default () => {
                 <hr className="ml-6 mr-6 mt-4 mb-4" ></hr>
                 <p className="text-sm">Achieved: 2024-02-01</p>
             </div>
-            <div className="bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-green-400 hover:bg-gray-200">
+            <div className="bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-[#61E9B1] hover:bg-gray-200">
                 <div className="rounded-4xl pb-3 flex">
                     <img src="https://cdn1.iconfinder.com/data/icons/ui-roundicons/480/circle_award-512.png" alt="steps" className="rounded-4xl mx-auto" height={100} width={100}/>
                 </div>
@@ -50,7 +50,7 @@ export default () => {
                 <hr className="ml-6 mr-6 mt-4 mb-4" ></hr>
                 <p className="text-sm">In progress...</p>
             </div>
-            <div className="bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-green-400 hover:bg-gray-200">
+            <div className="bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-[#61E9B1] hover:bg-gray-200">
                 <div className="rounded-4xl pb-3 flex">
                     <img src="https://cdn1.iconfinder.com/data/icons/ui-roundicons/480/circle_award-512.png" alt="steps" className="rounded-4xl mx-auto" height={100} width={100}/>
                 </div>
@@ -64,7 +64,7 @@ export default () => {
                 <hr className="ml-6 mr-6 mt-4 mb-4" ></hr>
                 <p className="text-sm">Achieved: 2024-02-09</p>
             </div>
-            <div className="bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-green-400 hover:bg-gray-200">
+            <div className="bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-[#61E9B1] hover:bg-gray-200">
                 <div className="rounded-4xl pb-3 flex">
                     <img src="https://cdn1.iconfinder.com/data/icons/ui-roundicons/480/circle_award-512.png" alt="steps" className="rounded-4xl mx-auto" height={100} width={100}/>
                 </div>
@@ -78,7 +78,7 @@ export default () => {
                 <hr className="ml-6 mr-6 mt-4 mb-4" ></hr>
                 <p className="text-sm">Achieved: 2024-02-29</p>
             </div>
-            <div className="bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-green-400 hover:bg-gray-200">
+            <div className="bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-[#61E9B1] hover:bg-gray-200">
                 <div className="rounded-4xl pb-3 flex">
                     <img src="https://cdn1.iconfinder.com/data/icons/ui-roundicons/480/circle_award-512.png" alt="steps" className="rounded-4xl mx-auto" height={100} width={100}/>
                 </div>

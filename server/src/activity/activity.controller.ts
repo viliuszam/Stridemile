@@ -16,6 +16,7 @@ export class ActivityController {
     return this.activityService.createActivityEntry(activityEntry, userId);
   }
 
+
   @UseGuards(AuthGuard('jwt'))
   @Get('summary')
   async getUserActivitySummary(@Request() req): Promise<{

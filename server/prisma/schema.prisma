@@ -300,6 +300,7 @@ model Achievement {
   description   String?
   steps_required Int
   time_required_s Int?
+  points Int
   users AchievementsOnUsers[]
   //date_achieved DateTime?
   //points_count  Int?

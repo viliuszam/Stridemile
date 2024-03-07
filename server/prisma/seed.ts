@@ -89,12 +89,14 @@ async function seed() {
           title: 'Begginer',
           description: 'Achieve 30 steps',
           steps_required: 30,
+          points: 5,
         },
         {
           title: 'Pro',
           description: 'Achieve 30 steps in 1min',
           steps_required: 30,
           time_required_s: 60,
+          points: 5,
         }
       ]
     })

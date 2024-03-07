@@ -13,7 +13,6 @@ import HomePage from "./views/HomePage";
 import Achievements from "./views/Achievements";
 import GroupPage from "./views/Group";
 import CreateGroup from "./views/CreateGroup";
-import AchievementsDemo from "./views/AchievementsDemo";
 
 
 export default function App() {
@@ -24,7 +23,7 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="/group/:id" element={<GroupPage />} />
           <Route path="/achievements" element={<Achievements />} />
-		      <Route path="/achievementsdemo" element={<AchievementsDemo />} />
+		  <Route path="/achievementsdemo" element={<AchievementsDemo />} />
         </Route>
 
         <Route element={<AuthLayout />}>

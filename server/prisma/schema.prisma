@@ -121,11 +121,13 @@ model Group {
   name          String?
   description   String?
   id            Int      @id @default(autoincrement())
-  visibility    Int?     // Scalar field representing the foreign key to GroupVisibility
+  visibilityId    Int?    
   invitations Invitation[]
   groupEvents GroupEvent[]
   goals Goal[]
   challenges Challenge[]
+  mentorId      Int?
+  mentor        User?    @relation(fields: [mentorId], references: [id])
 
   @@map("groups")
 }
@@ -160,12 +162,12 @@ model User {
   isResetValid Boolean @default(false)
 
   role             Role?     @relation(fields: [fk_Roleid], references: [id])
-  //role              String?
   fk_Roleid        Int @default(3)
   persons Person[]
   mentors Mentor[]
   administrators Administrator[]
   activityEntries ActivityEntry[]
+  groups Group[]
 
   @@map("users")
 }

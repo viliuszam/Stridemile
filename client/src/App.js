@@ -11,6 +11,7 @@ import PasswordRecovery from "./views/PasswordRecovery";
 import PasswordChange from "./views/PasswordChange";
 import HomePage from "./views/HomePage";
 import Achievements from "./views/Achievements";
+import CreateGroup from "./views/CreateGroup";
 
 
 export default function App() {
@@ -27,6 +28,7 @@ export default function App() {
           <Route path={'/resetPassword/:token'} element={<PasswordChange/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/create-group" element={<CreateGroup />} />
         </Route>
 
         <Route path="/HomePage" element={<HomePage />} />

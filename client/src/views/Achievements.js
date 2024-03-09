@@ -9,10 +9,7 @@ import { isLoggedIn } from "../classes/Auth";
 export default () => {
 
   return isLoggedIn() ? (
-    <div className="min-h-dvh" style={{
-        background: "url(https://giffiles.alphacoders.com/220/220213.gif)",
-        backgroundSize: "cover",
-      }}>
+    <div>
     <div className="container bg-white pt-12">
         <div className="text-[#61E9B1]">
             <h2 className="text-center text-2xl">Achievements</h2>

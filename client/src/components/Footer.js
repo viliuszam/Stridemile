@@ -3,8 +3,8 @@ import '../styles/Footer.css'; // Make sure to adjust the path if you have an ex
 
 const Footer = () => {
   return (
-<div class="footer">
-  <div class="contain">
+    <div className='bg-white border-b border-b-solid border-b-gray-100 drop-shadow w-full py-1 z-10'>
+  <div class="container">
   <div class="col">
     <h1>Company</h1>
     <ul>

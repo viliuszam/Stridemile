@@ -15,6 +15,7 @@ import Achievements from "./views/Achievements";
 import GroupPage from "./views/Group";
 import CreateGroup from "./views/CreateGroup";
 import AchievementsDemo from "./views/AchievementsDemo";
+import PageNotFound from "./views/PageNotFound";
 
 
 export default function App() {
@@ -37,7 +38,7 @@ export default function App() {
         </Route>
 
         <Route path="/HomePage" element={<HomePage />} />
-        
+        <Route path="/*" element={<PageNotFound />} />
       </Routes>
   );
 }

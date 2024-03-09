@@ -2,6 +2,7 @@ import { useOutletContext } from "react-router-dom";
 import { useState, useEffect } from 'react'
 import { AlertTypes } from "../styles/modules/AlertStyles";
 import axios from 'axios';
+import NavBar from "../components/NavBar";
 
 export default () => {
   const { setAlert } = useOutletContext();
@@ -61,7 +62,9 @@ export default () => {
   }
 
   return (
-    <div>
+    <div className="w-full">
+   
+    <div className="container">
       <h1 className="text-2xl text-center font-medium">Create a Group</h1>
       <hr className="my-6" />
 
@@ -91,6 +94,7 @@ export default () => {
         Create Group
       </button>
 
+    </div>
     </div>
   );
 };

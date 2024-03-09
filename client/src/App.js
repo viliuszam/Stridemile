@@ -16,6 +16,7 @@ import GroupPage from "./views/Group";
 import CreateGroup from "./views/CreateGroup";
 import AchievementsDemo from "./views/AchievementsDemo";
 import PageNotFound from "./views/PageNotFound";
+import Groups from "./views/Groups";
 
 
 export default function App() {
@@ -27,6 +28,8 @@ export default function App() {
           <Route path="/group/:id" element={<GroupPage />} />
           <Route path="/achievements" element={<Achievements />} />
 		      <Route path="/achievementsdemo" element={<AchievementsDemo />} />
+          <Route path="/create-group" element={<CreateGroup />} />
+          <Route path="/groups" element={<Groups />} />
         </Route>
 
         <Route element={<AuthLayout />}>
@@ -34,7 +37,6 @@ export default function App() {
           <Route path={'/resetPassword/:token'} element={<PasswordChange/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/create-group" element={<CreateGroup />} />
         </Route>
 
         <Route path="/HomePage" element={<HomePage />} />

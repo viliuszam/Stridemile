@@ -97,7 +97,26 @@ async function seed() {
           steps_required: 30,
           time_required_s: 60,
           points: 5,
-        }
+        },
+        {
+          title: 'Expert',
+          description: 'Achieve 300 steps',
+          steps_required: 300,
+          points: 15,
+        },
+        {
+          title: 'Sportsman',
+          description: 'Achieve 100 steps in 1min',
+          steps_required: 100,
+          time_required_s: 60,
+          points: 20,
+        },
+        {
+          title: 'Novice',
+          description: 'Achieve 100 steps',
+          steps_required: 100,
+          points: 10,
+        },
       ]
     })
 

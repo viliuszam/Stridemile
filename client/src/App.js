@@ -15,7 +15,6 @@ import HomePage from "./views/HomePage";
 import Achievements from "./views/Achievements";
 import GroupPage from "./views/Group";
 import CreateGroup from "./views/CreateGroup";
-import AchievementsDemo from "./views/AchievementsDemo";
 import PageNotFound from "./views/PageNotFound";
 import Groups from "./views/Groups";
 
@@ -29,7 +28,6 @@ export default function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/group/:id" element={<GroupPage />} />
           <Route path="/achievements" element={<Achievements />} />
-		      <Route path="/achievementsdemo" element={<AchievementsDemo />} />
           <Route path="/create-group" element={<CreateGroup />} />
           <Route path="/groups" element={<Groups />} />
         </Route>

@@ -9,8 +9,9 @@ export class AchievementController {
 
     @UseGuards(AuthGuard('jwt'))
     @Get('all')
-    getAll() {
-        return this.achievementService.getAllAchievements();
+    getAll(@Request() req) {
+        const userId = req.user.id;
+        return this.achievementService.getAllAchievements(userId);
     }
 
     @UseGuards(AuthGuard('jwt'))

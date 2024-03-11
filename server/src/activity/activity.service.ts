@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { ActivityEntry } from './dto/activitytrack.dto';
+import { startOfMonth, endOfMonth } from 'date-fns';
 
 @Injectable()
 export class ActivityService {
@@ -48,6 +49,30 @@ export class ActivityService {
       totalTimeSpent,
     };
   }
+
+  async getMonthlyUserSteps(userId: number) {
+    const currentDate = new Date();
+    const startOfMonthDate = startOfMonth(currentDate);
+    const endOfMonthDate = endOfMonth(currentDate)
+
+    const activityEntries = await this.prisma.activityEntry.findMany({
+        where: {
+            AND: [
+                { user: { id: userId } },
+                {
+                    start_time: {
+                        gte: startOfMonthDate,
+                        lte: endOfMonthDate
+                    }
+                }
+            ]
+        },
+    });
+
+    const monthlySteps = activityEntries.reduce((sum, entry) => sum + entry.steps, 0);
+
+    return monthlySteps;
+}
 
 
 }

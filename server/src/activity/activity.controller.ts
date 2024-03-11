@@ -16,6 +16,12 @@ export class ActivityController {
     return this.activityService.createActivityEntry(activityEntry, userId);
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @Get('monthlySteps')
+  async getMonthlySteps(@Request() req){
+    const userId = req.user.id;
+    return this.activityService.getMonthlyUserSteps(userId);
+  }
 
   @UseGuards(AuthGuard('jwt'))
   @Get('summary')

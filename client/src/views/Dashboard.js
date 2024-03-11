@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 export default () => {
   const [points, setPoints] = useState([]);
+  const [monthlySteps, setMonthlySteps] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
@@ -20,6 +21,22 @@ export default () => {
       })
       .catch(error => {
         console.error('Error fetching points: ', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+
+    axios.get('http://localhost:3333/activity/monthlySteps', {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+      .then(response => {
+        setMonthlySteps(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching steps: ', error);
       });
   }, []);
 
@@ -228,9 +245,11 @@ export default () => {
 
           <div className='p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100 text-sm text-gray-600'>
             <p className='text-black font-bold'>Steps</p>
-            <p className='mb-3 text-xs text-gray-600'>In the last few days you made total of steps</p>
+            <p className='mb-3 text-xs text-gray-600'>In this month you made this much steps:</p>
             <div className='py-4 flex my-auto place-items-center'>
-              <p className='flex text-center text-gray-500 text-5xl font-bold'>109</p>
+              <p className='flex text-center text-gray-500 text-5xl font-bold'>
+                {monthlySteps}
+              </p>
             </div>
           </div>
           

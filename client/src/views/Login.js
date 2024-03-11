@@ -34,7 +34,7 @@ export default () => {
         setAlert({ text: 'Successful login', type: AlertTypes.success })
         setTimeout(()=> { 
           authLogin(access_token) 
-          navigate('/')
+          navigate('/dashboard')
         }, 2000)
       })
       .catch(function (error) {

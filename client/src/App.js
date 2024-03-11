@@ -6,6 +6,7 @@ import AuthLayout from "./layouts/Auth";
 
 // Views
 import Home from './views/Home'
+import Dashboard from './views/Dashboard'
 import Login from './views/Login'
 import Register from './views/Register'
 import PasswordRecovery from "./views/PasswordRecovery";
@@ -25,6 +26,7 @@ export default function App() {
 
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/group/:id" element={<GroupPage />} />
           <Route path="/achievements" element={<Achievements />} />
 		      <Route path="/achievementsdemo" element={<AchievementsDemo />} />

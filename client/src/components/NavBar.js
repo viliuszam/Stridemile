@@ -29,13 +29,33 @@ const NavBar = () => {
         <div className='text-black pt-4 pb-4 pl-2 text-sm my-auto flex' >
           <p>LOGO</p>
         </div>
-        <Link to="/" className="ml-24 my-auto flex pl-2 text-medium hover:text-[#61E9B1]">
-          <div className='flex hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
-            <div className='pl-2 pr-2'>
-              Home
-            </div>
-          </div> 
-        </Link>
+        {(() => {
+          if(isLoggedIn())
+          {
+            return (
+              <Link to="/dashboard" className="ml-24 my-auto flex pl-2 text-medium hover:text-[#61E9B1]">
+                <div className='flex hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
+                  <div className='pl-2 pr-2'>
+                    Home
+                  </div>
+                </div> 
+              </Link>
+            )
+          }
+          else
+          {
+            return (
+              <Link to="/" className="ml-24 my-auto flex pl-2 text-medium hover:text-[#61E9B1]">
+                <div className='flex hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
+                  <div className='pl-2 pr-2'>
+                    Home
+                  </div>
+                </div> 
+              </Link>
+            )
+          }
+
+        })()}
         <Link to="/groups" className="my-auto flex pl-2 text-medium hover:text-[#61E9B1]">
         <div className='flex ml-2 hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
             <div className='pl-2 pr-2'>

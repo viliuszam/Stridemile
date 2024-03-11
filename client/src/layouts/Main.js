@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { AlertTypes } from "../styles/modules/AlertStyles";
 import Alert from "../components/Alert";
 import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
 
 export default () => {
   const [alert, setAlert] = useState({
@@ -17,6 +18,7 @@ export default () => {
         <Alert text={alert.text} type={alert.type} />
         <Outlet context={{ setAlert }} />
       </div>
+      <Footer/>
     </div>
   );
 }

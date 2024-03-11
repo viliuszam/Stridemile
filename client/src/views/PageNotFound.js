@@ -40,7 +40,7 @@ export default () => {
         
         <div className="mx-auto flex" id="fly"><img src={photo} height={400} width={400} /></div>
     </div>
-    <div className="container bg-white pt-8 pb-6 text-center mx-auto">
+    <div className="container bg-white pt-8 pb-16 text-center mx-auto">
         <div className="mx-auto flex">
         <h2 className="text-4xl flex mx-auto">Page not found</h2>
         </div>
@@ -92,6 +92,7 @@ export default () => {
             </div>
         </div>
     </div>
+    <Footer />
     </div>
   );
 };

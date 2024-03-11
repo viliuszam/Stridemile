@@ -1,5 +1,4 @@
 import React from 'react';
-import '../styles/HomePage.css'; // Make sure to adjust the path if you have an external CSS file
 import '../components/Footer'; // Make sure to adjust the path if you have an external CSS file
 import Footer from '../components/Footer';
 import NavBar from '../components/NavBar';

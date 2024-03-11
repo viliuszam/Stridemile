@@ -5,6 +5,7 @@ import '../styles/Home.css';
 import axios from 'axios';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { isLoggedIn } from "../classes/Auth";
+import Footer from "../components/Footer";
 
 export default () => {
 
@@ -12,7 +13,7 @@ export default () => {
 
   return !isLoggedIn() ? (
     <div>
-    <div className="container bg-white pt-12">
+    <div className="container bg-white pt-12 pb-8">
         <div className="text-[#61E9B1]">
             <h2 className="text-center text-2xl">Group list</h2>
         </div>

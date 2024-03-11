@@ -1,8 +1,29 @@
 import '../styles/Home.css';
 import { PieChart } from '@mui/x-charts/PieChart';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 export default () => {
+  const [points, setPoints] = useState([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+
+    axios.get('http://localhost:3333/achievements/points', {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+      .then(response => {
+        setPoints(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching points: ', error);
+      });
+  }, []);
+
+
   const getMapsUrl = (loc) => {
     return `https://www.google.com/maps/place/${loc}/`
   }
@@ -25,6 +46,8 @@ export default () => {
     if(minutes) return `${minutes} minutes`
     return `${seconds} seconds`
   }
+
+  const percentage = (points.userPoints / points.totalPoints) * 100;
 
   return (
     <div className='container'>
@@ -179,15 +202,15 @@ export default () => {
             <p className='mb-3 text-xs text-gray-600'>Statistics of your completed achievements</p>
             <div className='flex my-auto place-items-center'>
               <p className='flex text-center text-gray-500 text-5xl font-bold'>
-                { Math.floor(10/15*100) } <i className="fa-solid fa-percent"></i>
+                {((points.userPoints / points.totalPoints) * 100).toFixed(2)} <i className="fa-solid fa-percent"></i>
               </p>
               <PieChart
               slotProps={{ legend: { hidden: true } }}
               series={[
                 {
                   data: [ 
-                    { id: 0, value: 10, color: '#e1e1e1', label: 'Not done' },
-                    { id: 1, value: 15, color: '#61E9B1', label: 'Completed' }, 
+                    { id: 0, value: 100 - percentage, color: '#e1e1e1', label: 'Not done' },
+                    { id: 1, value: percentage, color: '#61E9B1', label: 'Completed' }, 
                   ],
                   innerRadius: 20,
                   outerRadius: 30,

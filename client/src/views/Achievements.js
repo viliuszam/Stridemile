@@ -1,5 +1,5 @@
 import { useOutletContext, Link, Navigate } from "react-router-dom";
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import { AlertTypes } from "../styles/modules/AlertStyles";
 import '../styles/Home.css';
 import axios from 'axios';

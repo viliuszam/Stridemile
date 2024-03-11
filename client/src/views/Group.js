@@ -31,7 +31,7 @@ export default () => {
                   <p>2024-03-06</p>
                   <span className='mx-2'>|</span>
                   <a href={getMapsUrl("Kaunas, Pilies g. 17")} target="_blank" rel="noopener noreferrer" className='text-[#74cfda]'>
-                    <i class="fa-solid fa-location-dot"></i> Kaunas, Pilies g. 17
+                    <i className="fa-solid fa-location-dot"></i> Kaunas, Pilies g. 17
                   </a>
                 </div>
 
@@ -46,12 +46,12 @@ export default () => {
             </div>
             <div className='flex ml-auto'>
               <div className='my-auto text-sm text-nowrap'>
-               50 <i class="fa-solid fa-user-check text-gray-400"></i>
+               50 <i className="fa-solid fa-user-check text-gray-400"></i>
               </div>
             </div>
             <div className='ml-auto'>
               <div className='text-[#4edba1] hover:text-[#61E9B1] cursor-pointer'>
-                <i class="fa-solid fa-circle-check"></i>
+                <i className="fa-solid fa-circle-check"></i>
               </div>
             </div>
           </div>
@@ -75,12 +75,12 @@ export default () => {
             </div>
             <div className='flex ml-auto'>
               <div className='my-auto text-sm text-nowrap'>
-               50 <i class="fa-solid fa-user-check text-gray-400"></i>
+               50 <i className="fa-solid fa-user-check text-gray-400"></i>
               </div>
             </div>
             <div className='ml-auto'>
               <div className='text-gray-400 hover:text-gray-300 cursor-pointer'>
-                <i class="fa-solid fa-circle-check"></i>
+                <i className="fa-solid fa-circle-check"></i>
               </div>
             </div>
           </div>
@@ -106,8 +106,8 @@ export default () => {
                   <p className='text-xs'>15%</p>
                   <p className='ml-auto'>100</p>
                 </div>
-                <div class="w-full bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
-                  <div class="bg-[#61E9B1] h-1.5 rounded-full" style={{ width: "15%" }}></div>
+                <div className="w-full bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
+                  <div className="bg-[#61E9B1] h-1.5 rounded-full" style={{ width: "15%" }}></div>
                 </div>
                 
                 <div className='flex text-xs text-gray-400'>
@@ -118,12 +118,12 @@ export default () => {
             </div>
             <div className='flex ml-auto'>
               <div className='my-auto text-sm text-nowrap'>
-               50 <i class="fa-solid fa-user-check text-gray-400"></i>
+               50 <i className="fa-solid fa-user-check text-gray-400"></i>
               </div>
             </div>
             <div className='ml-auto'>
               <div className='text-gray-400 hover:text-gray-300 cursor-pointer'>
-                <i class="fa-solid fa-circle-check"></i>
+                <i className="fa-solid fa-circle-check"></i>
               </div>
             </div>
           </div>
@@ -134,19 +134,19 @@ export default () => {
           <div className='mb-6 outline outline-2 outline-offset-8 outline-[#88e0ea] rounded-xl'>
             <p className='mb-4 text-black font-bold'>Group management</p>
             <a href="" className='mb-2 p-4 bg-[#61E9B1] hover:bg-[#4edba1] rounded-xl block'>
-              <i class="fa-solid fa-person-walking mr-2"></i> Create challenge
+              <i className="fa-solid fa-person-walking mr-2"></i> Create challenge
             </a>
 
             <a href="" className='mb-2 p-4 bg-[#61E9B1] hover:bg-[#4edba1] rounded-xl block'>
-            <i class="fa-solid fa-flag-checkered mr-2"></i> Create goal
+            <i className="fa-solid fa-flag-checkered mr-2"></i> Create goal
             </a>
 
             <a href="" className='mb-2 p-4 bg-[#61E9B1] hover:bg-[#4edba1] rounded-xl block'>
-              <i class="fa-regular fa-calendar-plus mr-2"></i> Create event
+              <i className="fa-regular fa-calendar-plus mr-2"></i> Create event
             </a>
 
             <a href="" className='mb-6 p-4 bg-[#61E9B1] hover:bg-[#4edba1] rounded-xl block'>
-              <i class="fa-solid fa-pen-to-square mr-2"></i> Edit group
+              <i className="fa-solid fa-pen-to-square mr-2"></i> Edit group
             </a>
 
             <p className='mb-4 text-black font-bold'>Invite member</p>
@@ -168,17 +168,17 @@ export default () => {
           <div className='grid grid-cols-3 gap-4 justify-items-center text-center'>
             <div>
               <p>500</p>
-              <i class="fa-solid fa-users"></i>
+              <i className="fa-solid fa-users"></i>
               <p className='text-xs'>Members</p>
             </div>
             <div>
               <p>200</p>
-              <i class="fa-solid fa-trophy"></i>
+              <i className="fa-solid fa-trophy"></i>
               <p className='text-xs'>Achievements</p>
             </div>
             <div>
               <p>100</p>
-              <i class="fa-solid fa-calendar-days"></i>
+              <i className="fa-solid fa-calendar-days"></i>
               <p className='text-xs'>Events</p>
             </div>
           </div>
@@ -191,52 +191,6 @@ export default () => {
         </div>
       </div>
 
-      {/* 
-      <div className='flex bg-white mb-5 p-5 rounded-xl'>
-        <div className='my-auto'>
-          <span className='bg-gray-100 p-10 inline-block rounded'>
-            <i class="fa-solid fa-user-group text-5xl"></i>
-          </span>
-        </div>
-        <div className='ml-5 w-full'>
-          <p className='text-xl font-bold mb-3'>Group name</p>
-          <div className='grid grid-cols-3 gap-4 text-sm'>
-            <div>
-              <p className='mb-2 text-gray-500'>Description</p>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin consequat ornare nibh, nec vestibulum velit commodo nec. In varius pharetra ornare.</p>
-            </div>
-            <div>
-              <p className='mb-2 text-gray-500'>Info</p>
-              <p className='mb-1'>
-                <i class="fa-solid fa-diagram-project"></i> Type
-              </p>
-              <p className='mb-1'>
-                <i class="fa-solid fa-eye"></i> Public
-              </p>
-            </div>
-            <div>
-              <p className='mb-2 text-gray-500'>Members</p>
-              <p className='mb-1'>
-                <i class="fa-solid fa-users"></i> 500
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className='flex'>
-
-        <div className='bg-white w-full mr-5 p-5 rounded-lg '>
-          g
-        </div>
-
-        <div className='bg-white w-96 p-5 rounded-lg'>
-          j
-        </div>
-
-      </div>
-
-      */}
     </div>
   );
 };

@@ -83,8 +83,8 @@ export default () => {
                         </div>
                         <h2 className="font-semibold">{achievement.title}</h2>
                         <p className="text-sm">{achievement.description}</p>
-                        <div class="bg-gray-200 rounded-full h-1 ml-6 mr-6 mb-4 dark:bg-gray-700 mt-6">
-                            <div class="bg-[#61E9B1] h-1 rounded-full dark:bg-blue-500" style={{ width: "100%" }}></div>
+                        <div className="bg-gray-200 rounded-full h-1 ml-6 mr-6 mb-4 dark:bg-gray-700 mt-6">
+                            <div className="bg-[#61E9B1] h-1 rounded-full dark:bg-blue-500" style={{ width: "100%" }}></div>
                         </div>
                     </div>
                 ))}

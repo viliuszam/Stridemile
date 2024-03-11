@@ -25,8 +25,8 @@ export default () => {
                 </div>
                 <h2 className="font-semibold">Huge walker</h2>
                 <p className="text-sm">Walk more than 20,000 steps in 3 days.</p>
-                <div class="bg-gray-200 rounded-full h-1 ml-6 mr-6 mb-4 dark:bg-gray-700 mt-6">
-                    <div class="bg-[#61E9B1] h-1 rounded-full dark:bg-blue-500" style={{ width: "100%" }}></div>
+                <div className="bg-gray-200 rounded-full h-1 ml-6 mr-6 mb-4 dark:bg-gray-700 mt-6">
+                    <div className="bg-[#61E9B1] h-1 rounded-full dark:bg-blue-500" style={{ width: "100%" }}></div>
                 </div>
                 <div className="text-[#61E9B1]">100%</div>
                 <hr className="ml-6 mr-6 mt-4 mb-4" ></hr>
@@ -39,8 +39,8 @@ export default () => {
                 <h2 className="font-semibold">Event Participant</h2>
                 <p className="text-sm">Take part in 5 different events of all time</p>
                 <p></p>
-                <div class="bg-gray-200 rounded-full h-1 ml-6 mr-6 mb-4 dark:bg-gray-700 mt-6">
-                    <div class="bg-[#61E9B1] h-1 rounded-full dark:bg-blue-500" style={{ width: "80%" }}></div>
+                <div className="bg-gray-200 rounded-full h-1 ml-6 mr-6 mb-4 dark:bg-gray-700 mt-6">
+                    <div className="bg-[#61E9B1] h-1 rounded-full dark:bg-blue-500" style={{ width: "80%" }}></div>
                 </div>
                 <div className="text-[#61E9B1]">80%</div>
                 <hr className="ml-6 mr-6 mt-4 mb-4" ></hr>
@@ -53,8 +53,8 @@ export default () => {
                 <h2 className="font-semibold">Great Sleeper</h2>
                 <p className="text-sm">Sleep at least 8 hours a day for a week.</p>
                 <p></p>
-                <div class="bg-gray-200 rounded-full h-1 ml-6 mr-6 mb-4 dark:bg-gray-700 mt-6">
-                    <div class="bg-[#61E9B1] h-1 rounded-full dark:bg-blue-500" style={{ width: "100%" }}></div>
+                <div className="bg-gray-200 rounded-full h-1 ml-6 mr-6 mb-4 dark:bg-gray-700 mt-6">
+                    <div className="bg-[#61E9B1] h-1 rounded-full dark:bg-blue-500" style={{ width: "100%" }}></div>
                 </div>
                 <div className="text-[#61E9B1]">100%</div>
                 <hr className="ml-6 mr-6 mt-4 mb-4" ></hr>
@@ -67,8 +67,8 @@ export default () => {
                 <h2 className="font-semibold">Relaxed Guy</h2>
                 <p className="text-sm">Keep your stress levels low 3 days in a row</p>
                 <p></p>
-                <div class="bg-gray-200 rounded-full h-1 ml-6 mr-6 mb-4 dark:bg-gray-700 mt-6">
-                    <div class="bg-[#61E9B1] h-1 rounded-full dark:bg-blue-500" style={{ width: "100%" }}></div>
+                <div className="bg-gray-200 rounded-full h-1 ml-6 mr-6 mb-4 dark:bg-gray-700 mt-6">
+                    <div className="bg-[#61E9B1] h-1 rounded-full dark:bg-blue-500" style={{ width: "100%" }}></div>
                 </div>
                 <div className="text-[#61E9B1]">100%</div>
                 <hr className="ml-6 mr-6 mt-4 mb-4" ></hr>
@@ -81,8 +81,8 @@ export default () => {
                 <h2 className="font-semibold">Decent drinker</h2>
                 <p className="text-sm">Drink 5 litres of water 3 days in a row</p>
                 <p></p>
-                <div class="bg-gray-200 rounded-full h-1 ml-6 mr-6 mb-4 dark:bg-gray-700 mt-6">
-                    <div class="bg-[#61E9B1] h-1 rounded-full dark:bg-blue-500" style={{ width: "62%" }}></div>
+                <div className="bg-gray-200 rounded-full h-1 ml-6 mr-6 mb-4 dark:bg-gray-700 mt-6">
+                    <div className="bg-[#61E9B1] h-1 rounded-full dark:bg-blue-500" style={{ width: "62%" }}></div>
                 </div>
                 <div className="text-[#61E9B1]">62%</div>
                 <hr className="ml-6 mr-6 mt-4 mb-4" ></hr>
@@ -122,21 +122,21 @@ export default () => {
             </div>
             <div>
                 <div className="flex">
-                <p><i class="fa-solid fa-bell"></i></p><p className="pl-2"> <b> Huge Walker</b> </p>
+                <p><i className="fa-solid fa-bell"></i></p><p className="pl-2"> <b> Huge Walker</b> </p>
                 <p className="text-[#61E9B1] pl-2"> +1 point</p>
                 </div>
                 <p className="pl-5"> (2024-02-01)</p>
             </div>
             <div>
                 <div className="flex">
-                <p><i class="fa-solid fa-bell"></i></p><p className="pl-2"> <b> Great Sleeper</b> </p>
+                <p><i className="fa-solid fa-bell"></i></p><p className="pl-2"> <b> Great Sleeper</b> </p>
                 <p className="text-[#61E9B1] pl-2"> +1 point</p>
                 </div>
                 <p className="pl-5"> (2024-02-09)</p>
             </div>
             <div>
                 <div className="flex">
-                <p><i class="fa-solid fa-bell"></i></p><p className="pl-2"> <b> Relaxed Guy</b> </p>
+                <p><i className="fa-solid fa-bell"></i></p><p className="pl-2"> <b> Relaxed Guy</b> </p>
                 <p className="text-[#61E9B1] pl-2"> +1 point</p>
                 </div>
                 <p className="pl-5"> (2024-02-29)</p>

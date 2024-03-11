@@ -90,7 +90,7 @@ export default () => {
                 <input value={groupName} onChange={(e) => setGroupName(e.target.value)} placeholder="Type group's name" type="text" className="pl-2 rounded-lg bg-gray-50 border border-solid border-[#61E9B1] mr-2 h-12 mt-2" />
                 
                 <button className="w-full mb-3 p-3 mt-2 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1]">
-                    <i class="fa-solid fa-magnifying-glass"></i> Search
+                    <i className="fa-solid fa-magnifying-glass"></i> Search
                 </button>
             </div>
         </div>

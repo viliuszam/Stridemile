@@ -4,7 +4,7 @@ import { useOutletContext, Link, Navigate } from "react-router-dom";
 const Footer = () => {
   return (
     <div className='bg-[#61E9B1] border-b border-b-solid border-b-gray-100 drop-shadow py-1 z-10'>
-  <div class="container md:flex mx-auto pt-8">
+  <div className="container md:flex mx-auto pt-8">
     <div className='mx-auto md:max-w-80 px-3 pt-5 text-center'>
       <p>Our mission is uniting people to achieve their goals together by doing physical activities. We expect our users to 
         join groups, complete personal achievements, mutual challenges and goals, but, most importantly, 
@@ -38,7 +38,7 @@ const Footer = () => {
       <div className='pt-2 text-black hover:text-white flex'>
         <Link to="http://facebook.com" className="hover:text-decoration hover:underline flex mx-auto">
           <div>
-            <i class="fa-brands fa-facebook"></i>
+            <i className="fa-brands fa-facebook"></i>
           </div>
           <div className='pl-1'>
             <p> Facebook</p>
@@ -48,7 +48,7 @@ const Footer = () => {
       <div className='pt-1 text-black hover:text-white flex'>
         <Link to="http://instagram.com" className="hover:text-decoration hover:underline flex mx-auto">
           <div>
-            <i class="fa-brands fa-instagram"></i>
+            <i className="fa-brands fa-instagram"></i>
           </div>
           <div className='pl-1'>
             <p> Instagram</p>

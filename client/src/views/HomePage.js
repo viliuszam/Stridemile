@@ -23,7 +23,7 @@ const HomePage = () => {
             Our goal is to bring the sense of accomplishement to a community
             <a href=""></a>
           </p>
-          <div class="center-container">
+          <div className="center-container">
           <img className="" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.pngall.com%2Fwp-content%2Fuploads%2F5%2FRibbon-Award.png&f=1&nofb=1&ipt=4c947c43d81fe4f8685dce0e7d3ac4b6575f08a5070c0afa72bcea2aeba87a5c&ipo=images" alt="" />
         </div>
         </section>

@@ -45,7 +45,7 @@ export default () => {
                     <p>2024-03-06</p>
                     <span className='mx-2'>|</span>
                     <a href={getMapsUrl("Kaunas, Pilies g. 17")} target="_blank" rel="noopener noreferrer" className='text-[#74cfda]'>
-                      <i class="fa-solid fa-location-dot"></i> Kaunas, Pilies g. 17
+                      <i className="fa-solid fa-location-dot"></i> Kaunas, Pilies g. 17
                     </a>
                   </div>
 
@@ -60,12 +60,12 @@ export default () => {
               </div>
               <div className='flex ml-auto'>
                 <div className='my-auto text-sm text-nowrap'>
-                50 <i class="fa-solid fa-user-check text-gray-400"></i>
+                50 <i className="fa-solid fa-user-check text-gray-400"></i>
                 </div>
               </div>
               <div className='ml-auto'>
                 <div className='text-[#4edba1] hover:text-[#61E9B1] cursor-pointer'>
-                  <i class="fa-solid fa-circle-check"></i>
+                  <i className="fa-solid fa-circle-check"></i>
                 </div>
               </div>
             </div>
@@ -99,12 +99,12 @@ export default () => {
               </div>
               <div className='flex ml-auto'>
                 <div className='my-auto text-sm text-nowrap'>
-                50 <i class="fa-solid fa-user-check text-gray-400"></i>
+                50 <i className="fa-solid fa-user-check text-gray-400"></i>
                 </div>
               </div>
               <div className='ml-auto'>
                 <div className='text-gray-400 hover:text-gray-300 cursor-pointer'>
-                  <i class="fa-solid fa-circle-check"></i>
+                  <i className="fa-solid fa-circle-check"></i>
                 </div>
               </div>
             </div>
@@ -140,8 +140,8 @@ export default () => {
                     <p className='text-xs'>15%</p>
                     <p className='ml-auto'>100</p>
                   </div>
-                  <div class="w-full bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
-                    <div class="bg-[#61E9B1] h-1.5 rounded-full" style={{ width: "15%" }}></div>
+                  <div className="w-full bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
+                    <div className="bg-[#61E9B1] h-1.5 rounded-full" style={{ width: "15%" }}></div>
                   </div>
                   
                   <div className='flex text-xs text-gray-400'>
@@ -152,12 +152,12 @@ export default () => {
               </div>
               <div className='flex ml-auto'>
                 <div className='my-auto text-sm text-nowrap'>
-                50 <i class="fa-solid fa-user-check text-gray-400"></i>
+                50 <i className="fa-solid fa-user-check text-gray-400"></i>
                 </div>
               </div>
               <div className='ml-auto'>
                 <div className='text-gray-400 hover:text-gray-300 cursor-pointer'>
-                  <i class="fa-solid fa-circle-check"></i>
+                  <i className="fa-solid fa-circle-check"></i>
                 </div>
               </div>
             </div>
@@ -179,7 +179,7 @@ export default () => {
             <p className='mb-3 text-xs text-gray-600'>Statistics of your completed achievements</p>
             <div className='flex my-auto place-items-center'>
               <p className='flex text-center text-gray-500 text-5xl font-bold'>
-                { Math.floor(10/15*100) } <i class="fa-solid fa-percent"></i>
+                { Math.floor(10/15*100) } <i className="fa-solid fa-percent"></i>
               </p>
               <PieChart
               slotProps={{ legend: { hidden: true } }}

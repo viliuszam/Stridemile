@@ -1,5 +1,5 @@
 import { useOutletContext, Link } from "react-router-dom";
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { AlertTypes } from "../styles/modules/AlertStyles";
 import axios from 'axios';
 import { isLoggedIn, login as authLogin } from "../classes/Auth";
@@ -12,6 +12,7 @@ export default () => {
   // User data inputs
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const passwordInputRef = useRef(null);
 
   const validate = () => {
     if(!username || !password) {
@@ -48,6 +49,21 @@ export default () => {
     }); 
   }
 
+  const handleUsernameKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      passwordInputRef.current.focus();
+    }
+  };
+
+  const handlePasswordKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      login();
+    }
+  };
+
+
   return !isLoggedIn() ? (
     <div>
       <h1 className="text-2xl text-center font-medium">Log in</h1>
@@ -55,12 +71,12 @@ export default () => {
 
       <div className="mb-3">
         <div className="text-base mb-2">Username</div>
-        <input value={username} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Username" className="w-full p-3 border-[1px] border-gray-400 rounded-lg" />
+        <input value={username} onChange={(e) => setUsername(e.target.value)} onKeyPress={handleUsernameKeyPress} type="text" placeholder="Username" className="w-full p-3 border-[1px] border-gray-400 rounded-lg" />
       </div>
 
       <div className="mb-3">
         <div className="text-base mb-2">Password</div>
-        <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" className="w-full p-3 border-[1px] border-gray-400 rounded-lg" />
+        <input ref={passwordInputRef} value={password} onChange={(e) => setPassword(e.target.value)} onKeyPress={handlePasswordKeyPress} type="password" placeholder="Password" className="w-full p-3 border-[1px] border-gray-400 rounded-lg" />
       </div>
 
       <hr className="my-6" />

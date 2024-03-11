@@ -15,7 +15,7 @@ export default () => {
     <div>
     <div className="container bg-white pt-12 pb-8">
         <div className="text-[#61E9B1]">
-            <h2 className="text-center text-2xl">Group list</h2>
+            <h2 className="text-center text-2xl">Groups</h2>
         </div>
         <div className="mt-4 mb-4 mr-6 text-left ml-6">
             <p className="text-xl flex mx-auto font-semibold">My groups</p>
@@ -31,7 +31,7 @@ export default () => {
                 <p className="text-sm">Public group</p>
                 <p className="text-sm">13 members</p>
                 <hr className="ml-6 mr-6 mt-4 mb-6" ></hr>
-                <Link to="/aboutus" className="bg-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm hover:bg-white border border-solid border-[#61E9B1]">
+                <Link to="/aboutus" className="bg-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm border border-solid border-[#61E9B1]">
                 More information
                 </Link>
                 <p className="pb-3"></p>
@@ -45,7 +45,7 @@ export default () => {
                 <p className="text-sm">Public group</p>
                 <p className="text-sm">170 members</p>
                 <hr className="ml-6 mr-6 mt-4 mb-6" ></hr>
-                <Link to="/aboutus" className="bg-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm hover:bg-white border border-solid border-[#61E9B1]">
+                <Link to="/aboutus" className="bg-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm border border-solid border-[#61E9B1]">
                 More information
                 </Link>
                 <p className="pb-3"></p>
@@ -59,7 +59,7 @@ export default () => {
                 <p className="text-sm">Public group</p>
                 <p className="text-sm">82 members</p>
                 <hr className="ml-6 mr-6 mt-4 mb-6" ></hr>
-                <Link to="/aboutus" className="bg-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm hover:bg-white border border-solid border-[#61E9B1]">
+                <Link to="/aboutus" className="bg-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm border border-solid border-[#61E9B1]">
                 More information
                 </Link>
                 <p className="pb-3"></p>
@@ -73,7 +73,7 @@ export default () => {
                 <p className="text-sm">Private group</p>
                 <p className="text-sm">5 members</p>
                 <hr className="ml-6 mr-6 mt-4 mb-6" ></hr>
-                <Link to="/aboutus" className="mb-12 bg-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm hover:bg-white border border-solid border-[#61E9B1]">
+                <Link to="/aboutus" className="mb-12 bg-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm border border-solid border-[#61E9B1]">
                 More information
                 </Link>
                 <p className="pb-3"></p>
@@ -87,7 +87,7 @@ export default () => {
                 <p className="text-xl flex mx-auto font-semibold">Public groups</p>
             </div>
             <div className="ml-auto mt-4 sm:flex mr-6">
-                <input value={groupName} onChange={(e) => setGroupName(e.target.value)} placeholder="Type group's name" type="text" className="pl-2 rounded-lg border border-solid border-[#61E9B1] mr-2 h-12 mt-2" />
+                <input value={groupName} onChange={(e) => setGroupName(e.target.value)} placeholder="Type group's name" type="text" className="pl-2 rounded-lg bg-gray-50 border border-solid border-[#61E9B1] mr-2 h-12 mt-2" />
                 
                 <button className="w-full mb-3 p-3 mt-2 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1]">
                     <i class="fa-solid fa-magnifying-glass"></i> Search
@@ -105,7 +105,7 @@ export default () => {
                 <p className="text-sm">Mentor: Agnė</p>
                 <p className="text-sm">13 members</p>
                 <hr className="ml-6 mr-6 mt-4 mb-6" ></hr>
-                <Link to="/aboutus" className="bg-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm hover:bg-white border border-solid border-[#61E9B1]">
+                <Link to="/aboutus" className="bg-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm border border-solid border-[#61E9B1]">
                 More information
                 </Link>
                 <p className="pb-3"></p>
@@ -119,7 +119,7 @@ export default () => {
                 <p className="text-sm">Mentor: Tautvydas</p>
                 <p className="text-sm">170 members</p>
                 <hr className="ml-6 mr-6 mt-4 mb-6" ></hr>
-                <Link to="/aboutus" className="bg-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm hover:bg-white border border-solid border-[#61E9B1]">
+                <Link to="/aboutus" className="bg-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm border border-solid border-[#61E9B1]">
                 More information
                 </Link>
                 <p className="pb-3"></p>
@@ -133,7 +133,7 @@ export default () => {
                 <p className="text-sm">Mentor: Saulius</p>
                 <p className="text-sm">82 members</p>
                 <hr className="ml-6 mr-6 mt-4 mb-6" ></hr>
-                <Link to="/aboutus" className="bg-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm hover:bg-white border border-solid border-[#61E9B1]">
+                <Link to="/aboutus" className="bg-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm border border-solid border-[#61E9B1]">
                 More information
                 </Link>
                 <p className="pb-3"></p>
@@ -147,7 +147,7 @@ export default () => {
                 <p className="text-sm">Mentor: Paulius</p>
                 <p className="text-sm">15 members</p>
                 <hr className="ml-6 mr-6 mt-4 mb-6" ></hr>
-                <Link to="/aboutus" className="mb-12 bg-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm hover:bg-white border border-solid border-[#61E9B1]">
+                <Link to="/aboutus" className="mb-12 bg-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm border border-solid border-[#61E9B1]">
                 More information
                 </Link>
                 <p className="pb-3"></p>
@@ -161,7 +161,7 @@ export default () => {
                 <p className="text-sm">Mentor: Romualdas</p>
                 <p className="text-sm">58 members</p>
                 <hr className="ml-6 mr-6 mt-4 mb-6" ></hr>
-                <Link to="/aboutus" className="mb-12 bg-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm hover:bg-white border border-solid border-[#61E9B1]">
+                <Link to="/aboutus" className="mb-12 bg-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm border border-solid border-[#61E9B1]">
                 More information
                 </Link>
                 <p className="pb-3"></p>

@@ -36,6 +36,13 @@ export class AchievementService {
                 progress = 100;
             }
         }
+        if (achievement.time_required_s !== null){
+          let steps = await this.findFastestTimeSteps(userId, achievement.time_required_s);
+          progress = steps / achievement.steps_required * 100;
+          if (progress >= 100) {
+            progress = 100;
+          }
+        }
         if (completed) {
             date = await this.getAchievementCompletionDate(userId, achievement.id);
         }
@@ -168,6 +175,11 @@ export class AchievementService {
         if (achievement.time_required_s === null && totalSteps > achievement.steps_required) {
           isCompleted = true;
         }
+        if (achievement.time_required_s !== null){
+          if(achievement.steps_required <= await this.findFastestTimeSteps(userId, achievement.time_required_s)){
+            isCompleted = true;
+          }
+        }
         if (isCompleted) {
           try {
             if (isCompleted) {
@@ -185,4 +197,78 @@ export class AchievementService {
       }
 
     }
+
+    async findFastestTimeSteps(userId: number, timeRequiredSec: number){
+      const activityEntries = await this.prisma.activityEntry.findMany({
+        where: {
+          user: { id: userId },
+        },
+        orderBy: {
+          start_time: 'asc',
+        },
+      });
+
+      var mostSteps = 0;
+
+      const timeIntervalCount = timeRequiredSec / 10;
+      if(activityEntries.length <= timeIntervalCount){
+        let accumulatedSteps = 0;
+        for(let i = 0; i < activityEntries.length; i++){
+          accumulatedSteps += activityEntries[i].steps;
+        }
+        return accumulatedSteps;
+      }
+      for(let i = 0; i < activityEntries.length - timeIntervalCount; i++){
+        let accumulatedSteps = 0;
+        for(let j = 0; j < timeIntervalCount; j++){
+          let index = i + j;
+          accumulatedSteps += activityEntries[index].steps;
+        }
+        if(accumulatedSteps > mostSteps){
+          mostSteps = accumulatedSteps;
+        }
+        accumulatedSteps = 0;
+      }
+      //console.log(mostSteps);
+
+      return mostSteps;
+
+    }
+
+    /*
+    async findFastestTime(userId: number, stepCount: number){
+      const activityEntries = await this.prisma.activityEntry.findMany({
+        where: {
+          user: { id: userId },
+        },
+        orderBy: {
+          start_time: 'asc',
+        },
+      });
+
+      var fastestTime = Infinity;
+
+      for(let i = 0; i < activityEntries.length; i++){
+        let accumulatedSteps = 0;
+        let timePassed = 0;
+        for(let j = i; j < activityEntries.length; j++){
+          accumulatedSteps += activityEntries[j].steps;
+          timePassed += activityEntries[j].end_time.getTime() - activityEntries[j].start_time.getTime();
+          if(timePassed < fastestTime && accumulatedSteps >= stepCount){
+            fastestTime = timePassed;
+            accumulatedSteps = 0;
+            timePassed = 0;
+          }
+
+          if(timePassed >= fastestTime){
+            accumulatedSteps = 0;
+            timePassed = 0;
+          }
+        }
+      }
+      return fastestTime === Infinity ? 0 : fastestTime;
+
+    }
+    */
+
 }

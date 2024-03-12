@@ -1,15 +1,18 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma, Group, Invitation } from '@prisma/client';
+import { Prisma, Group, Invitation, User } from '@prisma/client';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { MailService } from './mail/mail.service';
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import { SendInvitationDto } from './dto/send-invitation.dto';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class GroupService {
-  constructor(private prisma: PrismaService, private mailService: MailService, private jwt: JwtService, private config: ConfigService) {}
+  constructor(private prisma: PrismaService, private mailService: MailService, private jwt: JwtService, private config: ConfigService,
+    private userService: UserService
+    ) {}
 
   async createGroup(createGroupDto: CreateGroupDto): Promise<Group> {
     const { name, description, mentorId, visibilityId } = createGroupDto;
@@ -172,5 +175,18 @@ export class GroupService {
     } catch (error) {
       throw error;
     }
+  }
+
+  async findGroupAndUserByToken(token: string): Promise<{ group: Group | null, user: User | null }> {
+    const invitation = await this.prisma.invitation.findFirst({ where: { token } });
+
+    if (!invitation) {
+      return { group: null, user: null };
+    }
+
+    const group = await this.findGroupById(invitation.fk_GroupId);
+    const user = await this.userService.getUserById(invitation.fk_UserId);
+
+    return { group, user };
   }
 }

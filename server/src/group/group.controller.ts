@@ -85,11 +85,23 @@ export class GroupController {
       await this.groupService.addUserToGroup(userId, groupId);
 
       return {
+        statusCode: HttpStatus.OK,
         message: 'You have joined the group successfully!',
       };
-
-      } catch (error) {
-      return 'Error processing invitation: ' + error.message;
+    } catch (error) {
+      return {
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: error.message,
+      };
     }
+  }
+
+  @Get(':token')
+  async findGroupIdAndUserIdByToken(@Param('token') token: string) {
+    const result = await this.groupService.findGroupAndUserByToken(token);
+    if (!result) {
+      return { statusCode: HttpStatus.NOT_FOUND, message: 'Invitation not found' };
+    }
+    return { statusCode: HttpStatus.OK, data: result };
   }
 }

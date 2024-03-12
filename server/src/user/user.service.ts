@@ -9,11 +9,11 @@ export class UserService {
     constructor(private prisma: PrismaService) {
     }
 
-    async getUserById(id: string): Promise<User | null> {
+    async getUserById(id: number): Promise<User | null> {
         try {
             const user = await this.prisma.user.findUnique({
                 where: {
-                    id: parseInt(id)
+                    id: id
                 }
             });
             return user;
@@ -22,3 +22,5 @@ export class UserService {
         }
     }
 }
+
+export { User };

@@ -18,7 +18,6 @@ import CreateGroup from "./views/CreateGroup";
 import PageNotFound from "./views/PageNotFound";
 import Groups from "./views/Groups";
 import GroupInvitation from "./views/GroupInvitation";
-import InvitationPage from "./views/Invitation";
 
 export default function App() {
   return (
@@ -31,7 +30,6 @@ export default function App() {
           <Route path="/achievements" element={<Achievements />} />
           <Route path="/create-group" element={<CreateGroup />} />
           <Route path="/groups" element={<Groups />} />
-          <Route path={'/groups/:token'} element={<InvitationPage/>} />
         </Route>
 
         <Route element={<AuthLayout />}>
@@ -39,7 +37,7 @@ export default function App() {
           <Route path={'/resetPassword/:token'} element={<PasswordChange/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/group-invite/:id" element={<GroupInvitation />} />
+          <Route path="/groups/:token" element={<GroupInvitation />} />
         </Route>
 
         <Route path="/HomePage" element={<HomePage />} />

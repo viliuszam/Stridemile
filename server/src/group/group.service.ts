@@ -57,7 +57,10 @@ export class GroupService {
       return this.prisma.group.findMany({
         where: {
           visibilityId: publicVisibilityId
-        }
+        },
+        include: {
+          groupMembers: true,
+        },
       });
     } else {
       return [];

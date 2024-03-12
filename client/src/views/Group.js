@@ -1,13 +1,36 @@
 import '../styles/Home.css';
+import React, { useState } from 'react';
+import { useParams, useLocation } from "react-router-dom";
+import axios from 'axios';
 
-import { useParams } from "react-router-dom";
+const getMapsUrl = (loc) => {
+  return `https://www.google.com/maps/place/${loc}/`
+};
 
-export default () => {
-  const { groupId } = useParams();
+const InviteForm = () => {
+  const location = useLocation();
+  const pathArray = location.pathname.split('/');
+  const groupId = pathArray[pathArray.length - 1];
 
-  const getMapsUrl = (loc) => {
-    return `https://www.google.com/maps/place/${loc}/`
-  }
+  const [email, setEmail] = useState('');
+
+  const handleInvite = async (e) => {
+    e.preventDefault();
+    if (!groupId) {
+      console.error('Group ID is not available.');
+      return;
+    }
+    try {
+      const response = await axios.post('http://localhost:3333/groups/sendInvitation', {
+        groupId: parseInt(groupId),
+        userEmail: email,
+      });
+      console.log(response.data);
+      setEmail('');
+    } catch (error) {
+      console.error('Failed to send invitation:', error);
+    }
+  };
 
   return (
     <div className='container'>
@@ -150,10 +173,21 @@ export default () => {
             </a>
 
             <p className='mb-4 text-black font-bold'>Invite member</p>
-            <div className='flex'>
-              <input className='p-4 border-2 border-gary-50 rounded-xl' placeholder="Enter member @email" />
-              <button className='ml-2 p-4 bg-[#61E9B1] hover:bg-[#4edba1] rounded-xl'>Invite</button>
-            </div>
+            <form onSubmit={handleInvite} className='flex'>
+              <input
+                className='p-4 border-2 border-gary-50 rounded-xl'
+                placeholder="Enter member email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <button
+                type="submit"
+                className='ml-2 p-4 bg-[#61E9B1] hover:bg-[#4edba1] rounded-xl'
+              >
+                Invite
+              </button>
+            </form>
           </div>
 
           <p className='mb-4 text-black font-bold'>Description</p>
@@ -194,3 +228,5 @@ export default () => {
     </div>
   );
 };
+
+export default InviteForm;

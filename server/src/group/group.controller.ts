@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, HttpStatus, HttpException, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, HttpStatus, HttpException, NotFoundException, UseGuards, Request } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
+import { SendInvitationDto } from './dto/send-invitation.dto';
 import { Group } from '@prisma/client';
 
 @Controller('groups')
@@ -51,5 +52,44 @@ export class GroupController {
   async findUserGroups(@Request() req) {
     const userId = req.user.id;
     return this.groupService.findCurrentUserGroups(userId);
+  }
+
+  @Post('sendInvitation')
+  async sendInvitation(@Body() sendInvitationDto: SendInvitationDto) {
+    try {
+      const { groupId, userEmail } = sendInvitationDto;
+
+      const invitationSent = await this.groupService.sendInvitation(sendInvitationDto);
+
+      if (invitationSent) {
+        return { message: 'Invitation sent successfully' };
+      } else {
+        throw new NotFoundException('User or group not found');
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Post('joinGroup')
+  async handleInvitation(@Body() body: { token: string }) {
+    const { token } = body;
+
+    try {
+      const { groupId, userId } = await this.groupService.validateInvitationToken(token);
+
+      if (!groupId || !userId) {
+        throw new Error('Invalid invitation token');
+      }
+
+      await this.groupService.addUserToGroup(userId, groupId);
+
+      return {
+        message: 'You have joined the group successfully!',
+      };
+
+      } catch (error) {
+      return 'Error processing invitation: ' + error.message;
+    }
   }
 }

@@ -116,20 +116,29 @@ model Event {
 }
 
 model Group {
-  member_count  Int?
-  type          String?
   name          String?
   description   String?
   id            Int      @id @default(autoincrement())
   visibilityId    Int?    
   invitations Invitation[]
   groupEvents GroupEvent[]
+  groupMembers GroupMember[]
   goals Goal[]
   challenges Challenge[]
   mentorId      Int?
   mentor        User?    @relation(fields: [mentorId], references: [id])
 
   @@map("groups")
+}
+
+model GroupMember {
+  id       Int      @id @default(autoincrement())
+  groupId  Int
+  userId   Int
+  group    Group    @relation(fields: [groupId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
+
+  @@map("group_members")
 }
 
 model Permission {
@@ -163,11 +172,13 @@ model User {
 
   role             Role?     @relation(fields: [fk_Roleid], references: [id])
   fk_Roleid        Int @default(3)
-  persons Person[]
   mentors Mentor[]
+  groupMembers GroupMember[]
   administrators Administrator[]
   activityEntries ActivityEntry[]
+  persons Person[]
   groups Group[]
+  invitations Invitation[]
   completedAchievements AchievementsOnUsers[]
 
   @@map("users")
@@ -288,7 +299,6 @@ model Person {
   user          User     @relation(fields: [id], references: [id])
   statistics Statistics[]
   reminders Reminder[]
-  invitations Invitation[]
   //achievements Achievement[]
 
   @@map("persons")
@@ -311,16 +321,16 @@ model Achievement {
 }
 
 model Invitation {
-  date_sent      DateTime?
+  date_sent      DateTime? @default(now())
   date_responded DateTime?
-  message        String?
-  status         Int?
-  id             Int      @id @default(autoincrement())
-  group          Group    @relation(fields: [fk_Groupid], references: [id])
-  fk_Groupid     Int      
-  person         Person   @relation(fields: [fk_Personid], references: [id])
-  fk_Personid    Int      
-  invitationStatus  Int?
+  expiryDuration Int       @default(60)
+  token          String    @default("")
+  id             Int       @id @default(autoincrement())
+  group          Group     @relation(fields: [fk_GroupId], references: [id])
+  fk_GroupId     Int      
+  user           User      @relation(fields: [fk_UserId], references: [id])
+  fk_UserId      Int      
+  invitationStatus  Int? @default(1)
 
   @@map("invitations")
 }

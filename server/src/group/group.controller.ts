@@ -1,7 +1,8 @@
-import { Controller, Post, Body, HttpStatus, HttpException, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpStatus, HttpException, UseGuards, Request } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
+import { Group } from '@prisma/client';
 
 @Controller('groups')
 export class GroupController {
@@ -28,5 +29,27 @@ export class GroupController {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  @Get('publicGroups')
+  async getAllPublicGroups(): Promise<Group[]> {
+    try {
+      return await this.groupService.findAllPublicGroups();
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: 'Internal Server Error',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('userGroups')
+  async findUserGroups(@Request() req) {
+    const userId = req.user.id;
+    return this.groupService.findCurrentUserGroups(userId);
   }
 }

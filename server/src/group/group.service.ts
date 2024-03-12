@@ -26,4 +26,45 @@ export class GroupService {
       },
     });
   }
+
+  async findAll(): Promise<Group[]> {
+    return this.prisma.group.findMany();
+  }
+
+  async findPublicVisibilityId(): Promise<number | null> {
+    try {
+      const publicVisibility = await this.prisma.groupVisibility.findFirst({
+        where: {
+          name: 'public'
+        }
+      });
+  
+      return publicVisibility?.id ?? null;
+    } catch (error) {
+      console.error('Error finding public visibility:', error);
+      return null;
+    }
+  }
+
+  async findAllPublicGroups(): Promise<Group[]> {
+    const publicVisibilityId = await this.findPublicVisibilityId();
+
+    if (publicVisibilityId !== null) {
+      return this.prisma.group.findMany({
+        where: {
+          visibilityId: publicVisibilityId
+        }
+      });
+    } else {
+      return [];
+    }
+  }
+
+  async findCurrentUserGroups(mentorId: number): Promise<Group[]> {
+    return this.prisma.group.findMany({
+      where: {
+        mentorId: mentorId,
+      },
+    });
+  }
 }

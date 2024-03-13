@@ -90,10 +90,16 @@ export default () => {
           </select>
         </div>
 
-        <div className="text-base mb-2 pb-3">Group image</div>
+        <div className="text-base mb-2 pb-3">Group cover</div>
+        <div className=" pb-6">
+        <label for="uploadcover" className="hover:bg-white text-base text-black border-gray-400 border border-solid rounded-lg pr-[331px] pl-3 py-3 hover:bg-[#61E9B1] w-64">Select image...</label>
+        <input type="file" id="uploadcover" accept="image/*" hidden/>
+        </div>
+
+        <div className="text-base mb-2 pb-3">Group banner</div>
         <div className="">
-        <label for="upload" className="hover:bg-white text-base text-black border-gray-400 border border-solid rounded-lg pr-[331px] pl-3 py-3 hover:bg-[#61E9B1] w-64">Select image...</label>
-        <input type="file" id="upload" accept="image/*" hidden/>
+        <label for="uploadbanner" className="hover:bg-white text-base text-black border-gray-400 border border-solid rounded-lg pr-[331px] pl-3 py-3 hover:bg-[#61E9B1] w-64">Select image...</label>
+        <input type="file" id="uploadbanner" accept="image/*" hidden/>
         </div>
 
         <hr className="my-6 mt-9" />

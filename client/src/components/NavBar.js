@@ -25,7 +25,7 @@ const NavBar = () => {
 
   return (
     <div className='bg-white border-b border-b-solid border-b-gray-100 drop-shadow fixed w-full py-1 z-10'>
-      <div className="flex bg-white container">
+      <div className="md:flex bg-white container">
         <div className='text-black pt-4 pb-4 pl-2 text-sm my-auto flex' >
           <p>LOGO</p>
         </div>
@@ -87,7 +87,7 @@ const NavBar = () => {
             if(!isLoggedIn()) {
               return (
                 <div>
-                  <Link to="/login" className="bg-[#61E9B1] border-[1px] border-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm ml-24 border border-solid border-[#61E9B1]">
+                  <Link to="/login" className="bg-[#61E9B1] border-[1px] border-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 md:m-2 text-sm md:ml-24 border border-solid border-[#61E9B1]">
                     Log in
                   </Link>
                   <Link to="/register" className="bg-[#61E9B1] border-[1px] border-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm border border-solid border-[#61E9B1]">

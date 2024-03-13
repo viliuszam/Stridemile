@@ -65,7 +65,7 @@ export default () => {
   return (
     <div className="w-full">
    
-    <div className="container sm:flex pt-12">
+    <div className="container sm:flex pt-12 pb-12">
       <div className="w-3/6 sm:mx-8 mx-auto">
         <h1 className="text-2xl text-center font-medium">Create a group</h1>
         <hr className="my-6" />
@@ -90,7 +90,13 @@ export default () => {
           </select>
         </div>
 
-        <hr className="my-6" />
+        <div className="text-base mb-2 pb-3">Group image</div>
+        <div className="">
+        <label for="upload" className="hover:bg-white text-base text-black border-gray-400 border border-solid rounded-lg pr-[331px] pl-3 py-3 hover:bg-[#61E9B1] w-64">Select image...</label>
+        <input type="file" id="upload" accept="image/*" hidden/>
+        </div>
+
+        <hr className="my-6 mt-9" />
 
         <button onClick={createGroup} className="w-full mb-3 p-3 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1]">
         <i className="fa-solid fa-people-group"></i> Create a group

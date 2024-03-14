@@ -118,6 +118,8 @@ model Event {
 model Group {
   name          String?
   description   String?
+  image_url     String?
+  banner_url    String?
   id            Int      @id @default(autoincrement())
   visibilityId    Int?    
   invitations Invitation[]

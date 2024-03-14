@@ -7,12 +7,39 @@ import Footer from '../components/Footer';
 const Home = () => {
   const [publicGroups, setPublicGroups] = useState([]);
   const [userGroups, setUserGroups] = useState([]);
-  const [groupName, setGroupName] = useState('');
+  const [publicGroupName, setPublicGroupName] = useState('');
+  const [userGroupName, setUserGroupName] = useState('');
+  const [filteredPublicGroups, setFilteredPublicGroups] = useState([]);
+  const [filteredUserGroups, setFilteredUserGroups] = useState([]);
 
   useEffect(() => {
     fetchPublicGroups();
     fetchUserGroups();
   }, []);
+
+  useEffect(() => {
+    if (!publicGroupName) {
+      setFilteredPublicGroups(publicGroups);
+      return;
+    }
+
+    const filteredGroups = publicGroups.filter((group) =>
+      group.name.toLowerCase().includes(publicGroupName.toLowerCase())
+    );
+    setFilteredPublicGroups(filteredGroups);
+  }, [publicGroupName, publicGroups]);
+
+  useEffect(() => {
+    if (!userGroupName) {
+      setFilteredUserGroups(userGroups);
+      return;
+    }
+
+    const filteredGroups = userGroups.filter((group) =>
+      group.name.toLowerCase().includes(userGroupName.toLowerCase())
+    );
+    setFilteredUserGroups(filteredGroups);
+  }, [userGroupName, userGroups]);
 
   const fetchPublicGroups = async () => {
     try {
@@ -50,15 +77,24 @@ const Home = () => {
             <h2 className="text-center text-2xl">Groups</h2>
           </div>
   
-          <div className="mt-4 mb-4 mr-6 text-left ml-6">
-            <p className="text-xl flex mx-auto font-semibold">My groups</p>
+          <div className="flex mt-2">
+            <div className="mt-8 mb-3 mr-6 text-left ml-6">
+              <p className="text-xl flex mx-auto font-semibold">Public groups</p>
+            </div>
+            <div className="ml-auto mt-4 sm:flex mr-6">
+              <input value={userGroupName} onChange={(e) => setUserGroupName(e.target.value)} placeholder="Type group's name" type="text" className="pl-2 rounded-lg bg-gray-50 border border-solid border-[#61E9B1] mr-2 h-12 mt-2" />
+              <button className="w-full mb-3 p-3 mt-2 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1]">
+                <i className="fa-solid fa-magnifying-glass"></i> Search
+              </button>
+            </div>
           </div>
+
           <div className="flex">
             <div className="w-full grid md:grid-cols-4 md:gap-4 sm:grid-cols-2 sm:gap-4 pl-5 pr-5">
-              {userGroups.length === 0 ? (
+              {filteredUserGroups.length === 0 ? (
             <p style={{ textAlign: 'center', fontSize: '1.2rem', color: 'green', marginTop: '1rem' }}>No groups found.</p>
             ) : (
-                userGroups.map((group) => (
+                filteredUserGroups.map((group) => (
                   <div key={group.id} className="bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-[#61E9B1]">
                     <div className="rounded-4xl pb-3 flex">
                       <img src={group.image} alt="Group" className="rounded-4xl mx-auto" height={100} width={100} />
@@ -83,22 +119,25 @@ const Home = () => {
           </div>
         </div>
       )}
-  
+
       <div className="flex mt-2">
         <div className="mt-8 mb-3 mr-6 text-left ml-6">
           <p className="text-xl flex mx-auto font-semibold">Public groups</p>
         </div>
         <div className="ml-auto mt-4 sm:flex mr-6">
-          {/* Search input field */}
+          <input value={publicGroupName} onChange={(e) => setPublicGroupName(e.target.value)} placeholder="Type group's name" type="text" className="pl-2 rounded-lg bg-gray-50 border border-solid border-[#61E9B1] mr-2 h-12 mt-2" />
+          <button className="w-full mb-3 p-3 mt-2 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1]">
+            <i className="fa-solid fa-magnifying-glass"></i> Search
+          </button>
         </div>
       </div>
   
       <div className="flex">
         <div className="w-full grid md:grid-cols-4 md:gap-4 sm:grid-cols-2 sm:gap-4 pl-5 pr-5">
-          {publicGroups.length === 0 ? (
+          {filteredPublicGroups.length === 0 ? (
             <p style={{ textAlign: 'center', fontSize: '1.2rem', color: 'green', marginTop: '1rem' }}>No groups found.</p>
           ) : (
-            publicGroups.map((group) => (
+            filteredPublicGroups.map((group) => (
               <div key={group.id} className="bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-[#61E9B1]">
                 <div className="rounded-4xl pb-3 flex">
                   <img src={group.image} alt="Group" className="rounded-4xl mx-auto" height={100} width={100} />

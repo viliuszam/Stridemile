@@ -55,26 +55,58 @@ export class GroupService {
 
   async findAllPublicGroups(): Promise<Group[]> {
     const publicVisibilityId = await this.findPublicVisibilityId();
-
+  
     if (publicVisibilityId !== null) {
       return this.prisma.group.findMany({
         where: {
           visibilityId: publicVisibilityId
         },
         include: {
-          groupMembers: true,
-        },
+          groupMembers: {
+            include: {
+              user: {
+                select: {
+                  username: true
+                }
+              }
+            }
+          },
+          mentor: {
+            select: {
+              username: true
+            }
+          }
+        }
       });
     } else {
       return [];
     }
   }
 
-  async findCurrentUserGroups(mentorId: number): Promise<Group[]> {
+  async findCurrentUserGroups(userId: number): Promise<Group[]> {
     return this.prisma.group.findMany({
       where: {
-        mentorId: mentorId,
+        OR: [
+          { mentorId: userId },
+          { groupMembers: { some: { userId } } }
+        ]
       },
+      include: {
+        groupMembers: {
+          include: {
+            user: {
+              select: {
+                username: true
+              }
+            }
+          }
+        },
+        mentor: {
+          select: {
+            username: true
+          }
+        }
+      }
     });
   }
 

@@ -13,6 +13,7 @@ const InviteForm = () => {
   const groupId = pathArray[pathArray.length - 1];
 
   const [email, setEmail] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
 
   const handleInvite = async (e) => {
     e.preventDefault();
@@ -21,19 +22,53 @@ const InviteForm = () => {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:3333/groups/sendInvitation', {
-        groupId: parseInt(groupId),
-        userEmail: email,
-      });
+      const accessToken = localStorage.getItem('accessToken');
+      if (!accessToken) {
+        // Handle case where user is not logged in
+        console.error('User is not logged in.');
+        return;
+      }
+      
+      const response = await axios.post(
+        'http://localhost:3333/groups/sendInvitation',
+        {
+          groupId: parseInt(groupId),
+          userEmail: email,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
       console.log(response.data);
       setEmail('');
+      setAlertMessage({ text: 'Invitation sent successfully!', type: 'success' });
     } catch (error) {
       console.error('Failed to send invitation:', error);
+      if (error.response && error.response.data) {
+        setAlertMessage({ text: error.response.data.message, type: 'error' });
+      } else {
+        setAlertMessage({ text: 'Failed to send invitation', type: 'error' });
+      }
     }
   };
-
+  
   return (
     <div className='container'>
+
+      {alertMessage && (
+        <div className={`mb-4 p-2 text-center ${alertMessage.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+          {alertMessage.text}
+        </div>
+      )}
+
+      <div className='flex'>
+        <div className='w-full mr-6'>
+          <a className='text-[#4edba1] font-bold pb-2 border-b-4 border-[#4edba1]' href="#">Timeline</a>
+          <hr className='mb-3 mt-2' />
+          </div>
+      </div>
 
       <div className='relative mb-20 h-32 w-full bg-gradient-to-b from-gray-100 to-gray-200 rounded-xl'>
         <img className='absolute left-10 -bottom-10 h-24 w-24 rounded-full outline outline-8 outline-white' src="https://wearecardinals.com/wp-content/uploads/2020/04/u1Re9qgMfM8d6kumlW85PS6s55jQh5fbdmppgQsP.jpeg" />

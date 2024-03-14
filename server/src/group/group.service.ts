@@ -123,42 +123,44 @@ export class GroupService {
     }
   }
 
-  async sendInvitation(dto: SendInvitationDto) : Promise<boolean> {
+  async sendInvitation(dto: SendInvitationDto, userId: number): Promise<boolean> {
     try {
       const group = await this.prisma.group.findUnique({
         where: { id: dto.groupId },
       });
-
+  
+      if (!group) {
+        throw new NotFoundException('Group not found.');
+      }
+  
+      if (group.mentorId !== userId) {
+        throw new ForbiddenException('You are not the mentor of this group.');
+      }
+  
       const user = await this.prisma.user.findUnique({
         where: { email: dto.userEmail  },
       });
-
-      if (!group || !user) {
-        throw new NotFoundException('User or group not found');
+  
+      if (!user) {
+        throw new NotFoundException('User not found.');
       }
-
-      if (user && group) {
+  
       const token = await this.inviteToken(group.id, user.email);
-
+  
       await this.prisma.invitation.create({
         data: {
           token: token,
-          //status: 'Pending',
           user: { connect: { id: user.id } },
           group: { connect: { id: group.id } },
         },
-
-        });
-        await this.mailService.sendGroupInvitation(user, group.name, await token);
-        return true;
-      } else {
-        throw new ForbiddenException('Email does not exist');
-      }
-      
+      });
+  
+      await this.mailService.sendGroupInvitation(user, group.name, token);
+      return true;
     } catch (e) {
       throw e;
     }
-  }
+  } 
 
   async inviteToken(groupId: number, email: string) {
     const payload = {
@@ -182,7 +184,7 @@ export class GroupService {
       });
 
       if (!invitation) {
-        throw new NotFoundException('Invitation not found');
+        throw new NotFoundException('Invitation not found.');
       }
 
       const currentTime = new Date();
@@ -190,7 +192,7 @@ export class GroupService {
       expiryTime.setMinutes(expiryTime.getMinutes() + invitation.expiryDuration);
 
       if (currentTime > expiryTime) {
-        throw new Error('Invitation token has expired');
+        throw new Error('Invitation token has expired.');
       }
 
       if (invitation.fk_GroupId && invitation.fk_UserId) {

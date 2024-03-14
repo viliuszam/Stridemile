@@ -18,7 +18,7 @@ export class GroupController {
       
       const createdGroup = await this.groupService.createGroup(createGroupDto);
       return {
-        message: 'Group created successfully',
+        message: 'Group created successfully!',
         group: createdGroup,
       };
     } catch (error) {
@@ -55,11 +55,13 @@ export class GroupController {
   }
 
   @Post('sendInvitation')
-  async sendInvitation(@Body() sendInvitationDto: SendInvitationDto) {
+  @UseGuards(AuthGuard('jwt'))
+  async sendInvitation(@Body() sendInvitationDto: SendInvitationDto, @Request() req) {
     try {
       const { groupId, userEmail } = sendInvitationDto;
+      const userId = req.user.id;
 
-      const invitationSent = await this.groupService.sendInvitation(sendInvitationDto);
+      const invitationSent = await this.groupService.sendInvitation(sendInvitationDto, userId);
 
       if (invitationSent) {
         return { message: 'Invitation sent successfully' };

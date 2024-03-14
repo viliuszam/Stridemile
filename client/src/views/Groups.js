@@ -79,7 +79,7 @@ const Home = () => {
   
           <div className="flex mt-2">
             <div className="mt-8 mb-3 mr-6 text-left ml-6">
-              <p className="text-xl flex mx-auto font-semibold">Public groups</p>
+              <p className="text-xl flex mx-auto font-semibold">My groups</p>
             </div>
             <div className="ml-auto mt-4 sm:flex mr-6">
               <input value={userGroupName} onChange={(e) => setUserGroupName(e.target.value)} placeholder="Type group's name" type="text" className="pl-2 rounded-lg bg-gray-50 border border-solid border-[#61E9B1] mr-2 h-12 mt-2" />
@@ -97,7 +97,7 @@ const Home = () => {
                 filteredUserGroups.map((group) => (
                   <div key={group.id} className="bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-[#61E9B1]">
                     <div className="rounded-4xl pb-3 flex">
-                      <img src={group.image} alt="Group" className="rounded-4xl mx-auto" height={100} width={100} />
+                      <img src={group.image_url} alt="Group" className="rounded-4xl mx-auto" height={100} width={100} />
                     </div>
                     <h2 className="font-semibold">{group.name}</h2>
                     <hr className="ml-6 mr-6 mt-4 mb-4" />
@@ -140,7 +140,7 @@ const Home = () => {
             filteredPublicGroups.map((group) => (
               <div key={group.id} className="bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-[#61E9B1]">
                 <div className="rounded-4xl pb-3 flex">
-                  <img src={group.image} alt="Group" className="rounded-4xl mx-auto" height={100} width={100} />
+                  <img src={group.image_url} alt="Group" className="rounded-4xl mx-auto" height={100} width={100} />
                 </div>
                 <h2 className="font-semibold">{group.name}</h2>
                 <hr className="ml-6 mr-6 mt-4 mb-4" />

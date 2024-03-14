@@ -14,6 +14,9 @@ export default () => {
   const [visibilityOptions, setVisibilityOptions] = useState([]);
   const [selectedVisibility, setSelectedVisibility] = useState('');
 
+  const [imageGroupFile, setImageGroupFile] = useState(null);
+  const [imageBannerFile, setImageBannerFile] = useState(null);
+
   useEffect(() => {
     // Fetch visibility options from the server
     axios.get('http://localhost:3333/visibility-options')
@@ -35,21 +38,25 @@ export default () => {
 
   const createGroup = () => {
     if (!validate()) return;
-  
+
     const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) {
-      // neprisilogines
       return;
     }
-  
-    axios.post('http://localhost:3333/groups/createGroup', {
-      name: groupName,
-      description: groupDescription,
-      mentorId: parseInt(-1),
-      visibilityId: parseInt(selectedVisibility),
-    }, {
+    const formData = new FormData();
+    formData.append('name', groupName);
+    formData.append('description', groupDescription);
+    formData.append('mentorId', -1);
+    formData.append('visibilityId', selectedVisibility);
+    formData.append('imageGroupFile', imageGroupFile);
+    formData.append('imageBannerFile', imageBannerFile);
+    for (let entry of formData.entries()) {
+      console.log(entry);
+    }
+    axios.post('http://localhost:3333/groups/createGroup', formData, {
       headers: {
-        Authorization: `Bearer ${accessToken}`
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'multipart/form-data'
       }
     })
     .then(function (response) {
@@ -93,13 +100,13 @@ export default () => {
         <div className="text-base mb-2 pb-3">Group cover</div>
         <div className=" pb-6">
         <label for="uploadcover" className="hover:bg-white text-base text-black border-gray-400 border border-solid rounded-lg pr-[331px] pl-3 py-3 hover:bg-[#61E9B1] w-64">Select image...</label>
-        <input type="file" id="uploadcover" accept="image/*" hidden/>
+        <input type="file" id="uploadcover" accept="image/*" onChange={(e) => setImageGroupFile(e.target.files[0])} hidden/>
         </div>
 
         <div className="text-base mb-2 pb-3">Group banner</div>
         <div className="">
         <label for="uploadbanner" className="hover:bg-white text-base text-black border-gray-400 border border-solid rounded-lg pr-[331px] pl-3 py-3 hover:bg-[#61E9B1] w-64">Select image...</label>
-        <input type="file" id="uploadbanner" accept="image/*" hidden/>
+        <input type="file" id="uploadbanner" accept="image/*" onChange={(e) => setImageBannerFile(e.target.files[0])} hidden/>
         </div>
 
         <hr className="my-6 mt-9" />

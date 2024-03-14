@@ -14,7 +14,7 @@ export class GroupService {
     private userService: UserService
     ) {}
 
-  async createGroup(createGroupDto: CreateGroupDto): Promise<Group> {
+  async createGroup(createGroupDto: CreateGroupDto, groupFN, bannerFN): Promise<Group> {
     const { name, description, mentorId, visibilityId } = createGroupDto;
     return this.prisma.group.create({
       data: {
@@ -22,6 +22,8 @@ export class GroupService {
         description,
         mentorId,
         visibilityId,
+        image_url: groupFN,
+        banner_url: bannerFN
       },
     });
   }

@@ -1,9 +1,13 @@
-import { Controller, Get, Param, Post, Body, HttpStatus, HttpException, NotFoundException, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, HttpStatus, HttpException, NotFoundException, UseGuards, Request, UseInterceptors, UploadedFiles } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { SendInvitationDto } from './dto/send-invitation.dto';
 import { Group } from '@prisma/client';
+import { AnyFilesInterceptor } from '@nestjs/platform-express';
+import path = require('path');
+import { v4 as uuidv4 } from 'uuid';
+import { diskStorage, Multer } from 'multer';
 
 @Controller('groups')
 export class GroupController {
@@ -11,24 +15,59 @@ export class GroupController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post('createGroup')
-  async createGroup(@Body() createGroupDto: CreateGroupDto, @Request() req) {
+  @UseInterceptors(AnyFilesInterceptor({
+    storage: diskStorage({
+      destination: (req, file, cb) => {
+        var destination = ""
+        if(file.fieldname == 'imageGroupFile'){
+          destination = './uploads/groupimages'
+        }else{
+          destination = './uploads/bannerimages'
+        }
+        cb(null, destination);
+      },
+      filename: (req, file, cb) => {
+        const filename: string =
+          path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
+        const extension: string = path.parse(file.originalname).ext;
+  
+        cb(null, `${filename}${extension}`);
+      },
+    }),
+  }))
+  async createGroup(@UploadedFiles() files: Array<Multer.File>, @Request() req) {
     try {
       const userId = req.user.id;
-      createGroupDto.mentorId = userId;
+      var {name, description, mentorId, visibilityId } = req.body;
       
-      const createdGroup = await this.groupService.createGroup(createGroupDto);
+      mentorId = userId;
+      var bannerFN = null;
+      var groupFN = null;
+      for(let i = 0; i < files.length; i++){
+        if(files[i].fieldname == 'imageGroupFile'){
+          groupFN = process.env.GROUP_PHOTO_PATH + files[i].filename;
+          console.log(groupFN);
+        }
+        if(files[i].fieldname == 'imageBannerFile'){
+          bannerFN = process.env.BANNER_PHOTO_PATH + files[i].filename;
+          console.log(bannerFN);
+        }
+      }
+      
+      const createGroupDto: CreateGroupDto = {
+        name,
+        description,
+        mentorId: parseInt(mentorId),
+        visibilityId: parseInt(visibilityId),
+      };
+
+      const createdGroup = await this.groupService.createGroup(createGroupDto, groupFN, bannerFN);
       return {
-        message: 'Group created successfully!',
+        message: 'Group created successfully',
         group: createdGroup,
       };
     } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: 'Internal Server Error',
-        },
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      console.log(error);
     }
   }
 
@@ -107,3 +146,5 @@ export class GroupController {
     return { statusCode: HttpStatus.OK, data: result };
   }
 }
+
+

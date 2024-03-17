@@ -3,6 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { SendInvitationDto } from './dto/send-invitation.dto';
+import { CreateGoalDto } from './dto/create-goal.dto';
 import { Group } from '@prisma/client';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import path = require('path');
@@ -109,6 +110,31 @@ export class GroupController {
       }
     } catch (error) {
       throw error;
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post(':groupId/createGoal')
+  async createGoal(@Body() createGoalDto: CreateGoalDto, @Request() req, @Param('groupId') groupId: number) {
+    const userId = req.user.id;
+    const gid = parseInt(groupId.toString(), 10); // ??? kodel jis ne number by default nors tipas number
+    try {
+      const group = await this.groupService.findGroupById(gid);
+      if (!group) {
+        throw new HttpException('Group not found', HttpStatus.NOT_FOUND);
+      }
+
+      if (group.mentorId !== userId) {
+        throw new HttpException(
+          'You are not authorized to create goals for this group',
+          HttpStatus.FORBIDDEN,
+        );
+      }
+
+      const goal = await this.groupService.createGoal(createGoalDto, gid);
+      return { message: 'Goal created successfully', goal };
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
     }
   }
 

@@ -1,12 +1,13 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma, Group, Invitation, User } from '@prisma/client';
+import { Prisma, Group, Invitation, User, Goal } from '@prisma/client';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { MailService } from './mail/mail.service';
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import { SendInvitationDto } from './dto/send-invitation.dto';
 import { UserService } from '../user/user.service';
+import { CreateGoalDto } from './dto/create-goal.dto';
 
 @Injectable()
 export class GroupService {
@@ -225,4 +226,23 @@ export class GroupService {
 
     return { group, user };
   }
+
+  async createGoal(createGoalDto: CreateGoalDto, groupId: number): Promise<Goal> {
+    const { title, description, start_date, end_date, target_value, statusId, categoryId } =
+      createGoalDto;
+
+    return this.prisma.goal.create({
+      data: {
+        title,
+        description,
+        start_date,
+        end_date,
+        target_value,
+        status: statusId ? { connect: { id: statusId } } : undefined,
+        category: categoryId ? { connect: { id: categoryId } } : undefined,
+        group: { connect: { id: groupId } },
+      },
+    });
+  }
+
 }

@@ -66,6 +66,7 @@ model EventCategory {
 }
 
 model GoalCategory {
+  goals Goal[]
   id   Int    @id @default(autoincrement())
   name String
 
@@ -73,6 +74,7 @@ model GoalCategory {
 }
 
 model GoalStatus {
+  goals Goal[]
   id   Int    @id @default(autoincrement())
   name String
 
@@ -243,8 +245,10 @@ model Goal {
   id           Int      @id @default(autoincrement())
   group        Group    @relation(fields: [fk_Groupid], references: [id])
   fk_Groupid   Int      
-  status    Int?     // Scalar field representing the foreign key to GoalStatus
-  category    Int?     // Scalar field representing the foreign key to GoalCategory
+  status    GoalStatus   @relation(fields: [fk_Goalstatusid], references: [id])
+  fk_Goalstatusid Int  
+  category    GoalCategory   @relation(fields: [fk_Goalcategoryid], references: [id])
+  fk_Goalcategoryid Int  
 
   @@map("goals")
 }

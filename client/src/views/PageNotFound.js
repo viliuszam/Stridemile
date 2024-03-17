@@ -22,11 +22,11 @@ export default () => {
       tl
       .add({
         targets: '#fly',
-        translateX: 100,
+        translateX: 40,
       })
       .add({
         targets: '#fly',
-        translateX: -100,
+        translateX: -40,
       });
 
       animationRef.current = tl
@@ -37,8 +37,9 @@ export default () => {
     <div>
     <NavBar/>
     <div className="container bg-white pt-24 flex h-full">
-        
-        <div className="mx-auto flex" id="fly"><img src={photo} height={400} width={400} /></div>
+        <div className="mx-auto flex" id="fly">
+          <img src={photo} height={400} width={400} />
+        </div>
     </div>
     <div className="container bg-white pt-8 pb-16 text-center mx-auto">
         <div className="mx-auto flex">
@@ -47,7 +48,7 @@ export default () => {
         <div className="mx-auto flex pb-6 pt-3">
         <h2 className="text-xl flex mx-auto font-medium">Looks like you have to walk a little more to unlock this page</h2>
         </div>
-        <Link to="/" className="bg-[#61E9B1] border-[1px] border-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm hover:bg-white border border-solid border-[#61E9B1]">
+        <Link to="/" className="bg-[#61E9B1] border-[1px] border-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm border border-solid border-[#61E9B1]">
         Back to home
         </Link>
         <div className="mx-auto flex pb-3 pt-12">
@@ -59,7 +60,7 @@ export default () => {
                 <h2 className="text-xl flex mx-auto">Search groups</h2>
                 </div>
                 <p className="pb-6">You can see groups that you joined, their information</p>
-                <Link to="/groups" className="bg-[#61E9B1] border-[1px] border-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm hover:bg-white border border-solid border-[#61E9B1]">
+                <Link to="/groups" className="bg-[#61E9B1] border-[1px] border-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm border border-solid border-[#61E9B1]">
                 Groups
                 </Link>
             </div>
@@ -68,7 +69,7 @@ export default () => {
                 <h2 className="text-xl flex mx-auto">Find events</h2>
                 </div>
                 <p className="pb-6">You can see events that you can join and their information</p>
-                <Link to="/events" className="bg-[#61E9B1] border-[1px] border-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm hover:bg-white border border-solid border-[#61E9B1]">
+                <Link to="/events" className="bg-[#61E9B1] border-[1px] border-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm border border-solid border-[#61E9B1]">
                 Events
                 </Link>
             </div>
@@ -77,7 +78,7 @@ export default () => {
                 <h2 className="text-xl flex mx-auto">Reach achievements</h2>
                 </div>
                 <p className="pb-6">You can see personal achievements and statistics</p>
-                <Link to="/achievements" className="bg-[#61E9B1] border-[1px] border-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm hover:bg-white border border-solid border-[#61E9B1]">
+                <Link to="/achievements" className="bg-[#61E9B1] border-[1px] border-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm border border-solid border-[#61E9B1]">
                 Achievements
                 </Link>
             </div>
@@ -86,7 +87,7 @@ export default () => {
                 <h2 className="text-xl flex mx-auto">Learn more about us</h2>
                 </div>
                 <p className="pb-6">You can see main information about our system and its creators</p>
-                <Link to="/aboutus" className="bg-[#61E9B1] border-[1px] border-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm hover:bg-white border border-solid border-[#61E9B1]">
+                <Link to="/aboutus" className="bg-[#61E9B1] border-[1px] border-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm border border-solid border-[#61E9B1]">
                 About us
                 </Link>
             </div>

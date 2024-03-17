@@ -18,6 +18,7 @@ import CreateGroup from "./views/CreateGroup";
 import PageNotFound from "./views/PageNotFound";
 import Groups from "./views/Groups";
 import GroupInvitation from "./views/GroupInvitation";
+import CreateEvent from "./views/CreateEvent";
 
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
           <Route path="/group/:id" element={<GroupPage />} />
           <Route path="/achievements" element={<Achievements />} />
           <Route path="/create-group" element={<CreateGroup />} />
+          <Route path="/create-event" element={<CreateEvent />} />
           <Route path="/groups" element={<Groups />} />
         </Route>
 

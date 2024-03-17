@@ -18,7 +18,9 @@ export default () => {
         <Alert text={alert.text} type={alert.type} />
         <Outlet context={{ setAlert }} />
       </div>
+      <div className="pt-12">
       <Footer/>
+      </div>
     </div>
   );
 }

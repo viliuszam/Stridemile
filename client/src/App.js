@@ -23,6 +23,8 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "./classes/Auth";
 import CreateEvent from "./views/CreateEvent";
 import EditGroup from "./views/EditGroup";
+import CreateGoal from "./views/CreateGoal";
+import CreateChallenge from "./views/CreateChallenge";
 
 export default function App() {
   const navigate = useNavigate();
@@ -41,16 +43,18 @@ export default function App() {
   return (
     <Routes>
 
-      <Route path="/" element={<MainLayout />}>
-        <Route index element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/group/:id" element={<GroupPage />} />
-        <Route path="/achievements" element={<Achievements />} />
-        <Route path="/create-group" element={<CreateGroup />} />
-        <Route path="/edit-group" element={<EditGroup />} />
-        <Route path="/create-event" element={<CreateEvent />} />
-        <Route path="/groups" element={<Groups />} />
-      </Route>
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/group/:id" element={<GroupPage />} />
+          <Route path="/achievements" element={<Achievements />} />
+          <Route path="/create-group" element={<CreateGroup />} />
+          <Route path="/edit-group" element={<EditGroup />} />
+          <Route path="/create-event" element={<CreateEvent />} />
+          <Route path="/create-goal" element={<CreateGoal />} />
+          <Route path="/create-challenge" element={<CreateChallenge />} />
+          <Route path="/groups" element={<Groups />} />
+        </Route>
 
       <Route element={<AuthLayout />}>
         <Route path="/password-recovery" element={<PasswordRecovery />} />

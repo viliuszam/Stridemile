@@ -18,32 +18,48 @@ import CreateGroup from "./views/CreateGroup";
 import PageNotFound from "./views/PageNotFound";
 import Groups from "./views/Groups";
 import GroupInvitation from "./views/GroupInvitation";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { logout } from "./classes/Auth";
 import CreateEvent from "./views/CreateEvent";
 
 export default function App() {
+  const navigate = useNavigate();
+
+  // Handle axios errors
+  axios.interceptors.response.use((response) => response, (error) => {
+    const status = error.response.status
+    // User unauthorized response
+    if (status == 401) {
+      logout()
+      navigate('/login')
+    }
+    throw error;
+  });
+
   return (
-      <Routes>
+    <Routes>
 
-        <Route path="/" element={<MainLayout />}>
-          <Route index element={<Home />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/group/:id" element={<GroupPage />} />
-          <Route path="/achievements" element={<Achievements />} />
-          <Route path="/create-group" element={<CreateGroup />} />
+      <Route path="/" element={<MainLayout />}>
+        <Route index element={<Home />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/group/:id" element={<GroupPage />} />
+        <Route path="/achievements" element={<Achievements />} />
+        <Route path="/create-group" element={<CreateGroup />} />
           <Route path="/create-event" element={<CreateEvent />} />
-          <Route path="/groups" element={<Groups />} />
-        </Route>
+        <Route path="/groups" element={<Groups />} />
+      </Route>
 
-        <Route element={<AuthLayout />}>
-          <Route path="/password-recovery" element={<PasswordRecovery />} />
-          <Route path={'/resetPassword/:token'} element={<PasswordChange/>} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/groups/:token" element={<GroupInvitation />} />
-        </Route>
+      <Route element={<AuthLayout />}>
+        <Route path="/password-recovery" element={<PasswordRecovery />} />
+        <Route path={'/resetPassword/:token'} element={<PasswordChange />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/groups/:token" element={<GroupInvitation />} />
+      </Route>
 
-        <Route path="/HomePage" element={<HomePage />} />
-        <Route path="/*" element={<PageNotFound />} />
-      </Routes>
+      <Route path="/HomePage" element={<HomePage />} />
+      <Route path="/*" element={<PageNotFound />} />
+    </Routes>
   );
 }

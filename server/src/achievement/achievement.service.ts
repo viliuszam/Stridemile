@@ -23,6 +23,7 @@ export class AchievementService {
             description: true,
             steps_required: true,
             time_required_s: true,
+            points: true,
         },
       });
 

@@ -37,6 +37,8 @@ ehthumbs.db
 Thumbs.db
 #ignore node_modules
 /K378-BISPIS/node_modules
+/K378-BISPIS/server/uploads/bannerimages/*
+/K378-BISPIS/server/uploads/groupimages/*
 
 #ignore .idea
 /K378-BISPIS/.idea

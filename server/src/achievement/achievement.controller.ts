@@ -19,7 +19,7 @@ export class AchievementController {
     async checkAchievements(@Request() req){
         const userId = req.user.id;
         return this.achievementService.checkForUserAchievements(userId);
-  }
+    }
 
     @UseGuards(AuthGuard('jwt'))
     @Get('points')

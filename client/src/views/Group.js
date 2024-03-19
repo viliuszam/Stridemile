@@ -1,5 +1,5 @@
 import '../styles/Home.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from "react-router-dom";
 import axios from 'axios';
 
@@ -14,6 +14,23 @@ const InviteForm = () => {
 
   const [email, setEmail] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
+  const [groupInfo, setGroupInfo] = useState('');
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+
+    axios.get(`http://localhost:3333/groups/group/${groupId}`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+      .then(response => {
+        setGroupInfo(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching group info: ', error);
+      });
+  }, []);
 
   const handleInvite = async (e) => {
     e.preventDefault();
@@ -71,7 +88,8 @@ const InviteForm = () => {
       </div>
 
       <div className='relative mb-20 h-32 w-full bg-gradient-to-b from-gray-100 to-gray-200 rounded-xl'>
-        <img className='absolute left-10 -bottom-10 h-24 w-24 rounded-full outline outline-8 outline-white' src="https://wearecardinals.com/wp-content/uploads/2020/04/u1Re9qgMfM8d6kumlW85PS6s55jQh5fbdmppgQsP.jpeg" />
+        <img className='relative mb-20 h-32 w-full bg-gradient-to-b from-gray-100 to-gray-200 rounded-xl' src={groupInfo.image_url} />
+        <img className='absolute left-10 -bottom-10 h-24 w-24 rounded-full outline outline-8 outline-white' src={groupInfo.image_url} />
       </div>
 
       <div className='flex'>

@@ -245,4 +245,19 @@ export class GroupService {
     });
   }
 
+  async getGroupInfo(groupId: number){
+    try{
+      const groupInfo = await this.prisma.group.findUnique({
+        where: {
+          id: groupId,
+        }
+      });
+      return groupInfo;
+    }
+    catch (error){
+      console.log(error);
+    }
+    
+  }
+
 }

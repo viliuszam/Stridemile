@@ -132,7 +132,8 @@ export default () => {
                         </p>
                     </div>
                     <div className="flip-card-back absolute h-full w-full bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-green-400 hover:bg-gray-200">
-                        <p>Text goes here...</p>
+                        <p className="text-sm mb-4">This achievement is worth:</p>
+                        <div className="text-[#61E9B1]">{achievement.points} points</div>
                     </div>
                 </div>
             </div>

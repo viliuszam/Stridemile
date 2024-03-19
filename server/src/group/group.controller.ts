@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, HttpStatus, HttpException, NotFoundException, UseGuards, Request, UseInterceptors, UploadedFiles } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, HttpStatus, HttpException, NotFoundException, UseGuards, Request, UseInterceptors, UploadedFiles, ParseIntPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
@@ -163,6 +163,7 @@ export class GroupController {
     }
   }
 
+  
   @Get(':token')
   async findGroupIdAndUserIdByToken(@Param('token') token: string) {
     const result = await this.groupService.findGroupAndUserByToken(token);
@@ -170,6 +171,13 @@ export class GroupController {
       return { statusCode: HttpStatus.NOT_FOUND, message: 'Invitation not found' };
     }
     return { statusCode: HttpStatus.OK, data: result };
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('group/:groupId')
+  async getGroupInfo(@Param('groupId', ParseIntPipe) groupId: number){
+    const group = await this.groupService.getGroupInfo(groupId);
+    return group;
   }
 }
 

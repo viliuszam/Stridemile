@@ -22,6 +22,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { logout } from "./classes/Auth";
 import CreateEvent from "./views/CreateEvent";
+import EditGroup from "./views/EditGroup";
 
 export default function App() {
   const navigate = useNavigate();
@@ -46,7 +47,8 @@ export default function App() {
         <Route path="/group/:id" element={<GroupPage />} />
         <Route path="/achievements" element={<Achievements />} />
         <Route path="/create-group" element={<CreateGroup />} />
-          <Route path="/create-event" element={<CreateEvent />} />
+        <Route path="/edit-group" element={<EditGroup />} />
+        <Route path="/create-event" element={<CreateEvent />} />
         <Route path="/groups" element={<Groups />} />
       </Route>
 

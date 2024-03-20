@@ -79,17 +79,17 @@ export default () => {
 
         <div className="mb-3">
           <div className="text-base mb-2">Group name</div>
-          <input value={groupName} onChange={(e) => setGroupName(e.target.value)} type="text" placeholder="Group name" className="w-full p-3 border-[1px] border-gray-400 rounded-lg" />
+          <input value={groupName} onChange={(e) => setGroupName(e.target.value)} type="text" placeholder="Group name" className="w-full p-3 border-[1px] border-gray-400 rounded-lg hover:border-[#61E9B1]" />
         </div>
 
         <div className="mb-3">
           <div className="text-base mb-2">Description</div>
-          <input value={groupDescription} onChange={(e) => setGroupDescription(e.target.value)} type="text" placeholder="Description" className="w-full p-3 border-[1px] border-gray-400 rounded-lg" />
+          <input value={groupDescription} onChange={(e) => setGroupDescription(e.target.value)} type="text" placeholder="Description" className="w-full p-3 border-[1px] border-gray-400 rounded-lg hover:border-[#61E9B1]" />
         </div>
 
         <div className="mb-3">
           <div className="text-base mb-2">Visibility</div>
-          <select value={selectedVisibility} onChange={(e) => setSelectedVisibility(e.target.value)} className="w-full p-3 border-[1px] border-gray-400 rounded-lg bg-white">
+          <select value={selectedVisibility} onChange={(e) => setSelectedVisibility(e.target.value)} className="w-full p-3 border-[1px] border-gray-400 rounded-lg bg-white hover:border-[#61E9B1]">
             <option value="">Select visibility</option>
             {visibilityOptions.map(option => (
               <option key={option.id} value={option.id}>{option.name}</option>
@@ -99,13 +99,13 @@ export default () => {
 
         <div className="text-base mb-2 pb-3">Group cover</div>
         <div className=" pb-6">
-        <label for="uploadcover" className="hover:bg-white text-base text-black border-gray-400 border border-solid rounded-lg pr-[331px] pl-3 py-3 hover:bg-[#61E9B1] w-64">Select image...</label>
+        <label for="uploadcover" className="hover:bg-white text-base text-black border-gray-400 border border-solid rounded-lg pr-[331px] pl-3 py-3 hover:bg-[#61E9B1] w-64 hover:border-[#61E9B1]">Select image...</label>
         <input type="file" id="uploadcover" accept="image/*" onChange={(e) => setImageGroupFile(e.target.files[0])} hidden/>
         </div>
 
         <div className="text-base mb-2 pb-3">Group banner</div>
         <div className="">
-        <label for="uploadbanner" className="hover:bg-white text-base text-black border-gray-400 border border-solid rounded-lg pr-[331px] pl-3 py-3 hover:bg-[#61E9B1] w-64">Select image...</label>
+        <label for="uploadbanner" className="hover:bg-white text-base text-black border-gray-400 border border-solid rounded-lg pr-[331px] pl-3 py-3 hover:bg-[#61E9B1] w-64 hover:border-[#61E9B1]">Select image...</label>
         <input type="file" id="uploadbanner" accept="image/*" onChange={(e) => setImageBannerFile(e.target.files[0])} hidden/>
         </div>
 

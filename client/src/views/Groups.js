@@ -92,7 +92,7 @@ const Home = () => {
           <div className="flex">
             <div className="w-full grid md:grid-cols-4 md:gap-4 sm:grid-cols-2 sm:gap-4 pl-5 pr-5">
               {filteredUserGroups.length === 0 ? (
-            <p style={{ textAlign: 'center', fontSize: '1.2rem', color: 'green', marginTop: '1rem' }}>No groups found.</p>
+            <p className='text-black pl-1.5'>No groups found.</p>
             ) : (
                 filteredUserGroups.map((group) => (
                   <div key={group.id} className="bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-[#61E9B1]">

@@ -88,7 +88,7 @@ const InviteForm = () => {
       </div>
 
       <div className='relative mb-20 h-32 w-full bg-gradient-to-b from-gray-100 to-gray-200 rounded-xl'>
-        <img className='relative mb-20 h-32 w-full bg-gradient-to-b from-gray-100 to-gray-200 rounded-xl object-cover object-center' src={groupInfo.image_url} />
+        <img className='relative mb-20 h-32 w-full bg-gradient-to-b from-gray-100 to-gray-200 rounded-xl object-cover object-center' src={groupInfo.banner_url} />
         <img className='absolute left-10 -bottom-10 h-24 w-24 rounded-full outline outline-8 outline-white object-cover' src={groupInfo.image_url} />
       </div>
 

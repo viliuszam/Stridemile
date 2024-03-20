@@ -177,6 +177,7 @@ model User {
   hash           String
   resetPassToken String   @default("")
   isResetValid   Boolean  @default(false)
+  colourHex      String   @default("#000000")
 
   role                  Role?                 @relation(fields: [fk_Roleid], references: [id])
   fk_Roleid             Int                   @default(3)
@@ -188,8 +189,28 @@ model User {
   groups                Group[]
   invitations           Invitation[]
   completedAchievements AchievementsOnUsers[]
+  colourRewards         ColourRewardsOnUsers[]
 
   @@map("users")
+}
+
+model ColourReward {
+  id                    Int @id @default(autoincrement())
+  pointsRequired        Int
+  colourHex             String
+  users                 ColourRewardsOnUsers[]
+
+  @@map("colour_rewards")
+}
+
+model ColourRewardsOnUsers{
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  colourReward ColourReward @relation(fields: [colourRewardId], references: [id])
+  colourRewardId Int
+
+  @@id([userId, colourRewardId])
+  @@map("colour_rewards_on_users")
 }
 
 model AchievementsOnUsers {

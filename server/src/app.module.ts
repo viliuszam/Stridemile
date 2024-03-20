@@ -10,10 +10,11 @@ import { GroupModule } from './group/group.module';
 import { GroupVisibilityModule } from './group/group-visibility/group-visibility.module'; 
 import { CategoryOptionsModule } from './group/category-options/category-options.module'; 
 import { AchievementModule } from './achievement/achievement.module';
+import { RewardModule } from './reward/reward.module';
 
 
 @Module({
-  imports: [ConfigModule.forRoot({isGlobal: true}), AuthModule, UserModule, PrismaModule, ActivityModule, GroupModule, GroupVisibilityModule, AchievementModule, CategoryOptionsModule],
+  imports: [ConfigModule.forRoot({isGlobal: true}), AuthModule, UserModule, PrismaModule, ActivityModule, GroupModule, GroupVisibilityModule, AchievementModule, CategoryOptionsModule, RewardModule],
   controllers: [],
   providers: [],
 })

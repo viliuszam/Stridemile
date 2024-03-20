@@ -26,6 +26,22 @@ export default () => {
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
+  
+    axios.post('http://localhost:3333/rewards/update', {}, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+    })
+      .then(response => {
+
+      })
+      .catch(error => {
+        console.error('Error updating rewards: ', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
 
     axios.get('http://localhost:3333/activity/monthlySteps', {
         headers: {

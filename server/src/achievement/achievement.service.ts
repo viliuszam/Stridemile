@@ -168,7 +168,6 @@ export class AchievementService {
           time_required_s: true,
         }
       });
-
       const totalSteps = activityEntries.reduce((sum, entry) => sum + entry.steps, 0);
 
       for (const achievement of missingAchievements) {

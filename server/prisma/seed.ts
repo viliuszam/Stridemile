@@ -83,6 +83,19 @@ async function seed() {
       ],
     });
 
+    await prisma.colourReward.createMany({
+      data: [
+        {
+          pointsRequired: 10,
+          colourHex: '#727cf5',
+        },
+        {
+          pointsRequired: 15,
+          colourHex: '#d53a47',
+        },
+      ]
+    })
+
     await prisma.achievement.createMany({
       data: [
         {

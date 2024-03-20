@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { isLoggedIn, logout } from '../classes/Auth';
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +13,9 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 
 const NavBar = () => {
+  const [username, setUsername] = useState('');
+  const [hexColour, setHexColour] = useState('');
+
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -22,6 +25,15 @@ const NavBar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    
+    if (user && user.username && user.colourHex) {
+      setUsername(user.username);
+      setHexColour(user.colourHex);
+    }
+  }, []);
 
   return (
     <div className='bg-white border-b border-b-solid border-b-gray-100 drop-shadow fixed w-full py-1 z-10'>
@@ -80,7 +92,7 @@ const NavBar = () => {
             <div className='pl-2 pr-2'>
               About us
             </div>
-          </div> 
+        </div>
         </Link>
         <div className='ml-auto my-auto'>
           {(() => {
@@ -104,8 +116,8 @@ const NavBar = () => {
                     <img src="https://www.freeiconspng.com/thumbs/face-png/obama-face-png-3.png" alt="man" height={25} width={25} />
                   </Link>
                   */}
-
                   <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+                    <p style={{ color: hexColour }}>{username}</p>
                     <Tooltip title="Account settings">
                       <IconButton
                         onClick={handleClick}

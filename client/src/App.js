@@ -25,6 +25,7 @@ import CreateEvent from "./views/CreateEvent";
 import EditGroup from "./views/EditGroup";
 import CreateGoal from "./views/CreateGoal";
 import CreateChallenge from "./views/CreateChallenge";
+import Settings from "./views/Settings";
 import { useEffect } from "react";
 
 export default function App() {
@@ -70,6 +71,7 @@ export default function App() {
         <Route path="/create-goal" element={<CreateGoal />} />
         <Route path="/create-challenge" element={<CreateChallenge />} />
         <Route path="/groups" element={<Groups />} />
+        <Route path="/settings" element={<Settings />} />
       </Route>
 
       <Route element={<AuthLayout />}>

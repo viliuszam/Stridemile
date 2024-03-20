@@ -38,40 +38,13 @@ export default () => {
     }
   })
 
-  const [goalTitle, setGoalTitle] = useState('');
-  const [goalDescription, setGoalDescription] = useState('');
-  const [categoryOptions, setCategoryOptions] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [statusOptions, setStatusOptions] = useState([]);
-  const [selectedStatus, setSelectedStatus] = useState('');
-  const [targetValue, setTargetValue] = useState('');
+  const [challengeTitle, setChallengeTitle] = useState('');
+  const [challengeDescription, setChallengeDescription] = useState('');
   const [startDate, setStartDate] = React.useState(dayjs());
   const [endDate, setEndDate] = React.useState(dayjs());
 
-  useEffect(() => {
-    // Fetch visibility options from the server
-    axios.get('http://localhost:3333/category-options')
-      .then(response => {
-        setCategoryOptions(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching category options:', error);
-      });
-  }, []);
-
-  useEffect(() => {
-    // Fetch visibility options from the server
-    axios.get('http://localhost:3333/status-options')
-      .then(response => {
-        setCategoryOptions(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching status options:', error);
-      });
-  }, []);
-
   const validate = () => {
-    if (!goalTitle || !goalDescription || !selectedCategory || !selectedStatus || !targetValue) {
+    if (!challengeTitle || !challengeDescription ) {
       setAlert({ text: 'There are empty fields', type: AlertTypes.warning });
       return false;
     }
@@ -82,7 +55,7 @@ export default () => {
     return true;
   }
 
-  const createEvent = () => {
+  const createChallenge = () => {
     if (!validate()) return;
 
     const accessToken = localStorage.getItem('accessToken');
@@ -90,16 +63,13 @@ export default () => {
       return;
     }
     const formData = new FormData();
-    formData.append('title', goalTitle);
-    formData.append('description', goalDescription);
-    formData.append('target-value', targetValue);
+    formData.append('title', challengeTitle);
+    formData.append('description', challengeDescription);
     formData.append('mentorId', -1);
-    formData.append('categoryId', selectedCategory);
-    formData.append('statusId', selectedStatus);
     for (let entry of formData.entries()) {
       console.log(entry);
     }
-    axios.post('http://localhost:3333/goals/createGoal', formData, {
+    axios.post('http://localhost:3333/challenges/createChallenge', formData, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'multipart/form-data'
@@ -107,11 +77,11 @@ export default () => {
     })
     .then(function (response) {
       console.log(response);
-      setAlert({ text: 'Goal created successfully', type: AlertTypes.success });
+      setAlert({ text: 'Challenge created successfully', type: AlertTypes.success });
     })
     .catch(function (error) {
       console.error(error);
-      setAlert({ text: 'Error creating goal', type: AlertTypes.error });
+      setAlert({ text: 'Error creating challenge', type: AlertTypes.error });
     });
   }
 
@@ -124,38 +94,13 @@ export default () => {
         <hr className="my-6" />
 
         <div className="mb-3">
-          <div className="text-base mb-2">Goal title</div>
-          <input value={goalTitle} onChange={(e) => setGoalTitle(e.target.value)} type="text" placeholder="Goal title" className="w-full p-3 border-[1px] border-gray-400 rounded-lg hover:border-[#61E9B1]" />
+          <div className="text-base mb-2">Challenge title</div>
+          <input value={challengeTitle} onChange={(e) => setChallengeTitle(e.target.value)} type="text" placeholder="Challenge title" className="w-full p-3 border-[1px] border-gray-400 rounded-lg hover:border-[#61E9B1]" />
         </div>
 
         <div className="mb-3">
           <div className="text-base mb-2">Description</div>
-          <input value={goalDescription} onChange={(e) => setGoalDescription(e.target.value)} type="text" placeholder="Description" className="w-full p-3 border-[1px] border-gray-400 rounded-lg hover:border-[#61E9B1]" />
-        </div>
-
-        <div className="mb-3">
-          <div className="text-base mb-2">Target value</div>
-          <input value={targetValue} onChange={(e) => setTargetValue(e.target.value)} type="number" placeholder="Target value" className="w-full p-3 border-[1px] border-gray-400 rounded-lg hover:border-[#61E9B1]" />
-        </div>
-
-        <div className="mb-3">
-          <div className="text-base mb-2">Status</div>
-          <select value={selectedStatus} onChange={(e) => setSelectedStatus(e.target.value)} className="w-full p-3 border-[1px] border-gray-400 rounded-lg bg-white hover:border-[#61E9B1]">
-            <option value="">Select status</option>
-            {statusOptions.map(option => (
-              <option key={option.id} value={option.id}>{option.name}</option>
-            ))}
-          </select>
-        </div>
-
-        <div className="mb-3">
-          <div className="text-base mb-2">Category</div>
-          <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="w-full p-3 border-[1px] border-gray-400 rounded-lg bg-white hover:border-[#61E9B1]">
-            <option value="">Select category</option>
-            {categoryOptions.map(option => (
-              <option key={option.id} value={option.id}>{option.name}</option>
-            ))}
-          </select>
+          <input value={challengeDescription} onChange={(e) => setChallengeDescription(e.target.value)} type="text" placeholder="Description" className="w-full p-3 border-[1px] border-gray-400 rounded-lg hover:border-[#61E9B1]" />
         </div>
 
         <div className="mb-3">
@@ -228,23 +173,20 @@ export default () => {
 
         <hr className="my-9 mt-9" />
 
-        <button onClick={createEvent} className="w-full mb-3 p-3 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1]">
-          <i class="fa-solid fa-bullseye"></i> Create a goal
+        <button onClick={createChallenge} className="w-full mb-3 p-3 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1]">
+        <i class="fa-solid fa-arrow-trend-up"></i> Create a challenge
         </button>
       </div>
       <div className="w-3/6 sm:mx-8 mx-auto">
-        <h2 className="pb-3 pt-1 font-semibold text-xl">What are goals?</h2>
-        <p>Goals are group's common tasks that require to be achieved by group members together.
+        <h2 className="pb-3 pt-1 font-semibold text-xl">What are challenges?</h2>
+        <p>Challenges are group's common tasks that require to be achieved by group members together. Here progress cannot be followed.
         </p>
-        <h2 className="pb-3 pt-6 font-semibold text-xl">Who can create goals?</h2>
+        <h2 className="pb-3 pt-6 font-semibold text-xl">Who can create challenges?</h2>
         <p>Only the mentor of a group.
         </p>
         <h2 className="pb-3 pt-6 font-semibold text-xl">What are the start date and end date?</h2>
         <p>Start date is the date when activities can be started doing in order to achieve results. 
-          End date is the date after which the goal can no longer be completed if it was not already.
-        </p>
-        <h2 className="pb-3 pt-6 font-semibold text-xl">What is the target value?</h2>
-        <p>Target value is the required amount of something (for example, steps) that need to be done in order to complete the goal.
+          End date is the date after which the challenge can no longer be completed if it was not already.
         </p>
       </div>
     </div>

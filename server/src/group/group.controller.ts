@@ -9,6 +9,7 @@ import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import path = require('path');
 import { v4 as uuidv4 } from 'uuid';
 import { diskStorage, Multer } from 'multer';
+import { CreateEventDto } from './dto/create-event.dto';
 
 @Controller('groups')
 export class GroupController {
@@ -133,6 +134,31 @@ export class GroupController {
 
       const goal = await this.groupService.createGoal(createGoalDto, gid);
       return { message: 'Goal created successfully', goal };
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post(':groupId/createEvent')
+  async createEvent(@Body() createEventDto: CreateEventDto, @Request() req, @Param('groupId') groupId: number) {
+    const userId = req.user.id;
+    const gid = parseInt(groupId.toString(), 10);
+    try {
+      const group = await this.groupService.findGroupById(gid);
+      if (!group) {
+        throw new HttpException('Group not found', HttpStatus.NOT_FOUND);
+      }
+
+      if (group.mentorId !== userId) {
+        throw new HttpException(
+          'You are not authorized to create events for this group',
+          HttpStatus.FORBIDDEN,
+        );
+      }
+
+      const goal = await this.groupService.createEvent(createEventDto, gid);
+      return { message: 'Event created successfully', goal };
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }

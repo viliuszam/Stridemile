@@ -29,21 +29,6 @@ import Settings from "./views/Settings";
 import { useEffect } from "react";
 
 export default function App() {
-
-  useEffect(() => {
-    if(isLoggedIn()) {
-      axios.get(`http://localhost:3333/users/me`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-        }
-      })
-        .then(({ data }) => {
-          localStorage.setItem('user', JSON.stringify(data))
-          console.log(JSON.parse(localStorage.getItem('user')))
-        })
-    }
-  }, []);
-
   const navigate = useNavigate();
 
   // Handle axios errors

@@ -23,7 +23,7 @@ export default () => {
     return true
   }
 
-  const login = () => {
+  const login = async () => {
     if(!validate()) return
 
     axios.post('http://localhost:3333/auth/signin', {
@@ -33,8 +33,8 @@ export default () => {
       .then(function (response) {
         const { access_token } = response.data
         setAlert({ text: 'Successful login', type: AlertTypes.success })
-        setTimeout(()=> { 
-          authLogin(access_token) 
+        setTimeout(async ()=> { 
+          await authLogin(access_token) 
           navigate('/dashboard')
         }, 2000)
       })

@@ -15,7 +15,7 @@ export class CreateEventDto {
 
   @IsNotEmpty()
   @IsString()
-  location: Date;
+  location: string;
 
   @IsNotEmpty()
   @IsNumber()

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma, Group, Invitation, User, Goal } from '@prisma/client';
+import { Prisma, Group, Invitation, User, Goal, Event } from '@prisma/client';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { MailService } from './mail/mail.service';
 import { JwtService } from "@nestjs/jwt";
@@ -8,6 +8,7 @@ import { ConfigService } from "@nestjs/config";
 import { SendInvitationDto } from './dto/send-invitation.dto';
 import { UserService } from '../user/user.service';
 import { CreateGoalDto } from './dto/create-goal.dto';
+import { CreateEventDto } from './dto/create-event.dto';
 
 @Injectable()
 export class GroupService {
@@ -244,6 +245,23 @@ export class GroupService {
       },
     });
   }
+
+  async createEvent(createEventDto: CreateEventDto, groupId: number): Promise<Event> {
+    const { title, description, date, location, fk_Category } =
+      createEventDto;
+
+    return this.prisma.event.create({
+      data: {
+        title,
+        description,
+        date,
+        location,
+        category: fk_Category ? { connect: { id: fk_Category } } : undefined,
+        group: { connect: { id: groupId } },
+      },
+    });
+  }
+
 
   async getGroupInfo(groupId: number){
     try{

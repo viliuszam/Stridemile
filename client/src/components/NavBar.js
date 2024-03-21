@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { isLoggedIn, logout } from '../classes/Auth';
 import { useNavigate } from 'react-router-dom';
+import { getUser } from '../classes/User';
 
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -13,9 +14,6 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 
 const NavBar = () => {
-  const [username, setUsername] = useState('');
-  const [hexColour, setHexColour] = useState('');
-
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -25,15 +23,6 @@ const NavBar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    
-    if (user && user.username && user.colourHex) {
-      setUsername(user.username);
-      setHexColour(user.colourHex);
-    }
-  }, []);
 
   return (
     <div className='bg-white border-b border-b-solid border-b-gray-100 drop-shadow fixed w-full py-1 z-10'>
@@ -117,7 +106,7 @@ const NavBar = () => {
                   </Link>
                   */}
                   <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-                    <p style={{ color: hexColour }}>{username}</p>
+                    <p style={{ color: getUser().hexColour }}>{getUser().username}</p>
                     <Tooltip title="Account settings">
                       <IconButton
                         onClick={handleClick}

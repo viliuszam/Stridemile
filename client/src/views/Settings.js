@@ -131,7 +131,7 @@ export default function BasicTabs() {
 
   return (
     <div>
-      {!isLoggedIn() && (
+      {isLoggedIn() && (
         <div className="container bg-white pt-12 pb-8 px-2">
           <Box sx={{ width: '100%' }}>
             <div className="text-[#61E9B1]">

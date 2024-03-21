@@ -112,7 +112,7 @@ export default () => {
         {achievements.map((achievement) => (
             <div className="flip-card h-80">
                 <div className="flip-card-inner h-full w-full">
-                    <div className="flip-card-font absolute h-full w-full bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-green-400 hover:bg-gray-200">
+                    <div className="flip-card-front absolute h-full w-full bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-green-400">
                         <div className="rounded-4xl pb-3 flex">
                             <img src="https://cdn1.iconfinder.com/data/icons/ui-roundicons/480/circle_award-512.png" alt="steps" className="rounded-4xl mx-auto" height={100} width={100}/>
                         </div>
@@ -131,9 +131,23 @@ export default () => {
                             )}
                         </p>
                     </div>
-                    <div className="flip-card-back absolute h-full w-full bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-green-400 hover:bg-gray-200">
-                        <p className="text-sm mb-4">This achievement is worth:</p>
-                        <div className="text-[#61E9B1]">{achievement.points} points</div>
+                    <div className="flip-card-back flex absolute h-full w-full bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-green-400">
+                        
+                            {(achievement.progress == 100) ? (
+                                <div className="justify-center my-auto">
+                                    <div className="mb-6 text-green-300 text-6xl">
+                                        <i className="fa-solid fa-trophy"></i>
+                                    </div>
+                                    <p className="text-md text-gray-700">You have earned <label className="text-green-500">{achievement.points} points</label> for completing this achievement.</p>
+                                </div>
+                            ) : (
+                                <div className="justify-center my-auto">
+                                    <div className="mb-6 text-gray-300 text-6xl">
+                                        <i className="fa-solid fa-trophy"></i>
+                                    </div>
+                                    <p className="text-md text-gray-700">You will earn <label className="text-green-500">{achievement.points} points</label> by completing this achievement.</p>
+                                </div> 
+                            )}  
                     </div>
                 </div>
             </div>

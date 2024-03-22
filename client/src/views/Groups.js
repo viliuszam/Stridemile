@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { isLoggedIn } from '../classes/Auth';
-import Footer from '../components/Footer';
 
 const Home = () => {
   const [publicGroups, setPublicGroups] = useState([]);
@@ -82,6 +81,7 @@ const Home = () => {
               <p className="text-xl flex mx-auto font-semibold">My groups</p>
             </div>
             <div className="ml-auto mt-4 sm:flex mr-6">
+              <Link to="/create-group" className="w-full mb-3 p-3 mt-2 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1] mr-2 whitespace-nowrap">Create group</Link>
               <input value={userGroupName} onChange={(e) => setUserGroupName(e.target.value)} placeholder="Type group's name" type="text" className="pl-2 rounded-lg bg-gray-50 border border-solid border-[#61E9B1] mr-2 h-12 mt-2" />
               <button className="w-full mb-3 p-3 mt-2 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1]">
                 <i className="fa-solid fa-magnifying-glass"></i> Search

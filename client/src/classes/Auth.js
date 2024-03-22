@@ -1,5 +1,5 @@
 import { createToken, getToken, removeToken } from "./AccessToken"
-import { setUser, removeUser } from "./User"
+import { setUser, removeUser, getUser } from "./User"
 import axios from "axios"
 
 const fetchUserData = async (accessToken) => {
@@ -14,7 +14,7 @@ const fetchUserData = async (accessToken) => {
 }
 
 const isLoggedIn = () => {
-    if(getToken()) return true
+    if(getToken() && Object.keys(getUser()).length !== 0) return true
     return false
 }
 

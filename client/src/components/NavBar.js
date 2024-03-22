@@ -13,6 +13,8 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 
+import logo from '../images/logo.png'
+
 const NavBar = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -26,10 +28,8 @@ const NavBar = () => {
 
   return (
     <div className='bg-white border-b border-b-solid border-b-gray-100 drop-shadow fixed w-full py-1 z-10'>
-      <div className="md:flex bg-white container">
-        <div className='text-black pt-4 pb-4 pl-2 text-sm my-auto flex' >
-          <p>LOGO</p>
-        </div>
+      <div className="md:flex bg-white container justify-center items-center">
+        <img src={logo} className='h-6' alt="Logo" />
         {(() => {
           if(isLoggedIn())
           {

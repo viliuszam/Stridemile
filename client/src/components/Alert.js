@@ -1,4 +1,14 @@
-export default ({text, type}) => {
+import { useEffect } from "react"
+import { useLocation } from "react-router-dom";
+import { AlertTypes } from "../styles/modules/AlertStyles";
+
+export default ({text, type, setAlert}) => {
+    const location = useLocation();
+  
+    useEffect(() => {
+        setAlert({ text: '', type: AlertTypes.info });
+    }, [location])
+
     return (
         <div>
             {text && type ? 

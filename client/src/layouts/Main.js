@@ -15,7 +15,7 @@ export default () => {
     <div>
       <NavBar />
       <div className='container pt-14'>
-        <Alert text={alert.text} type={alert.type} />
+        <Alert text={alert.text} type={alert.type} setAlert={setAlert} />
         <Outlet context={{ setAlert }} />
       </div>
       <div className="pt-12">

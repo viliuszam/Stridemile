@@ -1,4 +1,4 @@
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { useState, useEffect } from 'react'
 import { AlertTypes } from "../styles/modules/AlertStyles";
 import axios from 'axios';
@@ -19,6 +19,7 @@ import { grey, red } from "@mui/material/colors";
 import { pickersLayoutClasses } from '@mui/x-date-pickers/PickersLayout';
 
 export default () => {
+  const { groupId } = useParams();
   const { setAlert } = useOutletContext();
 
   const newTheme = (theme) => createTheme({

@@ -161,10 +161,12 @@ const NavBar = () => {
                     </MenuItem>
                     <Divider />
                     <MenuItem onClick={handleClose}>
-                      <ListItemIcon>
-                        <i className="fa-solid fa-gears"></i>
-                      </ListItemIcon>
-                      Settings
+                      <Link to="/settings">
+                        <ListItemIcon>
+                          <i className="fa-solid fa-gears"></i>
+                        </ListItemIcon>
+                        Settings
+                      </Link>
                     </MenuItem>
                     <MenuItem onClick={() => { logout(); navigate('/') }}>
                       <ListItemIcon>

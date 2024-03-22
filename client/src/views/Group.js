@@ -1,6 +1,6 @@
 import '../styles/Home.css';
 import React, { useState, useEffect } from 'react';
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, Link } from "react-router-dom";
 import axios from 'axios';
 
 const getMapsUrl = (loc) => {
@@ -8,9 +8,7 @@ const getMapsUrl = (loc) => {
 };
 
 const InviteForm = () => {
-  const location = useLocation();
-  const pathArray = location.pathname.split('/');
-  const groupId = pathArray[pathArray.length - 1];
+  const { groupId } = useParams();
 
   const [email, setEmail] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
@@ -209,21 +207,21 @@ const InviteForm = () => {
 
           <div className='mb-6 outline outline-2 outline-offset-8 outline-[#88e0ea] rounded-xl'>
             <p className='mb-4 text-black font-bold'>Group management</p>
-            <a href="" className='mb-2 p-4 bg-[#61E9B1] hover:bg-[#4edba1] rounded-xl block'>
+            <Link to={`/create-challenge/${groupId}`} className='mb-2 p-4 bg-[#61E9B1] hover:bg-[#4edba1] rounded-xl block'>
               <i className="fa-solid fa-person-walking mr-2"></i> Create challenge
-            </a>
+            </Link>
 
-            <a href="" className='mb-2 p-4 bg-[#61E9B1] hover:bg-[#4edba1] rounded-xl block'>
+            <Link to={`/create-goal/${groupId}`} className='mb-2 p-4 bg-[#61E9B1] hover:bg-[#4edba1] rounded-xl block'>
             <i className="fa-solid fa-flag-checkered mr-2"></i> Create goal
-            </a>
+            </Link>
 
-            <a href="" className='mb-2 p-4 bg-[#61E9B1] hover:bg-[#4edba1] rounded-xl block'>
+            <Link to={`/create-event/${groupId}`} className='mb-2 p-4 bg-[#61E9B1] hover:bg-[#4edba1] rounded-xl block'>
               <i className="fa-regular fa-calendar-plus mr-2"></i> Create event
-            </a>
+            </Link>
 
-            <a href="" className='mb-6 p-4 bg-[#61E9B1] hover:bg-[#4edba1] rounded-xl block'>
+            <Link to={`/edit-group/${groupId}`} className='mb-6 p-4 bg-[#61E9B1] hover:bg-[#4edba1] rounded-xl block'>
               <i className="fa-solid fa-pen-to-square mr-2"></i> Edit group
-            </a>
+            </Link>
 
             <p className='mb-4 text-black font-bold'>Invite member</p>
             <form onSubmit={handleInvite} className='flex'>

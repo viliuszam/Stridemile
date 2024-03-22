@@ -1,4 +1,4 @@
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { useState, useEffect } from 'react'
 import { AlertTypes } from "../styles/modules/AlertStyles";
 import axios from 'axios';
@@ -6,6 +6,7 @@ import NavBar from "../components/NavBar";
 import { Link } from "react-router-dom";
 
 export default () => {
+  const { groupId } = useParams();
   const { setAlert } = useOutletContext();
 
   const [groupName, setGroupName] = useState('Furious group');

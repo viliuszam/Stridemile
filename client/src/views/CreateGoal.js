@@ -230,7 +230,7 @@ export default () => {
         <hr className="my-9 mt-9" />
 
         <button onClick={createEvent} className="w-full mb-3 p-3 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1]">
-          <i class="fa-solid fa-bullseye"></i> Create a goal
+          <i className="fa-solid fa-bullseye"></i> Create a goal
         </button>
       </div>
       <div className="w-3/6 sm:mx-8 mx-auto">

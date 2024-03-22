@@ -27,7 +27,7 @@ function CustomTabPanel(props) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          <Typography component={'div'}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -153,7 +153,7 @@ export default function Settings() {
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <Tabs
                 value={value} onChange={handleChange}
-                textColor="#61E9B1"
+                textColor="inherit"
                 indicatorColor="#61E9B1"
                 TabIndicatorProps={{
                   style: {
@@ -218,7 +218,7 @@ export default function Settings() {
                   <hr className="my-6" />
 
                   <button onClick={submitName} className="w-full mb-3 p-3 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1]">
-                    <i class="fa-solid fa-signature"></i> Change a name
+                    <i className="fa-solid fa-signature"></i> Change a name
                   </button>
                 </div>
                 <div className="w-3/6 sm:ml-8 mx-auto">
@@ -243,14 +243,14 @@ export default function Settings() {
                     <div className="text-base mb-2">Emoji</div>
                     <select className='w-full p-3 border-[1px] border-gray-400 rounded-lg hover:border-[#61E9B1] bg-white'>
                       <option value="" selected>None</option>
-                        {profileEmojies.map((emoji) => <option value={emoji}>{emoji}</option>)}
+                        {profileEmojies.map((emoji, i) => <option key={i} value={emoji}>{emoji}</option>)}
                     </select>
                   </div>
 
                   <hr className="my-6" />
 
                   <button onClick={submitName} className="w-full mb-3 p-3 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1]">
-                    <i class="fa-solid fa-signature"></i> Customization profile
+                    <i className="fa-solid fa-signature"></i> Customization profile
                   </button>
                 </div>
                 <div className="w-3/6 sm:ml-8 mx-auto">

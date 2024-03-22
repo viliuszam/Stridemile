@@ -29,7 +29,9 @@ const NavBar = () => {
   return (
     <div className='bg-white border-b border-b-solid border-b-gray-100 drop-shadow fixed w-full py-1 z-10'>
       <div className="md:flex bg-white container justify-center items-center">
-        <img src={logo} className='h-6' alt="Logo" />
+        <div className='text-black pt-4 pb-4 pl-2 text-sm my-auto flex' >
+          <img src={logo} className='h-6' alt="Logo" />
+        </div>
         {(() => {
           if(isLoggedIn())
           {

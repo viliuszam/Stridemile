@@ -20,13 +20,13 @@ import Groups from "./views/Groups";
 import GroupInvitation from "./views/GroupInvitation";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { logout, isLoggedIn } from "./classes/Auth";
+import { logout } from "./classes/Auth";
 import CreateEvent from "./views/CreateEvent";
 import EditGroup from "./views/EditGroup";
 import CreateGoal from "./views/CreateGoal";
 import CreateChallenge from "./views/CreateChallenge";
 import Settings from "./views/Settings";
-import { useEffect } from "react";
+import HealthTracking from "./views/HealthTracking";
 
 export default function App() {
   const navigate = useNavigate();
@@ -57,6 +57,7 @@ export default function App() {
         <Route path="/create-challenge/:groupId" element={<CreateChallenge />} />
         <Route path="/groups" element={<Groups />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/health-tracking" element={<HealthTracking />} />
       </Route>
 
       <Route element={<AuthLayout />}>

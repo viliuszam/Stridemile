@@ -45,6 +45,7 @@ export class GroupController {
       mentorId = userId;
       var bannerFN = null;
       var groupFN = null;
+
       for(let i = 0; i < files.length; i++){
         if(files[i].fieldname == 'imageGroupFile'){
           groupFN = process.env.GROUP_PHOTO_PATH + files[i].filename;
@@ -72,6 +73,67 @@ export class GroupController {
       console.log(error);
     }
   }
+  
+  @UseGuards(AuthGuard('jwt'))
+  @Post(':edit-group/:groupId')
+  @UseInterceptors(AnyFilesInterceptor({
+    storage: diskStorage({
+      destination: (req, file, cb) => {
+        var destination = ""
+        if(file.fieldname == 'imageGroupFile'){
+          destination = './uploads/groupimages'
+        }else{
+          destination = './uploads/bannerimages'
+        }
+        cb(null, destination);
+      },
+      filename: (req, file, cb) => {
+        const filename: string =
+          path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
+        const extension: string = path.parse(file.originalname).ext;
+  
+        cb(null, `${filename}${extension}`);
+      },
+    }),
+  }))
+  async updateGroup(
+    @Param('groupId') groupId: number, @UploadedFiles() files: Array<Multer.File>, @Request() req) {
+    try {
+
+      var {name, description, visibilityId } = req.body;
+
+      var bannerFN = null;
+      var groupFN = null;
+      
+      for(let i = 0; i < files.length; i++){
+        if(files[i].fieldname == 'imageGroupFile'){
+          groupFN = process.env.GROUP_PHOTO_PATH + files[i].filename;
+          console.log(groupFN);
+        }
+        if(files[i].fieldname == 'imageBannerFile'){
+          bannerFN = process.env.BANNER_PHOTO_PATH + files[i].filename;
+          console.log(bannerFN);
+        }
+      }
+
+      const updateGroupDto: CreateGroupDto = {
+        name,
+        description,
+        mentorId: null,
+        visibilityId: parseInt(visibilityId),
+      };
+
+      const gid = parseInt(groupId.toString(), 10); // ??? kodel jis ne number by default nors tipas number
+      const updatedGroup = await this.groupService.updateGroup(gid, updateGroupDto, groupFN, bannerFN);
+      return {
+        message: 'Group updated successfully',
+        group: updatedGroup,
+      };
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
 
   @Get('publicGroups')
   async getAllPublicGroups(): Promise<Group[]> {

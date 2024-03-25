@@ -30,6 +30,31 @@ export class GroupService {
     });
   }
 
+  async updateGroup(groupId: number, updateGroupDto: CreateGroupDto, groupFN, bannerFN): Promise<Group> {
+    const { name, description, visibilityId } = updateGroupDto;
+  
+    const dataToUpdate: any = {
+        name,
+        description,
+        visibilityId
+    };
+
+    if (groupFN !== null) {
+        dataToUpdate.image_url = groupFN;
+    }
+
+    if (bannerFN !== null) {
+        dataToUpdate.banner_url = bannerFN;
+    }
+
+    return this.prisma.group.update({
+        where: {
+            id: groupId,
+        },
+        data: dataToUpdate,
+    });
+  }
+
   async findGroupById(groupId: number): Promise<Group | null> {
     return this.prisma.group.findUnique({
       where: {

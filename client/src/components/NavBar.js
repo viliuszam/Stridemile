@@ -27,10 +27,12 @@ const NavBar = () => {
   };
 
   return (
-    <div className='bg-white border-b border-b-solid border-b-gray-100 drop-shadow fixed w-full py-1 z-10'>
+    <div className='bg-white border-b border-b-solid border-b-gray-100 drop-shadow fixed top-0 w-full py-1 z-10'>
       <div className="md:flex bg-white container justify-center items-center">
         <div className='text-black pt-4 pb-4 pl-2 text-sm my-auto flex' >
-          <img src={logo} className='h-6' alt="Logo" />
+          <Link to="/">
+            <img src={logo} className='h-6' alt="Logo" />
+          </Link>
         </div>
         {(() => {
           if(isLoggedIn())
@@ -66,9 +68,9 @@ const NavBar = () => {
             </div>
           </div> 
         </Link>
-        <Link to="/events" className="my-auto flex pl-2 text-medium hover:text-[#61E9B1]">
+        <Link to="/health-tracking" className="my-auto flex pl-2 text-medium hover:text-[#61E9B1]">
         <div className='flex ml-2 hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
-          <div className='pl-2 pr-2'>Events</div>
+          <div className='pl-2 pr-2'>Health</div>
           </div> 
         </Link>
         <Link to="/achievements" className="my-auto flex pl-2 text-medium hover:text-[#61E9B1]">

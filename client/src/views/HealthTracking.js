@@ -83,7 +83,7 @@ const HealthTracking = () => {
             </div>
             <div className='ml-auto'>
               <div className='text-red-500 hover:text-red-700 cursor-pointer'>
-                <i class="fa-solid fa-trash"></i>
+                <i className="fa-solid fa-trash"></i>
               </div>
             </div>
           </div>
@@ -120,7 +120,7 @@ const HealthTracking = () => {
             </div>
             <div className='ml-auto'>
               <div className='text-red-500 hover:text-red-700 cursor-pointer'>
-                <i class="fa-solid fa-trash"></i>
+                <i className="fa-solid fa-trash"></i>
               </div>
             </div>
           </div>
@@ -133,7 +133,7 @@ const HealthTracking = () => {
           <div className='flex justify-center items-center'>
             <div className='mb-36 absolute mx-auto'>
               <p className='p-3 bg-white rounded-lg text-lg font-bold border-[1px] border-green-400'>
-                <i class="fa-solid fa-weight-scale"></i> 76 kg
+                <i className="fa-solid fa-weight-scale"></i> 76 kg
               </p>
             </div>
             <img src={personBody} className='h-[30rem] object-contain' />

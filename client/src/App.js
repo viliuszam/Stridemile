@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 // Layouts
 import MainLayout from "./layouts/Main";
 import AuthLayout from "./layouts/Auth";
+import EmptyLayout from "./layouts/Empty";
 
 // Views
 import Home from './views/Home'
@@ -45,8 +46,11 @@ export default function App() {
   return (
     <Routes>
 
-      <Route path="/" element={<MainLayout />}>
+      <Route path="/" element={<EmptyLayout />}>
         <Route index element={<Home />} />
+      </Route>
+
+      <Route element={<MainLayout />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/group/:groupId" element={<GroupPage />} />
         <Route path="/achievements" element={<Achievements />} />

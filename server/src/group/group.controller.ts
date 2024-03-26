@@ -10,6 +10,7 @@ import path = require('path');
 import { v4 as uuidv4 } from 'uuid';
 import { diskStorage, Multer } from 'multer';
 import { CreateEventDto } from './dto/create-event.dto';
+import { CreateChallengeDto } from './dto/create-challenge.dto';
 
 @Controller('groups')
 export class GroupController {
@@ -221,6 +222,110 @@ export class GroupController {
 
       const goal = await this.groupService.createEvent(createEventDto, gid);
       return { message: 'Event created successfully', goal };
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post(':groupId/createChallenge')
+  async createChallenge(@Body() createChallengeDto: CreateChallengeDto, @Request() req, @Param('groupId') groupId: number) {
+    const userId = req.user.id;
+    const gid = parseInt(groupId.toString(), 10);
+    try {
+      const group = await this.groupService.findGroupById(gid);
+      if (!group) {
+        throw new HttpException('Group not found', HttpStatus.NOT_FOUND);
+      }
+
+      if (group.mentorId !== userId) {
+        throw new HttpException(
+          'You are not authorized to create challenges for this group',
+          HttpStatus.FORBIDDEN,
+        );
+      }
+
+      const goal = await this.groupService.createChallenge(createChallengeDto, gid);
+      return { message: 'Challenge created successfully', goal };
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get(':groupId/events')
+  async getAllEvents(@Request() req, @Param('groupId') groupId: number) {
+    const gid = parseInt(groupId.toString(), 10);
+    try {
+      const group = await this.groupService.findGroupById(gid);
+      if (!group) {
+        throw new HttpException('Group not found', HttpStatus.NOT_FOUND);
+      }
+  
+      const userGroups = await this.groupService.findCurrentUserGroups(req.user.id);
+      const userIsMember = userGroups.some(group => group.id === gid);
+      if (!userIsMember) {
+        throw new HttpException(
+          'You are not a member of this group and cannot view its events',
+          HttpStatus.FORBIDDEN,
+        );
+      }
+  
+      const events = await this.groupService.getEvents(gid);
+      return { events };
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get(':groupId/goals')
+  async getAllGoals(@Request() req, @Param('groupId') groupId: number) {
+    const userId = req.user.id;
+    const gid = parseInt(groupId.toString(), 10);
+    try {
+      const group = await this.groupService.findGroupById(gid);
+      if (!group) {
+        throw new HttpException('Group not found', HttpStatus.NOT_FOUND);
+      }
+  
+      const userGroups = await this.groupService.findCurrentUserGroups(req.user.id);
+      const userIsMember = userGroups.some(group => group.id === gid);
+      if (!userIsMember) {
+        throw new HttpException(
+          'You are not a member of this group and cannot view its goals',
+          HttpStatus.FORBIDDEN,
+        );
+      }
+  
+      const events = await this.groupService.getGoals(gid);
+      return { events };
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get(':groupId/challenges')
+  async getAllChallenges(@Request() req, @Param('groupId') groupId: number) {
+    const gid = parseInt(groupId.toString(), 10);
+    try {
+      const group = await this.groupService.findGroupById(gid);
+      if (!group) {
+        throw new HttpException('Group not found', HttpStatus.NOT_FOUND);
+      }
+  
+      const userGroups = await this.groupService.findCurrentUserGroups(req.user.id);
+      const userIsMember = userGroups.some(group => group.id === gid);
+      if (!userIsMember) {
+        throw new HttpException(
+          'You are not a member of this group and cannot view its challenges',
+          HttpStatus.FORBIDDEN,
+        );
+      }
+  
+      const events = await this.groupService.getEvents(gid);
+      return { events };
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }

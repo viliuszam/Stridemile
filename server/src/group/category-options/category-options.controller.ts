@@ -5,8 +5,13 @@ import { CategoryOptionsService } from './category-options.service';
 export class CategoryOptionsController {
   constructor(private readonly categoryService: CategoryOptionsService) {}
 
-  @Get()
-  async getVisibilityOptions() {
-    return this.categoryService.getCategories();
+  @Get("/event")
+  async getEventVisibilityOptions() {
+    return this.categoryService.getEventCategories();
+  }
+
+  @Get("/goal")
+  async getGoalVisibilityOptions() {
+    return this.categoryService.getGoalCategories();
   }
 }

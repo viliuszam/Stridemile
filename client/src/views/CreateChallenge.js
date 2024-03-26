@@ -63,6 +63,7 @@ export default () => {
     if (!accessToken) {
       return;
     }
+    /*
     const formData = new FormData();
     formData.append('title', challengeTitle);
     formData.append('description', challengeDescription);
@@ -70,10 +71,18 @@ export default () => {
     for (let entry of formData.entries()) {
       console.log(entry);
     }
-    axios.post('http://localhost:3333/challenges/createChallenge', formData, {
+    */
+    const requestData = {
+      title: challengeTitle,
+      description: challengeDescription,
+      start_date: startDate,
+      end_date: endDate
+    };
+
+    axios.post(`http://localhost:3333/groups/${groupId}/createChallenge`, requestData, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'application/json'
       }
     })
     .then(function (response) {

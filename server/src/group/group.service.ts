@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma, Group, Invitation, User, Goal, Event } from '@prisma/client';
+import { Prisma, Group, Invitation, User, Goal, Event, Challenge } from '@prisma/client';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { MailService } from './mail/mail.service';
 import { JwtService } from "@nestjs/jwt";
@@ -9,6 +9,7 @@ import { SendInvitationDto } from './dto/send-invitation.dto';
 import { UserService } from '../user/user.service';
 import { CreateGoalDto } from './dto/create-goal.dto';
 import { CreateEventDto } from './dto/create-event.dto';
+import { CreateChallengeDto } from './dto/create-challenge.dto';
 
 @Injectable()
 export class GroupService {
@@ -253,6 +254,21 @@ export class GroupService {
     return { group, user };
   }
 
+  async createChallenge(createChallengeDto: CreateChallengeDto, groupId: number): Promise<Challenge> {
+    const { title, description, start_date, end_date } =
+    createChallengeDto;
+
+    return this.prisma.challenge.create({
+      data: {
+        title,
+        description,
+        start_date,
+        end_date,
+        group: { connect: { id: groupId } },
+      },
+    });
+  }
+
   async createGoal(createGoalDto: CreateGoalDto, groupId: number): Promise<Goal> {
     const { title, description, start_date, end_date, target_value, statusId, categoryId } =
       createGoalDto;
@@ -284,6 +300,30 @@ export class GroupService {
         category: fk_Category ? { connect: { id: fk_Category } } : undefined,
         group: { connect: { id: groupId } },
       },
+    });
+  }
+
+  async getEvents(groupId: number): Promise<Event[]> {
+    return this.prisma.event.findMany({
+      where: {
+        fk_GroupId: groupId
+      }
+    });
+  }
+
+  async getGoals(groupId: number): Promise<Goal[]> {
+    return this.prisma.goal.findMany({
+      where: {
+        fk_Groupid: groupId
+      }
+    });
+  }
+
+  async getChallenges(groupId: number): Promise<Challenge[]> {
+    return this.prisma.challenge.findMany({
+      where: {
+        fk_Groupid: groupId
+      }
     });
   }
 

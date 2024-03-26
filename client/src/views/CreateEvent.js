@@ -43,10 +43,11 @@ export default () => {
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [eventLocation, setEventLocation] = useState('');
+  const [eventDate, setEventDate] = React.useState(dayjs());
 
   useEffect(() => {
     // Fetch visibility options from the server
-    axios.get('http://localhost:3333/category-options')
+    axios.get('http://localhost:3333/category-options/event')
       .then(response => {
         setCategoryOptions(response.data);
       })
@@ -56,7 +57,7 @@ export default () => {
   }, []);
 
   const validate = () => {
-    if (!eventTitle || !eventDescription || !selectedCategory || !eventLocation) {
+    if (!eventTitle || !eventDescription || !selectedCategory || !eventLocation || !eventDate) {
       setAlert({ text: 'There are empty fields', type: AlertTypes.warning });
       return false;
     }
@@ -70,6 +71,7 @@ export default () => {
     if (!accessToken) {
       return;
     }
+    /*
     const formData = new FormData();
     formData.append('title', eventTitle);
     formData.append('description', eventDescription);
@@ -79,10 +81,20 @@ export default () => {
     for (let entry of formData.entries()) {
       console.log(entry);
     }
-    axios.post('http://localhost:3333/events/createEvent', formData, {
+    */
+
+    const requestData = {
+      title: eventTitle,
+      description: eventDescription,
+      date: eventDate,
+      location: eventLocation,
+      fk_Category: parseInt(selectedCategory)
+    };
+
+    axios.post(`http://localhost:3333/groups/${groupId}/createEvent`, requestData, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'application/json'
       }
     })
     .then(function (response) {
@@ -141,7 +153,9 @@ export default () => {
                 ]}
               >
                 <ThemeProvider theme={newTheme}>
-                  <DatePicker sx={{
+                  <DatePicker 
+                  value={eventDate} onChange={(newEventDate) => setEventDate(newEventDate)}
+                  sx={{
                     width: "100%",
                     "& .MuiInputLabel-root.Mui-focused": { color: "#979797" }, //styles the label
                     "& .MuiOutlinedInput-root": {

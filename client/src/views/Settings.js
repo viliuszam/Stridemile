@@ -61,44 +61,53 @@ export default function Settings() {
   const [name, setName] = useState('');
   const [hexColor, setHexColor] = useState('#ffffff')
 
-  const validate = () => {
+  const validatePassword = () => {
     if (!currentPassword || !password || !rePassword) {
       setAlert({ text: 'There are empty fields', type: AlertTypes.warning })
       return false;
     }
-
+  
     if (password.length < 5) {
       setAlert({ text: 'Password must be at least 5 characters', type: AlertTypes.warning })
       return false;
     }
-
-    if (password != rePassword) {
+  
+    if (password !== rePassword) {
       setAlert({ text: 'Passwords do not match', type: AlertTypes.warning })
       return false;
     }
-
+  
     return true;
   }
 
-  const submit = () => {
-    if (!validate()) return
-
-    axios.post('http://localhost:3333/auth/', {
-      password: password,
+  const submitPassword = () => {
+    if (!validatePassword()) return;
+  
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+      return;
+    }
+  
+    axios.post('http://localhost:3333/auth/passChange', {
+      oldPassword: currentPassword,
+      newPassword: password,
+    }, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      }
     })
-      .then(function (response) {
-        setAlert({ text: 'Successful password change', type: AlertTypes.success })
-      })
-      .catch(function (error) {
-        console.log(error);
-        if (error.response.status === 403) {
-          if (error.response.data.message == "Username is already taken") {
-            setAlert({ text: 'Username is already taken', type: AlertTypes.error });
-          }
-        } else {
-          setAlert({ text: `An error has occurred (${error.message})`, type: AlertTypes.error });
-        }
-      });
+    .then(function (response) {
+      setAlert({ text: 'Successful password change', type: AlertTypes.success });
+    })
+    .catch(function (error) {
+      console.log(error);
+      if (error.response && error.response.status === 403) {
+        setAlert({ text: 'Password change failed. Please check your old password.', type: AlertTypes.error });
+      } else {
+        setAlert({ text: `An error has occurred (${error.message})`, type: AlertTypes.error });
+      }
+    });
   }
 
   const validateName = () => {
@@ -109,6 +118,10 @@ export default function Settings() {
 
     return true;
   }
+
+  const submitCustomization = () => {
+  }
+
 
   const submitName = () => {
     if (!validateName()) return;
@@ -202,7 +215,7 @@ export default function Settings() {
 
                   <hr className="my-6" />
 
-                  <button onClick={submit} className="w-full mb-3 p-3 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1]">
+                  <button onClick={submitPassword} className="w-full mb-3 p-3 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1]">
                     <i className="fa-solid fa-key"></i> Change a password
                   </button>
                 </div>
@@ -261,7 +274,7 @@ export default function Settings() {
 
                   <hr className="my-6" />
 
-                  <button onClick={submit} className="w-full mb-3 p-3 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1]">
+                  <button onClick={submitCustomization} className="w-full mb-3 p-3 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1]">
                     <i className="fa-solid fa-signature"></i> Customization profile
                   </button>
                 </div>

@@ -16,6 +16,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import React from 'react';
+import { isLoggedIn } from '../classes/Auth';
 
 export default () => {
   return (
@@ -27,7 +28,7 @@ export default () => {
             <div className='my-auto'>
               <p className='text-7xl font-semibold'>Find your own way in sport </p>
               <p className='my-10 text-2xl'>Community for productive sport activities is available now</p>
-              <Link to="/register" className="mb-3 p-3 px-12 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1] text-lg">
+              <Link to={isLoggedIn() ? '/' : '/register'} className="mb-3 p-3 px-12 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1] text-lg">
                 Get started <i className="fa-solid fa-arrow-right"></i>
               </Link>
             </div>
@@ -131,7 +132,7 @@ export default () => {
       <div className='container pb-20'>
         <p className='mb-16 text-5xl text-center font-semibold'>Join now and take the path of wellness</p>
         <div className='flex'>
-        <Link to="/register" className="mb-3 mx-auto p-3 px-12 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1] text-lg">
+        <Link to={isLoggedIn() ? '/' : '/register'} className="mb-3 mx-auto p-3 px-12 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1] text-lg">
           Get started <i className="fa-solid fa-arrow-right"></i>
         </Link>
         </div>

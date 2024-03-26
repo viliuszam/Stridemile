@@ -103,7 +103,7 @@ export default function Settings() {
 
   const validateName = () => {
     if (!name) {
-      setAlert({ text: 'There are empty fields', type: AlertTypes.warning })
+      setAlert({ text: 'The username field is empty', type: AlertTypes.warning })
       return false;
     }
 
@@ -111,18 +111,29 @@ export default function Settings() {
   }
 
   const submitName = () => {
-    if (!validateName()) return
-
-    axios.post('http://localhost:3333/auth/', {
-      name: name,
+    if (!validateName()) return;
+  
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+      return;
+    }
+  
+    const newName = name;
+  
+    axios.post('http://localhost:3333/users/change-username', { username: newName }, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      }
     })
       .then(function (response) {
+        console.log(response);
         setAlert({ text: 'Successful name change', type: AlertTypes.success })
       })
       .catch(function (error) {
         console.log(error);
-        if (error.response.status === 403) {
-          if (error.response.data.message == "Username is already taken") {
+        if (error.response && error.response.status === 400) {
+          if (error.response.data.message === "Username is already taken") {
             setAlert({ text: 'Username is already taken', type: AlertTypes.error });
           }
         } else {
@@ -130,6 +141,7 @@ export default function Settings() {
         }
       });
   }
+  
 
   const profileEmojies = [
     '🏃',
@@ -249,7 +261,7 @@ export default function Settings() {
 
                   <hr className="my-6" />
 
-                  <button onClick={submitName} className="w-full mb-3 p-3 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1]">
+                  <button onClick={submit} className="w-full mb-3 p-3 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1]">
                     <i className="fa-solid fa-signature"></i> Customization profile
                   </button>
                 </div>

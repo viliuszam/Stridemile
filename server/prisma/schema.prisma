@@ -188,6 +188,7 @@ model User {
   persons               Person[]
   groups                Group[]
   invitations           Invitation[]
+  statistics            Statistics[]
   completedAchievements AchievementsOnUsers[]
   colourRewards         ColourRewardsOnUsers[]
 
@@ -328,7 +329,7 @@ model Person {
   fk_Mentorid   Int?
   gender        Int? // Scalar field representing the foreign key to PersonGender
   user          User         @relation(fields: [id], references: [id])
-  statistics    Statistics[]
+  //statistics    Statistics[]
   reminders     Reminder[]
   //achievements Achievement[]
 
@@ -381,14 +382,14 @@ model Reminder {
 
 model Statistics {
   date                 DateTime?
-  weight               Float?
+  weight               String?
   calories_intake      String?
   macroelements_intake String?
   water_intake         String?
-  sleep_duration       Int?
+  sleep_duration       String?
   id                   Int              @id @default(autoincrement())
-  person               Person           @relation(fields: [fk_Personid], references: [id])
-  fk_Personid          Int
+  user                 User           @relation(fields: [fk_UserId], references: [id])
+  fk_UserId            Int
   trackingRecords      TrackingRecord[]
 
   @@map("statistics")

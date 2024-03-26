@@ -11,10 +11,11 @@ import { GroupVisibilityModule } from './group/group-visibility/group-visibility
 import { CategoryOptionsModule } from './group/category-options/category-options.module'; 
 import { AchievementModule } from './achievement/achievement.module';
 import { RewardModule } from './reward/reward.module';
-
+import { HealthTrackingModule } from './health-tracking/health-tracking.module'; 
+ 
 
 @Module({
-  imports: [ConfigModule.forRoot({isGlobal: true}), AuthModule, UserModule, PrismaModule, ActivityModule, GroupModule, GroupVisibilityModule, AchievementModule, CategoryOptionsModule, RewardModule],
+  imports: [ConfigModule.forRoot({isGlobal: true}), HealthTrackingModule, AuthModule, UserModule, PrismaModule, ActivityModule, GroupModule, GroupVisibilityModule, AchievementModule, CategoryOptionsModule, RewardModule],
   controllers: [],
   providers: [],
 })

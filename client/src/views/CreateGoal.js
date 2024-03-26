@@ -51,7 +51,7 @@ export default () => {
 
   useEffect(() => {
     // Fetch visibility options from the server
-    axios.get('http://localhost:3333/category-options')
+    axios.get('http://localhost:3333/category-options/goal')
       .then(response => {
         setCategoryOptions(response.data);
       })
@@ -64,7 +64,7 @@ export default () => {
     // Fetch visibility options from the server
     axios.get('http://localhost:3333/status-options')
       .then(response => {
-        setCategoryOptions(response.data);
+        setStatusOptions(response.data);
       })
       .catch(error => {
         console.error('Error fetching status options:', error);
@@ -90,6 +90,7 @@ export default () => {
     if (!accessToken) {
       return;
     }
+    /*
     const formData = new FormData();
     formData.append('title', goalTitle);
     formData.append('description', goalDescription);
@@ -100,10 +101,22 @@ export default () => {
     for (let entry of formData.entries()) {
       console.log(entry);
     }
-    axios.post('http://localhost:3333/goals/createGoal', formData, {
+*/
+
+    const requestData = {
+      title: goalTitle,
+      description: goalDescription,
+      start_date: startDate,
+      end_date: endDate,
+      target_value: targetValue,
+      statusId: parseInt(selectedStatus),
+      categoryId: parseInt(selectedCategory)
+    };
+
+    axios.post(`http://localhost:3333/groups/${groupId}/createGoal`, requestData, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'application/json'
       }
     })
     .then(function (response) {

@@ -5,7 +5,12 @@ import { PrismaService } from '../../prisma/prisma.service';
 export class CategoryOptionsService {
   constructor(private prisma: PrismaService) {}
 
-  async getCategories() {
+  async getEventCategories() {
     return this.prisma.eventCategory.findMany();
   }
+
+  async getGoalCategories() {
+    return this.prisma.goalCategory.findMany();
+  }
+
 }

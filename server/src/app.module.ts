@@ -9,12 +9,14 @@ import { ActivityModule } from './activity/activity.module';
 import { GroupModule } from './group/group.module'; 
 import { GroupVisibilityModule } from './group/group-visibility/group-visibility.module'; 
 import { CategoryOptionsModule } from './group/category-options/category-options.module'; 
+import { StatusOptionsModule } from './group/status-options/status-options.module'; 
 import { AchievementModule } from './achievement/achievement.module';
 import { RewardModule } from './reward/reward.module';
-
+import { HealthTrackingModule } from './health-tracking/health-tracking.module'; 
+ 
 
 @Module({
-  imports: [ConfigModule.forRoot({isGlobal: true}), AuthModule, UserModule, PrismaModule, ActivityModule, GroupModule, GroupVisibilityModule, AchievementModule, CategoryOptionsModule, RewardModule],
+  imports: [ConfigModule.forRoot({isGlobal: true}), HealthTrackingModule, AuthModule, UserModule, PrismaModule, ActivityModule, GroupModule, GroupVisibilityModule, AchievementModule, CategoryOptionsModule, RewardModule, StatusOptionsModule],
   controllers: [],
   providers: [],
 })

@@ -264,7 +264,7 @@ export class GroupController {
   
       const userGroups = await this.groupService.findCurrentUserGroups(req.user.id);
       const userIsMember = userGroups.some(group => group.id === gid);
-      if (!userIsMember) {
+      if (!userIsMember && group.visibilityId == 2) {
         throw new HttpException(
           'You are not a member of this group and cannot view its events',
           HttpStatus.FORBIDDEN,
@@ -291,15 +291,15 @@ export class GroupController {
   
       const userGroups = await this.groupService.findCurrentUserGroups(req.user.id);
       const userIsMember = userGroups.some(group => group.id === gid);
-      if (!userIsMember) {
+      if (!userIsMember && group.visibilityId == 2) {
         throw new HttpException(
           'You are not a member of this group and cannot view its goals',
           HttpStatus.FORBIDDEN,
         );
       }
   
-      const events = await this.groupService.getGoals(gid);
-      return { events };
+      const goals = await this.groupService.getGoals(gid);
+      return { goals };
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }
@@ -317,15 +317,15 @@ export class GroupController {
   
       const userGroups = await this.groupService.findCurrentUserGroups(req.user.id);
       const userIsMember = userGroups.some(group => group.id === gid);
-      if (!userIsMember) {
+      if (!userIsMember && group.visibilityId == 2) {
         throw new HttpException(
           'You are not a member of this group and cannot view its challenges',
           HttpStatus.FORBIDDEN,
         );
       }
   
-      const events = await this.groupService.getEvents(gid);
-      return { events };
+      const challenges = await this.groupService.getChallenges(gid);
+      return { challenges };
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }
@@ -373,5 +373,3 @@ export class GroupController {
     return group;
   }
 }
-
-

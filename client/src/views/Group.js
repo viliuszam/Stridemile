@@ -12,27 +12,75 @@ const getMapsUrl = (loc) => {
 
 const InviteForm = () => {
   const { setAlert } = useOutletContext();
-
   const { groupId } = useParams();
   const [email, setEmail] = useState('');
   const [groupInfo, setGroupInfo] = useState('');
+  const [events, setEvents] = useState([]);
+  const [challenges, setChallenges] = useState([]);
+  const [goals, setGoals] = useState([]);
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
+    const fetchGroupInfo = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
+        const response = await axios.get(`http://localhost:3333/groups/group/${groupId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setGroupInfo(response.data);
+      } catch (error) {
+        console.error('Error fetching group info:', error);
+      }
+    };
 
-    axios.get(`http://localhost:3333/groups/group/${groupId}`, {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    })
-      .then(({ data }) => {
-        if(data) setGroupInfo(data);
-        else setAlert({ text: "Group doesn't exist", type: AlertTypes.warning })
-      })
-      .catch(error => {
-        console.error('Error fetching group info: ', error);
-      });
-  }, []);
+    const fetchEvents = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
+        const response = await axios.get(`http://localhost:3333/groups/${groupId}/events`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setEvents(response.data.events);
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
+    };
+
+    const fetchChallenges = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
+        const response = await axios.get(`http://localhost:3333/groups/${groupId}/challenges`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setChallenges(response.data.challenges);
+      } catch (error) {
+        console.error('Error fetching challenges:', error);
+      }
+    };
+
+      const fetchGoals = async () => {
+        try {
+          const token = localStorage.getItem('accessToken');
+          const response = await axios.get(`http://localhost:3333/groups/${groupId}/goals`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          setGoals(response.data.goals);
+        } catch (error) {
+          console.error('Error fetching goals:', error);
+        }   
+    };
+
+    fetchGroupInfo();
+    fetchEvents();
+    fetchChallenges();
+    fetchGoals();
+  }, [groupId]);
 
   const handleInvite = async (e) => {
     e.preventDefault();
@@ -43,7 +91,6 @@ const InviteForm = () => {
     try {
       const accessToken = localStorage.getItem('accessToken');
       if (!accessToken) {
-        // Handle case where user is not logged in
         console.error('User is not logged in.');
         return;
       }
@@ -94,61 +141,62 @@ const InviteForm = () => {
             <a className='text-[#4edba1] font-bold pb-2 border-b-4 border-[#4edba1]' href="#">Timeline</a>
             <hr className='mb-3 mt-2' />
 
-            <div className='flex mb-3 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>
-              <img className="my-auto w-24 h-24 object-cover rounded" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Ludovic_and_Lauren_%288425515069%29.jpg/640px-Ludovic_and_Lauren_%288425515069%29.jpg" />
-              <div className='mx-4'>
-
-                  <div className='mb-1 flex text-xs text-gray-400'>
-                    <p>Event</p>
-                    <span className='mx-2'>|</span>
-                    <p>2024-03-06</p>
-                    <span className='mx-2'>|</span>
-                    <a href={getMapsUrl("Kaunas, Pilies g. 17")} target="_blank" rel="noopener noreferrer" className='text-[#74cfda]'>
-                      <i className="fa-solid fa-location-dot"></i> Kaunas, Pilies g. 17
-                    </a>
+            <div>
+              {events.map(event => (
+                <div key={event.id} className='flex mb-3 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>
+                  <img className="my-auto w-24 h-24 object-cover rounded" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Ludovic_and_Lauren_%288425515069%29.jpg/640px-Ludovic_and_Lauren_%288425515069%29.jpg" alt="Event" />
+                  <div className='mx-4'>
+                    <div className='mb-1 flex text-xs text-gray-400'>
+                      <p>Event</p>
+                      <span className='mx-2'>|</span>
+                      <p>{new Date(event.date).toLocaleString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</p>
+                      <span className='mx-2'>|</span>
+                      <a href={getMapsUrl(event.location)} target="_blank" rel="noopener noreferrer" className='text-[#74cfda]'>
+                        <i className="fa-solid fa-location-dot"></i> {event.location}
+                      </a>
+                    </div>
+                    <p className='mb-1 font-bold'>{event.title}</p>
+                    <p className='mb-3 text-sm text-gray-500'>{event.description}</p>
+                    <div className='text-xs text-gray-400'>
+                      ORGANIZATION: to do
+                    </div>
                   </div>
-
-                  <p className='mb-1 font-bold'>Event title</p>
-
-                  <p className='mb-3 text-sm text-gray-500'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin consequat ornare nibh, nec vestibulum velit commodo nec. In varius pharetra ornare.</p>
-
-                  <div className='text-xs text-gray-400'>
-                    ORANIZATION UAB "Sportiva"
+                  <div className='flex ml-auto'>
+                    <div className='my-auto text-sm text-nowrap'>
+                     to do {event.attendees} <i className="fa-solid fa-user-check text-gray-400"></i>
+                    </div>
                   </div>
-
-              </div>
-              <div className='flex ml-auto'>
-                <div className='my-auto text-sm text-nowrap'>
-                50 <i className="fa-solid fa-user-check text-gray-400"></i>
+                  <div className='ml-auto'>
+                    <div className='text-[#4edba1] hover:text-[#61E9B1] cursor-pointer'>
+                      <i className="fa-solid fa-circle-check"></i>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className='ml-auto'>
-                <div className='text-[#4edba1] hover:text-[#61E9B1] cursor-pointer'>
-                  <i className="fa-solid fa-circle-check"></i>
-                </div>
-              </div>
+              ))}
             </div>
-
-            <div className='flex mb-3 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>
+            
+            <div>
+              {challenges.map(challenge => (
+              <div key={challenge.id} className='flex mb-3 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>
               <img className="my-auto w-24 h-24 object-cover rounded" src="https://media.istockphoto.com/id/1266413326/vector/vector-challenge-sign-pop-art-comic-speech-bubble-with-expression-text-competition-bright.jpg?s=612x612&w=0&k=20&c=eYOQaCn7WvMAEo5ZxVHVVQ-pcNT8HZ-yPeTjueuXi28=" />
               <div className='mx-4'>
 
                   <div className='mb-1 flex text-xs text-gray-400'>
                     <p>Challenge</p>
                     <span className='mx-2'>|</span>
-                    <p>Starts 2024-03-06 10:30</p>
+                    <p>Starts {new Date(challenge.start_date).toLocaleString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</p>
                     <span className='mx-2'>|</span>
-                    <p>Ends 2024-03-10 10:30</p>
+                    <p>Ends {new Date(challenge.end_date).toLocaleString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</p>
                   </div>
 
-                  <p className='mb-1 font-bold'>Challenge title</p>
+                  <p className='mb-1 font-bold'>{challenge.title}</p>
 
-                  <p className='mb-3 text-sm text-gray-500'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin consequat ornare nibh, nec vestibulum velit commodo nec. In varius pharetra ornare.</p>
+                  <p className='mb-3 text-sm text-gray-500'>{challenge.description}</p>
 
               </div>
               <div className='flex ml-auto'>
                 <div className='my-auto text-sm text-nowrap'>
-                50 <i className="fa-solid fa-user-check text-gray-400"></i>
+                to do <i className="fa-solid fa-user-check text-gray-400"></i>
                 </div>
               </div>
               <div className='ml-auto'>
@@ -156,23 +204,27 @@ const InviteForm = () => {
                   <i className="fa-solid fa-circle-check"></i>
                 </div>
               </div>
+                </div>
+              ))}
             </div>
 
-            <div className='flex mb-3 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>
+            <div>
+              {goals.map(goal => (
+              <div key={goal.id} className='flex mb-3 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>
               <img className="my-auto w-24 h-24 object-cover rounded" src="https://www.speexx.com/wp-content/uploads/goal-setting-basics.jpg" />
               <div className='mx-4'>
 
                   <div className='mb-1 flex text-xs text-gray-400'>
                     <p>Goal</p>
                     <span className='mx-2'>|</span>
-                    <p>Starts 2024-03-06 10:30</p>
+                    <p>Starts {new Date(goal.start_date).toLocaleString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</p>
                     <span className='mx-2'>|</span>
-                    <p>Ends 2024-03-10 10:30</p>
+                    <p>Ends {new Date(goal.end_date).toLocaleString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</p>
                   </div>
 
-                  <p className='mb-1 font-bold'>Goal title</p>
+                  <p className='mb-1 font-bold'>{goal.title}</p>
 
-                  <p className='mb-3 text-sm text-gray-500'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin consequat ornare nibh, nec vestibulum velit commodo nec. In varius pharetra ornare.</p>
+                  <p className='mb-3 text-sm text-gray-500'>{goal.description}</p>
 
                   <div className='flex text-sm text-gray-400'>
                     <p className='mr-auto'>15</p>
@@ -184,14 +236,14 @@ const InviteForm = () => {
                   </div>
                   
                   <div className='flex text-xs text-gray-400'>
-                    <p>STATUS: [STATUS GOES HERE]</p>
-                    <p className='ml-6'>CATEGORY: [CATEGORY GOES HERE]</p>
+                    <p>STATUS: {goal.status.name}</p>
+                    <p className='ml-6'>CATEGORY: {goal.category.name}</p>
                   </div>
 
               </div>
               <div className='flex ml-auto'>
                 <div className='my-auto text-sm text-nowrap'>
-                50 <i className="fa-solid fa-user-check text-gray-400"></i>
+                to do <i className="fa-solid fa-user-check text-gray-400"></i>
                 </div>
               </div>
               <div className='ml-auto'>
@@ -199,6 +251,8 @@ const InviteForm = () => {
                   <i className="fa-solid fa-circle-check"></i>
                 </div>
               </div>
+                </div>
+              ))}
             </div>
 
           </div>
@@ -243,27 +297,26 @@ const InviteForm = () => {
             : null}
 
             <p className='mb-4 text-black font-bold'>Description</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin consequat ornare nibh, nec vestibulum velit commodo nec. In varius pharetra ornare.</p>
+            <p>{groupInfo.description}</p>
             <hr className='my-6' />
             <div className='grid grid-cols-2'>
-              <p className='text-right mb-1 mr-5'>Visibility</p><p>public</p>
-              <p className='text-right mb-1 mr-5'>Type</p><p>group type</p>
-              <p className='text-right mb-1 mr-5'>Last activity</p><p>2 days ago</p>
+              <p className='text-right mb-1 mr-5'>Visibility:</p>
+              <p>{groupInfo.visibilityId === 1 ? 'Public' : 'Private'}</p>
             </div>
             <hr className='my-6' />
             <div className='grid grid-cols-3 gap-4 justify-items-center text-center'>
               <div>
-                <p>500</p>
+                <p>{groupInfo.groupMembers.length}</p>
                 <i className="fa-solid fa-users"></i>
                 <p className='text-xs'>Members</p>
               </div>
               <div>
-                <p>200</p>
+                <p>to do</p>
                 <i className="fa-solid fa-trophy"></i>
                 <p className='text-xs'>Achievements</p>
               </div>
               <div>
-                <p>100</p>
+                <p>{events.length}</p>
                 <i className="fa-solid fa-calendar-days"></i>
                 <p className='text-xs'>Events</p>
               </div>
@@ -271,9 +324,23 @@ const InviteForm = () => {
             <hr className='my-6' />
             <p className='mb-4 text-black font-bold'>Mentor</p>
             <div className='text-center inline-block'>
-              <img className='mx-auto w-10 h-10 rounded-full' src="https://www.befunky.com/images/prismic/5ddfea42-7377-4bef-9ac4-f3bd407d52ab_landing-photo-to-cartoon-img5.jpeg?auto=avif,webp&format=jpg&width=863" />
-              <p className='text-xs'>Tautvydas</p>
+              <img className='mx-auto w-10 h-10 rounded-full' src={groupInfo.mentor.profile_picture} />
+              <p className='text-xs'>{groupInfo.mentor.username}</p>
             </div>
+            <hr className='my-6' />
+            <p className='mb-4 text-black font-bold'>Group Members</p>
+            {groupInfo.groupMembers.length === 0 ? (
+              <p>No members.</p>
+            ) : (
+              <div className='grid grid-cols-3 gap-4'>
+                {groupInfo.groupMembers.map((member) => (
+                  <div key={member.user.id} className='text-center'>
+                    <img className='mx-auto w-10 h-10 rounded-full' src={member.user.profile_picture} alt={member.user.username} />
+                    <p className='text-xs'>{member.user.username}</p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 

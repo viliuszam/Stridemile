@@ -314,8 +314,20 @@ export class GroupService {
   async getGoals(groupId: number): Promise<Goal[]> {
     return this.prisma.goal.findMany({
       where: {
-        fk_Groupid: groupId
-      }
+        fk_Groupid: groupId,
+      },
+      include: {
+        category: {
+          select: {
+            name: true,
+          },
+        },
+        status: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
   }
 
@@ -327,20 +339,35 @@ export class GroupService {
     });
   }
 
-
   async getGroupInfo(groupId: number){
     try{
       const groupInfo = await this.prisma.group.findUnique({
         where: {
           id: groupId,
+        },
+        include: {
+          groupMembers: {
+            include: {
+              user: {
+                select: {
+                  username: true,
+                  profile_picture: true
+                }
+              }
+            }
+          },
+          mentor: {
+            select: {
+              username: true,
+              profile_picture: true
+            }
+          }
         }
       });
       return groupInfo;
     }
     catch (error){
       console.log(error);
-    }
-    
+    }    
   }
-
 }

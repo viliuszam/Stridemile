@@ -100,34 +100,34 @@ async function seed() {
       data: [
         {
           title: 'Begginer',
-          description: 'Achieve 30 steps',
-          steps_required: 30,
+          description: 'Achieve 300 steps',
+          steps_required: 300,
           points: 5,
         },
         {
           title: 'Pro',
-          description: 'Achieve 30 steps in 1min',
-          steps_required: 30,
+          description: 'Achieve 100 steps in 1min',
+          steps_required: 100,
           time_required_s: 60,
           points: 5,
         },
         {
           title: 'Expert',
-          description: 'Achieve 300 steps',
-          steps_required: 300,
+          description: 'Achieve 3000 steps',
+          steps_required: 3000,
           points: 15,
         },
         {
           title: 'Sportsman',
-          description: 'Achieve 100 steps in 1min',
-          steps_required: 100,
+          description: 'Achieve 150 steps in 1min',
+          steps_required: 150,
           time_required_s: 60,
           points: 20,
         },
         {
           title: 'Novice',
-          description: 'Achieve 100 steps',
-          steps_required: 100,
+          description: 'Achieve 1500 steps',
+          steps_required: 1500,
           points: 10,
         },
       ]
@@ -153,6 +153,140 @@ async function seed() {
           creation_date: new Date(),
           is_active: true,
         },
+      ],
+    });
+
+    // Seeding data for demonstration
+
+    // Users
+    await prisma.user.createMany({
+      data: [
+        {
+          username: 'strideuser1',
+          email: 'user1@stridemile.com',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          hash: '$argon2id$v=19$m=65536,t=3,p=4$rz4/aQ/TQwFx0jm/Lrm5Ew$QxXbv6EpGIeUfMm2HgsFgFPkN6ODJbvvKupeuY0633M',
+          resetPassToken: '',
+          colourHex: '#000000',
+          fk_Roleid: 3
+        },
+        {
+          username: 'strideuser2',
+          email: 'user2@stridemile.com',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          hash: '$argon2id$v=19$m=65536,t=3,p=4$rz4/aQ/TQwFx0jm/Lrm5Ew$QxXbv6EpGIeUfMm2HgsFgFPkN6ODJbvvKupeuY0633M',
+          resetPassToken: '',
+          colourHex: '#000000',
+          fk_Roleid: 3
+        },
+        {
+          username: 'strideuser3',
+          email: 'user3@stridemile.com',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          hash: '$argon2id$v=19$m=65536,t=3,p=4$rz4/aQ/TQwFx0jm/Lrm5Ew$QxXbv6EpGIeUfMm2HgsFgFPkN6ODJbvvKupeuY0633M',
+          resetPassToken: '',
+          colourHex: '#000000',
+          fk_Roleid: 3
+        },        
+        {
+          username: 'strideuser4',
+          email: 'user4@stridemile.com',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          hash: '$argon2id$v=19$m=65536,t=3,p=4$rz4/aQ/TQwFx0jm/Lrm5Ew$QxXbv6EpGIeUfMm2HgsFgFPkN6ODJbvvKupeuY0633M',
+          resetPassToken: '',
+          colourHex: '#000000',
+          fk_Roleid: 3
+        },        
+        {
+          username: 'strideuser5',
+          email: 'user5@stridemile.com',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          hash: '$argon2id$v=19$m=65536,t=3,p=4$rz4/aQ/TQwFx0jm/Lrm5Ew$QxXbv6EpGIeUfMm2HgsFgFPkN6ODJbvvKupeuY0633M',
+          resetPassToken: '',
+          colourHex: '#000000',
+          fk_Roleid: 3
+        },
+      ],
+    });
+    
+    // Groups
+    await prisma.group.createMany({
+      data: [
+        {
+          name: 'Basketball Fanclub',
+          description: 'A meeting place for basketball fans.',
+          image_url: 'http://localhost:3333/uploads/groupimages/lebrondunking237d5b56-a637-49a3-9d1f-6a84f541b1b3.png',
+          banner_url: 'http://localhost:3333/uploads/bannerimages/basketbannerfa5cbcb7-e6d1-49f8-9666-b16c4b1fe5d1.jpg',
+          visibilityId: 1,
+          mentorId: 1
+        },        
+        {
+          name: 'Runners United',
+          description: 'Casual runners going on casual runs.',
+          image_url: 'http://localhost:3333/uploads/groupimages/runnersprofilea39e775f-2296-49b6-ab64-28c0f75e2b8b.jpg',
+          banner_url: 'http://localhost:3333/uploads/bannerimages/runbannerb2786d97-eaf1-476b-a9de-5d995526ea50.jpg',
+          visibilityId: 1,
+          mentorId: 2
+        },        
+        {
+          name: 'Marathon Legends',
+          description: 'Professional runners going on long runs.',
+          image_url: 'http://localhost:3333/uploads/groupimages/marathonpfpb6c963b2-ea50-40ee-80e6-a1209f9b4d28.webp',
+          banner_url: 'http://localhost:3333/uploads/bannerimages/marathonbannerff7c335d-6c0c-495d-9753-adaa33f81f59.jpg',
+          visibilityId: 1,
+          mentorId: 3
+        },       
+        {
+          name: 'Kaunas Tennis Club',
+          description: 'A local tennis club for players from Kaunas.',
+          image_url: 'http://localhost:3333/uploads/groupimages/tennispfp3c098f04-0da7-460d-9966-4631d345a0ae.jpg',
+          banner_url: 'http://localhost:3333/uploads/bannerimages/tennisbanner7aafc5e2-c1dd-417a-9943-8b904d62626c.jpg',
+          visibilityId: 1,
+          mentorId: 4
+        }
+      ],
+    });
+
+    // Group members
+    await prisma.groupMember.createMany({
+      data: [
+        {
+          groupId: 1,
+          userId: 2
+        },
+        {
+          groupId: 1,
+          userId: 5
+        },
+        {
+          groupId: 2,
+          userId: 3
+        },
+        {
+          groupId: 2,
+          userId: 4
+        },
+        {
+          groupId: 3,
+          userId: 4
+        },
+        {
+          groupId: 3,
+          userId: 5
+        },
+        {
+          groupId: 4,
+          userId: 3
+        },
+        {
+          groupId: 4,
+          userId: 2
+        }
       ],
     });
 

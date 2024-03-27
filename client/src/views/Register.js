@@ -13,6 +13,8 @@ export default () => {
   const [password, setPassword] = useState('')
   const [rePassword, setRePassword] = useState('')
 
+  const [profileImage, setProfileImage] = useState(null);
+
   const validate = () => {
     if(!name || !email || !password || !rePassword) {
       setAlert({ text: 'There are empty fields', type: AlertTypes.warning })
@@ -86,6 +88,15 @@ export default () => {
       <div className="mb-3">
         <div className="text-base mb-2">Repeat password</div>
         <input value={rePassword} onChange={(e) => setRePassword(e.target.value)} type="password" placeholder="Password" className="w-full p-3 border-[1px] border-gray-400 rounded-lg" />
+      </div>
+
+      <div className="mb-3">
+        <div className="text-base mb-2">Profile image</div>
+        <div className="block hover:bg-white text-base text-black border-gray-400 border border-solid rounded-lg pl-3 py-3 hover:bg-[#61E9B1] w-full hover:border-[#61E9B1] overflow-hidden">
+          <label htmlFor="uploadbanner" className="block text-gray-400 whitespace-nowrap w-full overflow-hidden cursor-pointer">{!profileImage ? 'Select image (optional)...' : '🖼️ Image selected'}</label>
+          <input type="file" id="uploadbanner" accept="image/*" onChange={(e) => setProfileImage(e.target.files[0])} hidden/>
+        </div>
+        <p className="mt-1 text-xs text-gray-500">Recommended image size 150x150 pixels</p>
       </div>
 
       <hr className="my-6" />

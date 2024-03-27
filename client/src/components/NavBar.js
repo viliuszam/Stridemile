@@ -18,6 +18,7 @@ import logo from '../images/logo.png'
 const NavBar = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [user, setUser] = useState('');
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -120,7 +121,7 @@ const NavBar = () => {
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                       >
-                          <img src="https://www.freeiconspng.com/thumbs/face-png/obama-face-png-3.png" className='h-10 w-10 object-cover rounded-full'/>
+                          <img src={getUser().profile_picture} className='h-10 w-10 object-cover rounded-full'/>
                       </IconButton>
                     </Tooltip>
                   </Box>

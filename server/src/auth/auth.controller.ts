@@ -1,16 +1,37 @@
-import { Body, Controller, Post, Req, UseGuards, HttpException, HttpStatus } from "@nestjs/common";
+import { Body, Controller, Post, Req, UseGuards, HttpException, HttpStatus, UseInterceptors, UploadedFile, UploadedFiles} from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { AuthDto, AuthlogDto, AuthForgDto, AuthpassDto } from "./dto";
 import { AuthGuard } from "@nestjs/passport";
+import { AnyFilesInterceptor } from "@nestjs/platform-express";
+import path = require('path');
+import { diskStorage, Multer } from 'multer';
+import { v4 as uuidv4 } from 'uuid';
 
 @Controller('auth')
 export class AuthController{
     constructor(private authService: AuthService){}
 
     @Post('signup')
-    signup(@Body() dto: AuthDto){
-        console.log(dto)
-        return this.authService.signup(dto)
+    @UseInterceptors(AnyFilesInterceptor({
+      storage: diskStorage({
+        destination: (req, file, cb) => {
+          var destination = "./uploads/userimages"
+          cb(null, destination);
+        },
+        filename: (req, file, cb) => {
+          const filename: string =
+            path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
+          const extension: string = path.parse(file.originalname).ext;
+          cb(null, `${filename}${extension}`);
+        },
+      }),
+    }))
+    signup(@Body() dto: AuthDto, @UploadedFiles() files: Array<Multer.File>){
+        var profileFN = null;
+        for(let i = 0; i < files.length; i++){
+          profileFN = process.env.USER_PHOTO_PATH + files[i].filename;
+        }
+        return this.authService.signup(dto, profileFN)
     }
 
     @Post('signin')

@@ -16,5 +16,10 @@ export class RewardController {
         return this.rewardService.UpdateRewards(userId, points.userPoints);
     }
 
-    
+    @UseGuards(AuthGuard('jwt'))
+    @Post('update')
+    async GetColours(@Request() req){
+        const userId = req.user.id;
+        return this.rewardService.UserColours(userId);
+    }
 }

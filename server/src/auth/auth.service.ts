@@ -6,6 +6,7 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import { MailService } from './mail/mail.service';
+import { Multer } from 'multer';
 
 @Injectable()
 export class AuthService{
@@ -33,7 +34,7 @@ export class AuthService{
         return this.signToken(user.id, user.email)
     }
 
-    async signup(dto: AuthDto){
+    async signup(dto: AuthDto, profileURL: string){
         const hash = await argon.hash(dto.password);
         try {
             const user = await this.prisma.user.create({
@@ -41,6 +42,7 @@ export class AuthService{
                     username: dto.name,
                     email: dto.email,
                     hash,
+                    profile_picture: profileURL
                 },
             });
     

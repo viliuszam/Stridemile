@@ -42,11 +42,17 @@ export default () => {
   const submit = () => {
     if(!validate()) return
 
-    axios.post('http://localhost:3333/auth/signup', {
-      name: name,
-      email: email,
-      password: password,
-    })
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('file', profileImage);
+
+    axios.post('http://localhost:3333/auth/signup', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+      })
       .then(function (response) {
         setAlert({ text: 'Successful registration', type: AlertTypes.success })
       })

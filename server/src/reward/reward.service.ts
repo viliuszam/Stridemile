@@ -41,6 +41,19 @@ export class RewardService {
 
       return reward !== null;
     }
+
+    async UserColours(userId: number){
+      const colours = await this.prisma.colourRewardsOnUsers.findMany({
+        where: {
+          userId: userId,
+        },
+        include: {
+          colourReward: true,
+        },
+      });
+  
+      return colours.map((cr) => cr.colourReward.colourHex);
+    }
       
 
   

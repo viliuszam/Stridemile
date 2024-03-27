@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from "@nestjs/common";
+import { ForbiddenException,NotFoundException, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { AuthDto, AuthlogDto, AuthForgDto, AuthpassDto } from "./dto";
 import * as argon from 'argon2'
@@ -122,6 +122,38 @@ export class AuthService{
           hash: hash,
           resetPassToken: "",
           isResetValid: false
+        },
+      });
+    }
+
+    async passChange(oldPassword: string, newPassword: string, email: string) {
+
+      const user = await this.prisma.user.findUnique({
+        where: {
+          email: email,
+        },
+      });
+  
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+  
+      const isOldPasswordValid = await argon.verify(user.hash, oldPassword);
+  
+      if (!isOldPasswordValid) {
+        throw new ForbiddenException('Old password is incorrect');
+      }
+  
+      const newHash = await argon.hash(newPassword);
+  
+      await this.prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          hash: newHash,
+          resetPassToken: '',
+          isResetValid: false,
         },
       });
     }

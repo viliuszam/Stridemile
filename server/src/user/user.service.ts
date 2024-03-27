@@ -21,6 +21,21 @@ export class UserService {
             throw new Error('Error fetching user by ID: ' + error.message);
         }
     }
+
+    async changeUsername(userId: number, newUsername: string): Promise<void> {
+        const existingUser = await this.prisma.user.findUnique({
+          where: { username: newUsername },
+        });
+    
+        if (existingUser) {
+          throw new Error('Username is already taken');
+        }
+    
+        await this.prisma.user.update({
+          where: { id: userId },
+          data: { username: newUsername },
+        });
+      }
 }
 
 export { User };

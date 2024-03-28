@@ -45,7 +45,8 @@ export default () => {
         </div>
         <div className='w-1/2 my-auto pl-12'>
           <p className='mb-5 text-5xl font-semibold'>About <span className='text-[#61E9B1]'>StrideMile</span></p>
-          <p className='text-lg'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis vitae urna quis bibendum. Pellentesque dictum dui in iaculis commodo. Aliquam commodo, quam sit amet tincidunt pellentesque, eros ipsum fermentum tellus, id aliquam urna neque rhoncus dui. Fusce eget feugiat orci. Aenean pretium tortor sed sapien interdum, ut efficitur urna vehicula.</p>
+          <p className='text-lg'>It's the platform that aims to unite people and motivate them to engage in physical activity. Our community
+           and motivation of members are growing rapidly. People here not only improve their health but also find valuable friends.</p>
         </div>
       </div>
 
@@ -56,7 +57,7 @@ export default () => {
           <div className='text-center p-8'>
             <img className='mb-5 mx-auto h-64 object-contain' src={stepCount} />
             <p className='mb-5 text-[#61E9B1] text-3xl'>Step counting</p>
-            <p className='text-lg'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis vitae urna quis bibendum. Pellentesque dictum dui in iaculis commodo.</p>
+            <p className='text-lg'>Users can track their steps in order to complete achievements. After completing achievements users get some prizes related to profile customization.</p>
           </div>
 
           <div>
@@ -64,7 +65,7 @@ export default () => {
               <div className="p-8 h-full w-full bg-white rounded-xl mt-3 text-center bg-gray-50 border border-solid border-green-400">
                 <img className='mb-5 mx-auto h-64 object-contain' src={groupActivities} />
                 <p className='mb-5 text-[#61E9B1] text-3xl'>Group activities</p>
-                <p className='text-lg'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis vitae urna quis bibendum. Pellentesque dictum dui in iaculis commodo.</p>
+                <p className='text-lg'>Users can join groups and create them themselves. While being in groups, people are able to achieve goals and challenges together, participate in events. Most importantly, gain motivation from each other.</p>
               </div>
             </div>
           </div>
@@ -72,7 +73,7 @@ export default () => {
           <div className='text-center p-8'>
             <img className='mb-5 mx-auto h-64 object-contain' src={healthTracking} />
             <p className='mb-5 text-[#61E9B1] text-3xl'>Health tracking</p>
-            <p className='text-lg'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis vitae urna quis bibendum. Pellentesque dictum dui in iaculis commodo.</p>
+            <p className='text-lg'>People are able to track their health: weight, sleep, calories, macroelements, water. Then they are able to see their records sorted by date.</p>
           </div>
 
         </div>
@@ -84,15 +85,15 @@ export default () => {
           <div className="flex">
 
             <div className='text-center p-16 pb-0'>
-              <img className='mb-5 max-h-64 mx-auto' src={smartphone} />
+              <img className='mb-5 h-56 mx-auto' src={smartphone} />
               <p className='mb-5 text-[#61E9B1] text-3xl'>Smartphone</p>
-              <p className='text-lg'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis vitae urna quis bibendum. Pellentesque dictum dui in iaculis commodo.</p>
+              <p className='text-lg'>There is a mobile app that counts steps. It is easy and convenient to use.</p>
             </div>
 
             <div className='text-center p-16 pb-0'>
-              <img className='mb-5 max-h-96 mx-auto' src={browser} />
+              <img className='mb-5 h-56 mx-auto object-contain' src={browser} />
               <p className='mb-5 text-[#61E9B1] text-3xl'>Website</p>
-              <p className='text-lg'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis vitae urna quis bibendum. Pellentesque dictum dui in iaculis commodo.</p>
+              <p className='text-lg'>Main functionality is in the website. Here users can see their steps, achievements, challenges and groups. They can also track their health and see how it improved.</p>
             </div>
 
           </div>
@@ -107,11 +108,10 @@ export default () => {
             aria-controls="panel1-content"
             id="panel1-header"
           >
-            Accordion 1
+            <b>Who can create a group?</b>
           </AccordionSummary>
           <AccordionDetails>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+            Everyone with a huge willingness and motivation to unite people.
           </AccordionDetails>
         </Accordion>
         <Accordion className='py-3'>
@@ -120,11 +120,22 @@ export default () => {
             aria-controls="panel2-content"
             id="panel2-header"
           >
-            Accordion 2
+            <b>Is the platform free to use?</b>
           </AccordionSummary>
           <AccordionDetails>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+            Yes, at the moment there are no hidden costs.
+          </AccordionDetails>
+        </Accordion>
+        <Accordion className='py-3'>
+          <AccordionSummary
+            expandIcon={<i className="fa-solid fa-chevron-down"></i>}
+            aria-controls="panel2-content"
+            id="panel2-header"
+          >
+            <b>Should I use the same account for website and mobile app?</b>
+          </AccordionSummary>
+          <AccordionDetails>
+            Yes. StrideMile is a cross-platform, therefore, users should use the same account on any device.
           </AccordionDetails>
         </Accordion>
       </div>

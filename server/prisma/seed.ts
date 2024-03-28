@@ -169,6 +169,7 @@ async function seed() {
           hash: '$argon2id$v=19$m=65536,t=3,p=4$rz4/aQ/TQwFx0jm/Lrm5Ew$QxXbv6EpGIeUfMm2HgsFgFPkN6ODJbvvKupeuY0633M',
           resetPassToken: '',
           colourHex: '#000000',
+          profile_picture: 'http://localhost:3333/uploads/userimages/6IDyCFja_400x400b2a454cb-6938-4b5b-8dee-43d6de8f76b2.jpeg',
           fk_Roleid: 3
         },
         {
@@ -179,6 +180,7 @@ async function seed() {
           hash: '$argon2id$v=19$m=65536,t=3,p=4$rz4/aQ/TQwFx0jm/Lrm5Ew$QxXbv6EpGIeUfMm2HgsFgFPkN6ODJbvvKupeuY0633M',
           resetPassToken: '',
           colourHex: '#000000',
+          profile_picture: 'http://localhost:3333/uploads/userimages/AoBGN5Dfbc1210a-7312-4915-8303-5bc8d5e765bd.png',
           fk_Roleid: 3
         },
         {
@@ -189,6 +191,7 @@ async function seed() {
           hash: '$argon2id$v=19$m=65536,t=3,p=4$rz4/aQ/TQwFx0jm/Lrm5Ew$QxXbv6EpGIeUfMm2HgsFgFPkN6ODJbvvKupeuY0633M',
           resetPassToken: '',
           colourHex: '#000000',
+          profile_picture: 'http://localhost:3333/uploads/userimages/couple-on-tennis-court-sq-400c84a1420-46dc-4073-b57d-96a10bf3a786.jpg',
           fk_Roleid: 3
         },        
         {
@@ -199,6 +202,7 @@ async function seed() {
           hash: '$argon2id$v=19$m=65536,t=3,p=4$rz4/aQ/TQwFx0jm/Lrm5Ew$QxXbv6EpGIeUfMm2HgsFgFPkN6ODJbvvKupeuY0633M',
           resetPassToken: '',
           colourHex: '#000000',
+          profile_picture: 'http://localhost:3333/uploads/userimages/golfer-sq-400246627ba-ba00-4154-8a99-e0914e75adaa.jpg',
           fk_Roleid: 3
         },        
         {
@@ -209,6 +213,7 @@ async function seed() {
           hash: '$argon2id$v=19$m=65536,t=3,p=4$rz4/aQ/TQwFx0jm/Lrm5Ew$QxXbv6EpGIeUfMm2HgsFgFPkN6ODJbvvKupeuY0633M',
           resetPassToken: '',
           colourHex: '#000000',
+          profile_picture: 'http://localhost:3333/uploads/userimages/unnamed2d72b078-49d5-4e6a-84bd-ffcd83c65155.jpg',
           fk_Roleid: 3
         },
       ],
@@ -252,6 +257,124 @@ async function seed() {
       ],
     });
 
+    // Group goals
+    await prisma.goal.createMany({
+      data: [
+        {
+            title: '10 consecutive three-pointers',
+            description: 'Score 10 shots in a row from the three-point field goal.',
+            start_date: new Date('2024-03-28T11:36:56.000Z'),
+            end_date: new Date('2024-04-08T11:37:06.000Z'),
+            target_value: "10",
+            fk_Groupid: 1,
+            fk_Goalstatusid: 1,
+            fk_Goalcategoryid: 6
+        }, 
+        {
+          title: '5K Weekly Challenge',
+          description: 'Complete a 5-kilometer run every week for a month.',
+          start_date: new Date('2024-03-28T11:36:56.000Z'),
+          end_date: new Date('2024-04-28T11:37:06.000Z'),
+          target_value: "4",
+          fk_Groupid: 2,
+          fk_Goalstatusid: 1,
+          fk_Goalcategoryid: 6
+        },
+        {
+          title: 'Half-Marathon Preparation',
+          description: 'Train to complete a half-marathon within 3 months.',
+          start_date: new Date('2024-03-28T11:36:56.000Z'),
+          end_date: new Date('2024-06-28T11:37:06.000Z'),
+          target_value: "1",
+          fk_Groupid: 3,
+          fk_Goalstatusid: 1,
+          fk_Goalcategoryid: 1
+        },
+        {
+          title: 'Weekly Tennis Matches',
+          description: 'Participate in a tennis match every week for a month.',
+          start_date: new Date('2024-03-28T11:36:56.000Z'),
+          end_date: new Date('2024-04-28T11:37:06.000Z'),
+          target_value: "4",
+          fk_Groupid: 4,
+          fk_Goalstatusid: 1,
+          fk_Goalcategoryid: 6
+        }
+      ],
+    });
+
+    // Group events
+    await prisma.event.createMany({
+      data: [
+        {
+            title: '5v5 Friendly Team Game',
+            description: 'Randomly picked team members, friendly basketball game.',
+            date: new Date('2024-04-09T12:00:00.000Z'),
+            location: 'Radvilėnų pl. 19, Kaunas',
+            fk_Category: 4,
+            fk_GroupId: 1
+        }, 
+        {
+          title: 'Casual Saturday Morning Run',
+          description: 'Join us for a casual morning run around the city.',
+          date: new Date('2024-04-06T08:00:00.000Z'),
+          location: 'Taikos pr. 87B, Kaunas',
+          fk_Category: 1,
+          fk_GroupId: 2
+        },
+        {
+          title: 'Marathon Training Session: Hill Repeats',
+          description: 'Get ready for the upcoming marathon with hill repeats training session.',
+          date: new Date('2024-04-07T17:00:00.000Z'),
+          location: 'Draugystės g. 15A, Kaunas',
+          fk_Category: 1,
+          fk_GroupId: 3
+        },
+        {
+          title: 'Kaunas Tennis Club Doubles Tournament',
+          description: 'Compete in our monthly doubles tournament and showcase your tennis skills.',
+          date: new Date('2024-04-12T10:00:00.000Z'),
+          location: 'Sporto g. 3, Kaunas',
+          fk_Category: 4,
+          fk_GroupId: 4
+        }
+      ],
+    });
+
+    // Group challenges
+    await prisma.challenge.createMany({
+      data: [
+        {
+          title: 'Three-Point Shooting Challenge',
+          description: 'Compete to see who can make the most three-pointers in a week!',
+          start_date: new Date('2024-04-01T00:00:00.000Z'),
+          end_date: new Date('2024-04-08T23:59:59.999Z'),
+          fk_Groupid: 1
+        },
+        {
+          title: 'Weekly Mileage Challenge',
+          description: 'Challenge yourself to run the most kilometers in a week!',
+          start_date: new Date('2024-04-01T00:00:00.000Z'),
+          end_date: new Date('2024-04-07T23:59:59.999Z'),
+          fk_Groupid: 2
+        },
+        {
+          title: 'Marathon Training Challenge',
+          description: 'Participate in a structured training program to improve marathon performance!',
+          start_date: new Date('2024-04-01T00:00:00.000Z'),
+          end_date: new Date('2024-04-30T23:59:59.999Z'),
+          fk_Groupid: 3
+        },
+        {
+          title: 'Kaunas Tennis Club Doubles Challenge',
+          description: 'Compete with your partner to win the most doubles matches in a week!',
+          start_date: new Date('2024-04-01T00:00:00.000Z'),
+          end_date: new Date('2024-04-07T23:59:59.999Z'),
+          fk_Groupid: 4
+        }
+      ],
+    });
+
     // Group members
     await prisma.groupMember.createMany({
       data: [
@@ -288,6 +411,119 @@ async function seed() {
           userId: 2
         }
       ],
+    });
+
+    // Health statistics
+    await prisma.statistics.createMany({
+      data: [
+      {
+        sleep_duration: "7",
+        calories_intake: "1600",
+        macroelements_intake: "1200",
+        water_intake: "2.1",
+        weight: "86",
+        fk_UserId: 1,
+        date: new Date()
+      },
+      {
+        sleep_duration: "9",
+        calories_intake: "1600",
+        macroelements_intake: "1200",
+        water_intake: "1.2",
+        weight: "59",
+        fk_UserId: 2,
+        date: new Date()
+      },
+      {
+        sleep_duration: "6",
+        calories_intake: "1600",
+        macroelements_intake: "1200",
+        water_intake: "2",
+        weight: "74",
+        fk_UserId: 3,
+        date: new Date()
+      },
+      {
+        sleep_duration: "6.5",
+        calories_intake: "1600",
+        macroelements_intake: "1200",
+        water_intake: "1.7",
+        weight: "77",
+        fk_UserId: 4,
+        date: new Date()
+      },
+      {
+        sleep_duration: "8",
+        calories_intake: "1600",
+        macroelements_intake: "1200",
+        water_intake: "1.6",
+        weight: "91",
+        fk_UserId: 5,
+        date: new Date()
+      },
+    ]
+    });
+
+    // Activity entries
+    await prisma.activityEntry.createMany({
+      data: [
+      {
+        fk_Userid: 1,
+        steps: 372,
+        distance: 284.988,
+        start_time: '2024-03-28T11:36:46.000Z',
+        end_time: '2024-03-28T11:36:56.000Z'
+      },
+      {
+        fk_Userid: 1,
+        steps: 372,
+        distance: 284.988,
+        start_time: '2024-03-28T11:36:56.000Z',
+        end_time: '2024-03-28T11:37:06.000Z'
+      },
+      {
+        fk_Userid: 1,
+        steps: 372,
+        distance: 284.988,
+        start_time: '2024-03-28T11:37:06.000Z',
+        end_time: '2024-03-28T11:37:16.000Z'
+      },
+      {
+        fk_Userid: 1,
+        steps: 372,
+        distance: 284.988,
+        start_time: '2024-03-28T11:37:16.000Z',
+        end_time: '2024-03-28T11:37:26.000Z'
+      },
+      {
+        fk_Userid: 2,
+        steps: 372,
+        distance: 284.988,
+        start_time: '2024-03-28T11:37:16.000Z',
+        end_time: '2024-03-28T11:37:26.000Z'
+      },
+      {
+        fk_Userid: 3,
+        steps: 372,
+        distance: 284.988,
+        start_time: '2024-03-28T11:37:16.000Z',
+        end_time: '2024-03-28T11:37:26.000Z'
+      },
+      {
+        fk_Userid: 4,
+        steps: 372,
+        distance: 284.988,
+        start_time: '2024-03-28T11:37:16.000Z',
+        end_time: '2024-03-28T11:37:26.000Z'
+      },
+      {
+        fk_Userid: 5,
+        steps: 372,
+        distance: 284.988,
+        start_time: '2024-03-28T11:37:16.000Z',
+        end_time: '2024-03-28T11:37:26.000Z'
+      },
+    ]
     });
 
     console.log('Seed data inserted successfully');

@@ -23,7 +23,11 @@ export class RewardService {
             changed = true
           }
           catch (error) {
-            console.log('Duplicate entry. Ignore this');
+            if (error.code === 'P2002') {
+
+            } else {
+              throw error;
+            }
           }
         }
       }

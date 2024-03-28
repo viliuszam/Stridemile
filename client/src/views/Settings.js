@@ -321,9 +321,8 @@ export default function Settings() {
                   </button>
                 </div>
                 <div className="w-3/6 sm:ml-8 mx-auto">
-                  <h2 className="pb-3 pt-1 font-semibold text-xl">What name you cannot choose?</h2>
-                  <p>The one that is already taken.
-                  </p>
+                  <h2 className="pb-3 pt-1 font-semibold text-xl">How can you unlock colours?</h2>
+                  <p>Colours are unlocked by completing achievements and accumulating points. You can see unlocked colours by opening drop-down list.</p>
                 </div>
               </div>
             </CustomTabPanel>

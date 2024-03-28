@@ -96,14 +96,16 @@ export class GroupService {
             include: {
               user: {
                 select: {
-                  username: true
+                  username: true,
+                  colourHex: true
                 }
               }
             }
           },
           mentor: {
             select: {
-              username: true
+              username: true,
+              colourHex: true
             }
           }
         }
@@ -126,7 +128,8 @@ export class GroupService {
           include: {
             user: {
               select: {
-                username: true
+                username: true,
+                colourHex: true
               }
             }
           }

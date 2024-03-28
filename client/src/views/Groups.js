@@ -105,7 +105,7 @@ const Home = () => {
                     <p className="text-sm"><span style={{ color: 'green', fontWeight: 'bold' }}>Mentor: {group.mentor.username}</span></p>
                     <p className="text-sm">{group.groupMembers.length} member(s)</p>
                     {group.groupMembers.map((member) => (
-                      <p key={member.id}>{member.user.username}</p>
+                      <p key={member.id} style={{ color: member.user.colourHex }}>{member.user.username}</p>
                     ))}
                     <hr className="ml-6 mr-6 mt-4 mb-6" />
                     <Link to={`/group/${group.id}`} className="bg-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm border border-solid border-[#61E9B1]">
@@ -148,7 +148,7 @@ const Home = () => {
                 <p className="text-sm"><span style={{ color: 'green', fontWeight: 'bold' }}>Mentor: {group.mentor.username}</span></p>
                 <p className="text-sm">{group.groupMembers.length} member(s)</p>
                 {group.groupMembers.map((member) => (
-                  <p key={member.id}>{member.user.username}</p>
+                  <p key={member.id} style={{ color: member.user.colourHex }}>{member.user.username}</p>
                 ))}
                 <hr className="ml-6 mr-6 mt-4 mb-6" />
                 <Link to={`/group/${group.id}`} className="bg-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm border border-solid border-[#61E9B1]">

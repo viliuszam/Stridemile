@@ -199,6 +199,7 @@ model ColourReward {
   id                    Int @id @default(autoincrement())
   pointsRequired        Int
   colourHex             String
+  colourName            String
   users                 ColourRewardsOnUsers[]
 
   @@map("colour_rewards")

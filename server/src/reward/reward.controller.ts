@@ -17,9 +17,19 @@ export class RewardController {
     }
 
     @UseGuards(AuthGuard('jwt'))
-    @Post('update')
+    @Post('applyCustomisation')
+    async ApplyCustomiastion(@Request() req){
+        const userId = req.user.id;
+        const colourHex = req.body.hexColour
+        return this.rewardService.ApplyCustomisation(userId, colourHex);
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Get('unlockedColours')
     async GetColours(@Request() req){
         const userId = req.user.id;
-        return this.rewardService.UserColours(userId);
+        const unlockedColours = await this.rewardService.UserColours(userId);
+        console.log(unlockedColours);
+        return unlockedColours;
     }
 }

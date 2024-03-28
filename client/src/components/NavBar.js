@@ -18,7 +18,6 @@ import logo from '../images/logo.png'
 const NavBar = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [user, setUser] = useState('');
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -111,7 +110,7 @@ const NavBar = () => {
                   </Link>
                   */}
                   <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-                    <p style={{ color: getUser().hexColour }}>{getUser().username}</p>
+                    <p style={{ color: getUser().colourHex }}>{getUser().username}</p>
                     <Tooltip title="Account settings">
                       <IconButton
                         onClick={handleClick}
@@ -162,7 +161,7 @@ const NavBar = () => {
                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                   >
                     <MenuItem onClick={handleClose}>
-                      <Avatar /> Profile
+                      <Avatar src={getUser().profile_picture}/> Profile
                     </MenuItem>
                     <Divider />
                     <MenuItem onClick={handleClose}>

@@ -13,6 +13,7 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { MuiColorInput } from 'mui-color-input'
+import { getUser, updateUser } from '../classes/User';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -59,7 +60,8 @@ export default function Settings() {
   const [password, setPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
   const [name, setName] = useState('');
-  const [hexColor, setHexColor] = useState('#ffffff')
+  const [hexColor, setHexColor] = useState(getUser().colourHex)
+  const [unlockedHexColours, setUnlockedHexColours] = useState([]);
 
   const validatePassword = () => {
     if (!currentPassword || !password || !rePassword) {
@@ -79,6 +81,22 @@ export default function Settings() {
   
     return true;
   }
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+
+    axios.get('http://localhost:3333/rewards/unlockedColours', {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+      .then(response => {
+        setUnlockedHexColours(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching unlocked colours: ', error);
+      });
+  }, []);
 
   const submitPassword = () => {
     if (!validatePassword()) return;
@@ -120,6 +138,25 @@ export default function Settings() {
   }
 
   const submitCustomization = () => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+      return;
+    }
+
+    axios.post('http://localhost:3333/rewards/applyCustomisation', { hexColour: hexColor }, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(function (response) {
+        setAlert({ text: 'Successfuly applied customisation', type: AlertTypes.success })
+        updateUser(response.data);
+      })
+      .catch(function (error) {
+        console.error('Error updating customisation: ', error);
+      });
+
   }
 
 
@@ -261,7 +298,12 @@ export default function Settings() {
 
                   <div className="mb-3">
                     <div className="text-base mb-2">Username color</div>
-                    <MuiColorInput className='w-full p-3 border-[1px] border-gray-400 rounded-lg hover:border-[#61E9B1]' format="hex" value={hexColor} onChange={setHexColor} />
+                      <select value={hexColor} onChange={(e) => setHexColor(e.target.value)} className="w-full p-3 border-[1px] border-gray-400 rounded-lg bg-white hover:border-[#61E9B1]">
+                        <option value="#000000">Default</option>
+                          {unlockedHexColours.map(option => (
+                            <option key={option.hex} value={option.hex} style={{ backgroundColor: option.hex }}>{option.name}</option>
+                          ))}
+                      </select>
                   </div>
 
                   <div className="mb-3">

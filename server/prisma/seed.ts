@@ -88,10 +88,12 @@ async function seed() {
         {
           pointsRequired: 10,
           colourHex: '#727cf5',
+          colourName: 'Blue'
         },
         {
           pointsRequired: 15,
           colourHex: '#d53a47',
+          colourName: 'Red'
         },
       ]
     })

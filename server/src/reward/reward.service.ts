@@ -11,7 +11,8 @@ export class RewardService {
       const colourRewards = await this.prisma.colourReward.findMany();
       let changed = false;
       for(const reward of colourRewards){
-        if(userPoints >= reward.pointsRequired && !this.UserHasReward(userId, reward.id)){
+        let hasReward = await this.UserHasReward(userId, reward.id)
+        if(userPoints >= reward.pointsRequired && !hasReward){
           try {
             await this.prisma.colourRewardsOnUsers.create({
               data: {
@@ -22,11 +23,28 @@ export class RewardService {
             changed = true
           }
           catch (error) {
-            console.error(`Error updating reward ${reward.id} for user ${userId}:`, error);
+            console.log('Duplicate entry. Ignore this');
           }
         }
       }
       return changed;
+    }
+
+    async ApplyCustomisation(userId: number, hexColour: string){
+      try {
+        const updatedUser = await this.prisma.user.update({
+          where: {
+            id: userId,
+          },
+          data: {
+            colourHex: hexColour,
+          },
+        });
+        return updatedUser;
+      } catch (error) {
+        throw new Error('Failed to update user hex colour.');
+      }
+
     }
 
     async UserHasReward(userId: number, rewardId: number){
@@ -52,7 +70,10 @@ export class RewardService {
         },
       });
   
-      return colours.map((cr) => cr.colourReward.colourHex);
+      return colours.map((cr) => ({
+        hex: cr.colourReward.colourHex,
+        name: cr.colourReward.colourName
+      }));
     }
       
 

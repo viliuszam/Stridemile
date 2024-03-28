@@ -191,7 +191,7 @@ export class AchievementService {
               });
           }
          } catch (error) {
-            console.error(`Error updating achievement ${achievement.id} for user ${userId}:`, error);
+            console.log("Duplicate entry. Ignore this");
           }
         }
       }

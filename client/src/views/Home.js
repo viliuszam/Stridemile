@@ -17,6 +17,7 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import { isLoggedIn } from '../classes/Auth';
+import Questions from "../components/Questions";
 
 export default () => {
   return (
@@ -99,45 +100,11 @@ export default () => {
           </div>
         </div>
       </div>
-
-      <div className='container pb-20'>
-        <p className='mb-16 text-5xl text-center font-semibold'>FAQ</p>
-        <Accordion defaultExpanded className='py-3'>
-          <AccordionSummary
-            expandIcon={<i className="fa-solid fa-chevron-down"></i>}
-            aria-controls="panel1-content"
-            id="panel1-header"
-          >
-            <b>Who can create a group?</b>
-          </AccordionSummary>
-          <AccordionDetails>
-            Everyone with a huge willingness and motivation to unite people.
-          </AccordionDetails>
-        </Accordion>
-        <Accordion className='py-3'>
-          <AccordionSummary
-            expandIcon={<i className="fa-solid fa-chevron-down"></i>}
-            aria-controls="panel2-content"
-            id="panel2-header"
-          >
-            <b>Is the platform free to use?</b>
-          </AccordionSummary>
-          <AccordionDetails>
-            Yes, at the moment there are no hidden costs.
-          </AccordionDetails>
-        </Accordion>
-        <Accordion className='py-3'>
-          <AccordionSummary
-            expandIcon={<i className="fa-solid fa-chevron-down"></i>}
-            aria-controls="panel2-content"
-            id="panel2-header"
-          >
-            <b>Should I use the same account for website and mobile app?</b>
-          </AccordionSummary>
-          <AccordionDetails>
-            Yes. StrideMile is a cross-platform, therefore, users should use the same account on any device.
-          </AccordionDetails>
-        </Accordion>
+      <div className="container md:flex mx-auto pt-8">
+        <div className='container pb-20 mx-auto'>
+          <p className='mb-16 text-5xl text-center font-semibold'>FAQ</p>
+          <Questions />
+        </div>
       </div>
 
       <div className='container pb-20'>

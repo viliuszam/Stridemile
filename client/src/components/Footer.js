@@ -66,7 +66,7 @@ const Footer = () => {
         </Link>
       </div>
       <div className='pt-1 flex'>
-        <Link to="/contacts" className="text-black hover:text-white hover:text-decoration hover:underline mx-auto flex">
+        <Link to="/contact-us" className="text-black hover:text-white hover:text-decoration hover:underline mx-auto flex">
           Contact us
         </Link>
       </div>

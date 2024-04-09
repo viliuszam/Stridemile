@@ -28,6 +28,8 @@ import CreateGoal from "./views/CreateGoal";
 import CreateChallenge from "./views/CreateChallenge";
 import Settings from "./views/Settings";
 import HealthTracking from "./views/HealthTracking";
+import ContactUs from "./views/ContactUs";
+import FAQ from "./views/FAQ";
 
 export default function App() {
   const navigate = useNavigate();
@@ -62,6 +64,8 @@ export default function App() {
         <Route path="/groups" element={<Groups />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/health-tracking" element={<HealthTracking />} />
+        <Route path="/contact-us" element={<ContactUs />} />
+        <Route path="/faq" element={<FAQ />} />
       </Route>
 
       <Route element={<AuthLayout />}>

@@ -12,16 +12,62 @@ export class ActivityService {
         // TODO: padaryt kad responsa mestu normalu tiesiog
         throw new Error('Invalid userId provided.');
       }
-    return this.prisma.activityEntry.create({
-      data: {
-        user: { connect: { id: userId } },
-        steps: activityEntry.steps,
-        distance: activityEntry.distance,
-        start_time: activityEntry.start_time,
-        end_time: activityEntry.end_time,
-      },
-    });
+
+      const createdActivityEntry = await this.prisma.activityEntry.create({
+        data: {
+          user: { connect: { id: userId } },
+          steps: activityEntry.steps,
+          distance: activityEntry.distance,
+          start_time: activityEntry.start_time,
+          end_time: activityEntry.end_time,
+        },
+      });
+
+
+    await this.updateGoalProgressForUserGroups(userId, activityEntry.steps);
+
+    return createdActivityEntry;
   }
+
+    async updateGoalProgressForUserGroups(userId: number, steps: number): Promise<void> {
+      // hardcodint mentoriu, nes kazkodel nepriklauso prie group memberiu
+      const userGroups = await this.prisma.groupMember.findMany({
+        where: {
+          userId: userId,
+        },
+        include: {
+          group: true,
+        },
+      });
+    
+      for (const groupMember of userGroups) {
+        const activeGoals = await this.prisma.goal.findMany({
+          where: {
+            fk_Groupid: groupMember.group.id,
+            start_date: {
+              lte: new Date(),
+            },
+            end_date: {
+              gte: new Date(),
+            },
+          },
+        });
+    
+        for (const goal of activeGoals) {
+          // Update the current_value based on the activity entry
+          await this.prisma.goal.update({
+            where: {
+              id: goal.id,
+            },
+            data: {
+              current_value: {
+                increment: steps,
+              },
+            },
+          });
+        }
+      }
+    }
 
   async getUserActivitySummary(userId: number): Promise<{
     totalSteps: number;

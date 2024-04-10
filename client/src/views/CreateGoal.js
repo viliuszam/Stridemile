@@ -99,7 +99,7 @@ export default () => {
     formData.append('categoryId', selectedCategory);
     formData.append('statusId', selectedStatus);
     for (let entry of formData.entries()) {
-      console.log(entry);
+      console.log(entry); 
     }
 */
 

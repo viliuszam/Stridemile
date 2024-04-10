@@ -91,7 +91,7 @@ async function seed() {
           colourName: 'Blue'
         },
         {
-          pointsRequired: 15,
+          pointsRequired: 35,
           colourHex: '#d53a47',
           colourName: 'Red'
         },
@@ -266,8 +266,9 @@ async function seed() {
             title: '10 consecutive three-pointers',
             description: 'Score 10 shots in a row from the three-point field goal.',
             start_date: new Date('2024-03-28T11:36:56.000Z'),
-            end_date: new Date('2024-04-08T11:37:06.000Z'),
-            target_value: "10",
+            end_date: new Date('2024-12-28T11:37:06.000Z'),
+            target_value: 10,
+            current_value: 0,
             fk_Groupid: 1,
             fk_Goalstatusid: 1,
             fk_Goalcategoryid: 6
@@ -276,8 +277,9 @@ async function seed() {
           title: '5K Weekly Challenge',
           description: 'Complete a 5-kilometer run every week for a month.',
           start_date: new Date('2024-03-28T11:36:56.000Z'),
-          end_date: new Date('2024-04-28T11:37:06.000Z'),
-          target_value: "4",
+          end_date: new Date('2024-12-28T11:37:06.000Z'),
+          target_value: 4,
+          current_value: 0,
           fk_Groupid: 2,
           fk_Goalstatusid: 1,
           fk_Goalcategoryid: 6
@@ -286,8 +288,9 @@ async function seed() {
           title: 'Half-Marathon Preparation',
           description: 'Train to complete a half-marathon within 3 months.',
           start_date: new Date('2024-03-28T11:36:56.000Z'),
-          end_date: new Date('2024-06-28T11:37:06.000Z'),
-          target_value: "1",
+          end_date: new Date('2024-12-28T11:37:06.000Z'),
+          target_value: 1,
+          current_value: 0,
           fk_Groupid: 3,
           fk_Goalstatusid: 1,
           fk_Goalcategoryid: 1
@@ -296,8 +299,9 @@ async function seed() {
           title: 'Weekly Tennis Matches',
           description: 'Participate in a tennis match every week for a month.',
           start_date: new Date('2024-03-28T11:36:56.000Z'),
-          end_date: new Date('2024-04-28T11:37:06.000Z'),
-          target_value: "4",
+          end_date: new Date('2024-12-28T11:37:06.000Z'),
+          target_value: 4,
+          current_value: 0,
           fk_Groupid: 4,
           fk_Goalstatusid: 1,
           fk_Goalcategoryid: 6
@@ -478,7 +482,7 @@ async function seed() {
       },
       {
         fk_Userid: 1,
-        steps: 372,
+        steps: 373,
         distance: 284.988,
         start_time: '2024-03-28T11:36:56.000Z',
         end_time: '2024-03-28T11:37:06.000Z'

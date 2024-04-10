@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bckg"
+    android:background="@color/white"
     android:gravity="center">
 
     <TextView
@@ -20,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/loginLabel"
+        android:textColor="@android:color/black"
         android:layout_marginTop="12dp"
         android:layout_centerHorizontal="true"
         android:hint="Username"
@@ -30,6 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/usernameEditText"
+        android:textColor="@android:color/black"
         android:layout_marginTop="12dp"
         android:layout_centerHorizontal="true"
         android:hint="Password"

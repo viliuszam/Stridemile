@@ -19,7 +19,7 @@ export class CreateGoalDto {
 
   @IsOptional()
   @IsString()
-  target_value?: string;
+  target_value?: number;
 
   @IsNumber()
   statusId?: number;

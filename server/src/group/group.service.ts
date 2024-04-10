@@ -283,6 +283,7 @@ export class GroupService {
         start_date,
         end_date,
         target_value,
+        current_value: 0,
         status: statusId ? { connect: { id: statusId } } : undefined,
         category: categoryId ? { connect: { id: categoryId } } : undefined,
         group: { connect: { id: groupId } },

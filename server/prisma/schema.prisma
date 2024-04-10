@@ -179,8 +179,8 @@ model User {
   isResetValid   Boolean  @default(false)
   colourHex      String   @default("#000000")
 
-  role                  Role?                 @relation(fields: [fk_Roleid], references: [id])
-  fk_Roleid             Int                   @default(3)
+  role                  Role?                  @relation(fields: [fk_Roleid], references: [id])
+  fk_Roleid             Int                    @default(3)
   mentors               Mentor[]
   groupMembers          GroupMember[]
   administrators        Administrator[]
@@ -196,19 +196,19 @@ model User {
 }
 
 model ColourReward {
-  id                    Int @id @default(autoincrement())
-  pointsRequired        Int
-  colourHex             String
-  colourName            String
-  users                 ColourRewardsOnUsers[]
+  id             Int                    @id @default(autoincrement())
+  pointsRequired Int
+  colourHex      String
+  colourName     String
+  users          ColourRewardsOnUsers[]
 
   @@map("colour_rewards")
 }
 
-model ColourRewardsOnUsers{
-  user User @relation(fields: [userId], references: [id])
-  userId Int
-  colourReward ColourReward @relation(fields: [colourRewardId], references: [id])
+model ColourRewardsOnUsers {
+  user           User         @relation(fields: [userId], references: [id])
+  userId         Int
+  colourReward   ColourReward @relation(fields: [colourRewardId], references: [id])
   colourRewardId Int
 
   @@id([userId, colourRewardId])
@@ -266,9 +266,8 @@ model Goal {
   title             String?
   start_date        DateTime?
   end_date          DateTime?
-  target_value      String?
-  current_value     String?
-  progress          String?
+  target_value      Int
+  current_value     Int
   id                Int          @id @default(autoincrement())
   group             Group        @relation(fields: [fk_Groupid], references: [id])
   fk_Groupid        Int
@@ -325,11 +324,11 @@ model Person {
   age           Int?
   date_of_birth DateTime?
   phone_number  String?
-  id            Int          @id @default(autoincrement())
-  mentor        Mentor?      @relation(fields: [fk_Mentorid], references: [id])
+  id            Int        @id @default(autoincrement())
+  mentor        Mentor?    @relation(fields: [fk_Mentorid], references: [id])
   fk_Mentorid   Int?
   gender        Int? // Scalar field representing the foreign key to PersonGender
-  user          User         @relation(fields: [id], references: [id])
+  user          User       @relation(fields: [id], references: [id])
   //statistics    Statistics[]
   reminders     Reminder[]
   //achievements Achievement[]
@@ -389,7 +388,7 @@ model Statistics {
   water_intake         String?
   sleep_duration       String?
   id                   Int              @id @default(autoincrement())
-  user                 User           @relation(fields: [fk_UserId], references: [id])
+  user                 User             @relation(fields: [fk_UserId], references: [id])
   fk_UserId            Int
   trackingRecords      TrackingRecord[]
 

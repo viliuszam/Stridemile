@@ -30,6 +30,7 @@ import Settings from "./views/Settings";
 import HealthTracking from "./views/HealthTracking";
 import ContactUs from "./views/ContactUs";
 import FAQ from "./views/FAQ";
+import Reviews from "./views/Reviews";
 
 export default function App() {
   const navigate = useNavigate();
@@ -66,6 +67,7 @@ export default function App() {
         <Route path="/health-tracking" element={<HealthTracking />} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/faq" element={<FAQ />} />
+        <Route path="/reviews" element={<Reviews />} />
       </Route>
 
       <Route element={<AuthLayout />}>

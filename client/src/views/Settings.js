@@ -309,7 +309,7 @@ export default function Settings() {
                   <div className="mb-3">
                     <div className="text-base mb-2">Emoji</div>
                     <select className='w-full p-3 border-[1px] border-gray-400 rounded-lg hover:border-[#61E9B1] bg-white'>
-                      <option value="" selected>None</option>
+                      <option value="" defaultValue>None</option>
                         {profileEmojies.map((emoji, i) => <option key={i} value={emoji}>{emoji}</option>)}
                     </select>
                   </div>

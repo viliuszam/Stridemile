@@ -30,7 +30,7 @@ export default () => {
             <div>
                 <div className="md:flex">
                 <div className="ml-auto mr-auto pl-2 pr-2">
-                    <i class="fa-solid fa-circle-info"></i>
+                    <i className="fa-solid fa-circle-info"></i>
                     <div className="mx-auto flex pt-3 pb-4">
                     <h2 className="text-xl">Support</h2>
                     </div>
@@ -38,7 +38,7 @@ export default () => {
                     <p className="text-[#61E9B1] hover:underline"><a href="">snoozy053@gmail.com</a></p>
                 </div>
                 <div className="ml-auto mr-auto pl-2 pr-2">
-                    <i class="fa-solid fa-envelope"></i>
+                    <i className="fa-solid fa-envelope"></i>
                     <div className="mx-auto flex md:pt-3 pt-4 pb-4">
                     <h2 className="text-xl">Collaborate</h2>
                     </div>

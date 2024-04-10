@@ -124,14 +124,7 @@ const InviteForm = () => {
     return (
       <div className='container'>
 
-        <div className='flex'>
-          <div className='w-full mr-6'>
-            <a className='text-[#4edba1] font-bold pb-2 border-b-4 border-[#4edba1]' href="#">Timeline</a>
-            <hr className='mb-3 mt-2' />
-            </div>
-        </div>
-
-        <div className='relative mb-20 h-32 w-full bg-gradient-to-b from-gray-100 to-gray-200 rounded-xl'>
+        <div className='relative mt-10 mb-20 h-32 w-full bg-gradient-to-b from-gray-100 to-gray-200 rounded-xl'>
           <img className='relative mb-20 h-32 w-full bg-gradient-to-b from-gray-100 to-gray-200 rounded-xl object-cover object-center' src={groupInfo.banner_url} />
           <img className='absolute left-10 -bottom-10 h-24 w-24 rounded-full outline outline-8 outline-white object-cover bg-white border-[1px] border-gray-50' src={groupInfo.image_url} />
         </div>

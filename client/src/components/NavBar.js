@@ -35,61 +35,59 @@ const NavBar = () => {
           </Link>
         </div>
         {(() => {
-          if(isLoggedIn())
-          {
+          if (isLoggedIn()) {
             return (
               <Link to="/dashboard" className="ml-24 my-auto flex pl-2 text-medium hover:text-[#61E9B1]">
                 <div className='flex hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
                   <div className='pl-2 pr-2'>
                     Home
                   </div>
-                </div> 
+                </div>
               </Link>
             )
           }
-          else
-          {
+          else {
             return (
               <Link to="/" className="ml-24 my-auto flex pl-2 text-medium hover:text-[#61E9B1]">
                 <div className='flex hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
                   <div className='pl-2 pr-2'>
                     Home
                   </div>
-                </div> 
+                </div>
               </Link>
             )
           }
 
         })()}
         <Link to="/groups" className="my-auto flex pl-2 text-medium hover:text-[#61E9B1]">
-        <div className='flex ml-2 hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
+          <div className='flex ml-2 hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
             <div className='pl-2 pr-2'>
               Groups
             </div>
-          </div> 
+          </div>
         </Link>
         <Link to="/health-tracking" className="my-auto flex pl-2 text-medium hover:text-[#61E9B1]">
-        <div className='flex ml-2 hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
-          <div className='pl-2 pr-2'>Health</div>
-          </div> 
+          <div className='flex ml-2 hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
+            <div className='pl-2 pr-2'>Health</div>
+          </div>
         </Link>
         <Link to="/achievements" className="my-auto flex pl-2 text-medium hover:text-[#61E9B1]">
-        <div className='flex ml-2 hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
+          <div className='flex ml-2 hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
             <div className='pl-2 pr-2'>
               Achievements
             </div>
-          </div> 
+          </div>
         </Link>
         <Link to="/aboutus" className="pl-2 pr-4 text-medium my-auto flex hover:text-[#61E9B1]">
-        <div className='flex ml-2 hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
+          <div className='flex ml-2 hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
             <div className='pl-2 pr-2'>
               About us
             </div>
-        </div>
+          </div>
         </Link>
         <div className='ml-auto my-auto'>
           {(() => {
-            if(!isLoggedIn()) {
+            if (!isLoggedIn()) {
               return (
                 <div>
                   <Link to="/login" className="bg-[#61E9B1] border-[1px] border-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 md:m-2 text-sm md:ml-24 border border-solid border-[#61E9B1]">
@@ -120,7 +118,11 @@ const NavBar = () => {
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                       >
-                          <img src={getUser().profile_picture} className='h-10 w-10 object-cover rounded-full'/>
+                        {getUser().profile_picture ?
+                          <img src={getUser().profile_picture} className='h-10 w-10 object-cover rounded-full' />
+                          :
+                          <Avatar />
+                        }
                       </IconButton>
                     </Tooltip>
                   </Box>
@@ -161,7 +163,12 @@ const NavBar = () => {
                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                   >
                     <MenuItem onClick={handleClose}>
-                      <Avatar src={getUser().profile_picture}/> Profile
+                      <Link to={`/profile/${getUser().username}`} className='flex items-center'>
+                        <ListItemIcon>
+                          <Avatar src={getUser().profile_picture} />
+                        </ListItemIcon>
+                        Profile
+                      </Link>
                     </MenuItem>
                     <Divider />
                     <MenuItem onClick={handleClose}>

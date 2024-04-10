@@ -30,6 +30,7 @@ import Settings from "./views/Settings";
 import HealthTracking from "./views/HealthTracking";
 import ContactUs from "./views/ContactUs";
 import FAQ from "./views/FAQ";
+import Profile from "./views/Profile";
 import Reviews from "./views/Reviews";
 
 export default function App() {
@@ -55,6 +56,7 @@ export default function App() {
 
       <Route element={<MainLayout />}>
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile/:username" element={<Profile />} />
         <Route path="/group/:groupId" element={<GroupPage />} />
         <Route path="/achievements" element={<Achievements />} />
         <Route path="/create-group" element={<CreateGroup />} />

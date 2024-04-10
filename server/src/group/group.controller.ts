@@ -66,6 +66,10 @@ export class GroupController {
       };
 
       const createdGroup = await this.groupService.createGroup(createGroupDto, groupFN, bannerFN);
+
+      // bugfix: mentor isn't in the list of group members
+      await this.groupService.addUserToGroup(createGroupDto.mentorId, createdGroup.id);
+
       return {
         message: 'Group created successfully',
         group: createdGroup,

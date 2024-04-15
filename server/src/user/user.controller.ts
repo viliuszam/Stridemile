@@ -42,4 +42,14 @@ export class UserController {
         }
       }
     }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Get('leaderboard/top10')
+    async getTop10UsersByPoints() {
+      try {
+        return this.userService.getTop10UsersByPoints();
+      } catch (error) {
+        console.log(error);
+      }
+    }
 }

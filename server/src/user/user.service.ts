@@ -35,7 +35,51 @@ export class UserService {
           where: { id: userId },
           data: { username: newUsername },
         });
-      }
+    }
+
+    async getTop10UsersByPoints() {
+      const usersWithPoints = await this.prisma.user.findMany({
+        select: {
+          username: true,
+          completedAchievements: {
+            select: {
+              achievement: {
+                select: {
+                  points: true,
+                },
+              },
+              completedAt: true,
+            },
+          },
+        },
+      });
+    
+      const usersWithTotalPoints = usersWithPoints.map(user => {
+        const totalPoints = user.completedAchievements.reduce((sum, achievement) => {
+          return sum + achievement.achievement.points;
+        }, 0);
+        const lastAchievementDate = this.getLastAchievementDate(user.completedAchievements);
+        return { username: user.username, points: totalPoints, lastAchievementDate };
+      });
+    
+      usersWithTotalPoints.sort((a, b) => {
+        if (b.points !== a.points) {
+          return b.points - a.points;
+        }
+    
+        return a.lastAchievementDate.getTime() - b.lastAchievementDate.getTime();
+      });
+    
+      const topUsers = usersWithTotalPoints.slice(0, 10);
+    
+      return topUsers;
+    }
+
+    getLastAchievementDate(completedAchievements) {
+      const completionDates = completedAchievements.map(achievement => new Date(achievement.completedAt));
+      return new Date(Math.max(...completionDates));
+    }
+  
 }
 
 export { User };

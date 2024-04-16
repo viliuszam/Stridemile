@@ -32,6 +32,7 @@ import ContactUs from "./views/ContactUs";
 import FAQ from "./views/FAQ";
 import Profile from "./views/Profile";
 import Reviews from "./views/Reviews";
+import Leaderboard from "./views/Leaderboard";
 
 export default function App() {
   const navigate = useNavigate();
@@ -70,6 +71,7 @@ export default function App() {
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/reviews" element={<Reviews />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
       </Route>
 
       <Route element={<AuthLayout />}>

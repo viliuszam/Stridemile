@@ -37,7 +37,7 @@ const NavBar = () => {
         {(() => {
           if (isLoggedIn()) {
             return (
-              <Link to="/dashboard" className="ml-24 my-auto flex pl-2 text-medium hover:text-[#61E9B1]">
+              <Link to="/dashboard" className="ml-20 my-auto flex pl-2 text-medium hover:text-[#61E9B1]">
                 <div className='flex hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
                   <div className='pl-2 pr-2'>
                     Home
@@ -48,7 +48,7 @@ const NavBar = () => {
           }
           else {
             return (
-              <Link to="/" className="ml-24 my-auto flex pl-2 text-medium hover:text-[#61E9B1]">
+              <Link to="/" className="ml-20 my-auto flex pl-2 text-medium hover:text-[#61E9B1]">
                 <div className='flex hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
                   <div className='pl-2 pr-2'>
                     Home
@@ -75,6 +75,13 @@ const NavBar = () => {
           <div className='flex ml-2 hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
             <div className='pl-2 pr-2'>
               Achievements
+            </div>
+          </div>
+        </Link>
+        <Link to="/leaderboard" className="my-auto flex pl-2 text-medium hover:text-[#61E9B1]">
+          <div className='flex ml-2 hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
+            <div className='pl-2 pr-2'>
+              Leaderboard
             </div>
           </div>
         </Link>

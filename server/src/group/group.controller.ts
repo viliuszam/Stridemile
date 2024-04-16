@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { diskStorage, Multer } from 'multer';
 import { CreateEventDto } from './dto/create-event.dto';
 import { CreateChallengeDto } from './dto/create-challenge.dto';
+import { ParticipateChallengeDto } from './dto/participate-challenge.dto';
 
 @Controller('groups')
 export class GroupController {
@@ -160,6 +161,22 @@ export class GroupController {
   async findUserGroups(@Request() req) {
     const userId = req.user.id;
     return this.groupService.findCurrentUserGroups(userId);
+  }
+
+  @Post('challengeParticipate')
+  @UseGuards(AuthGuard('jwt'))
+  async markChallengeParticipation(
+    @Request() req,
+    @Body() dto: ParticipateChallengeDto) 
+    {
+    const userId = req.user.id;
+    const { challengeId } = dto;
+
+    return this.groupService.markChallengeParticipation(
+      userId,
+      challengeId,
+      0
+    );
   }
 
   @Post('sendInvitation')

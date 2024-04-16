@@ -179,20 +179,33 @@ model User {
   isResetValid   Boolean  @default(false)
   colourHex      String   @default("#000000")
 
-  role                  Role?                  @relation(fields: [fk_Roleid], references: [id])
-  fk_Roleid             Int                    @default(3)
-  mentors               Mentor[]
-  groupMembers          GroupMember[]
-  administrators        Administrator[]
-  activityEntries       ActivityEntry[]
-  persons               Person[]
-  groups                Group[]
-  invitations           Invitation[]
-  statistics            Statistics[]
-  completedAchievements AchievementsOnUsers[]
-  colourRewards         ColourRewardsOnUsers[]
+  role                    Role?                    @relation(fields: [fk_Roleid], references: [id])
+  fk_Roleid               Int                      @default(3)
+  mentors                 Mentor[]
+  groupMembers            GroupMember[]
+  administrators          Administrator[]
+  activityEntries         ActivityEntry[]
+  persons                 Person[]
+  groups                  Group[]
+  invitations             Invitation[]
+  statistics              Statistics[]
+  completedAchievements   AchievementsOnUsers[]
+  colourRewards           ColourRewardsOnUsers[]
+  challengeParticipations ChallengeParticipation[]
 
   @@map("users")
+}
+
+model ChallengeParticipation {
+  id             Int       @id @default(autoincrement())
+  user           User      @relation(fields: [userId], references: [id])
+  userId         Int
+  challenge      Challenge @relation(fields: [challengeId], references: [id])
+  challengeId    Int
+  progress       Int       @default(0)
+  completionDate DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 }
 
 model ColourReward {
@@ -250,13 +263,15 @@ model ActivityEntry {
 }
 
 model Challenge {
-  title       String?
-  description String?
-  start_date  DateTime?
-  end_date    DateTime?
-  id          Int       @id @default(autoincrement())
-  group       Group     @relation(fields: [fk_Groupid], references: [id])
-  fk_Groupid  Int
+  title                  String?
+  description            String?
+  start_date             DateTime?
+  end_date               DateTime?
+  target                 Int
+  id                     Int                      @id @default(autoincrement())
+  group                  Group                    @relation(fields: [fk_Groupid], references: [id])
+  fk_Groupid             Int
+  ChallengeParticipation ChallengeParticipation[]
 
   @@map("challenges")
 }

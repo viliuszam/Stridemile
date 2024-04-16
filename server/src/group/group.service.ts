@@ -312,9 +312,13 @@ export class GroupService {
     return this.prisma.event.findMany({
       where: {
         fk_GroupId: groupId
+      },
+      include: {
+        participants: true 
       }
     });
   }
+  
 
   async getEventComments(eventId: number) {
     try {
@@ -343,6 +347,58 @@ export class GroupService {
         content,
       },
     });
+  }
+
+  async participateInEvent(userId: number, eventId: number): Promise<void> {
+    try {
+      const existingParticipant = await this.prisma.event.findUnique({
+        where: {
+          id: eventId,
+        },
+        select: {
+          participants: {
+            where: {
+              id: userId,
+            },
+          },
+        },
+      });
+
+      if (existingParticipant) {
+        //throw new Error('User is already participating in the event');
+      }
+
+      await this.prisma.event.update({
+        where: {
+          id: eventId,
+        },
+        data: {
+          participants: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+      });
+    } catch (error) {
+      throw new Error('Failed to participate in event: ' + error.message);
+    }
+  }
+
+  async cancelParticipation(eventId: number, userId: number): Promise<void> {
+    await this.prisma.event.update({
+      where: { id: eventId },
+      data: { participants: { disconnect: { id: userId } } },
+    });
+  }
+
+  async isUserParticipating(eventId: number, userId: number): Promise<{ isParticipating: boolean }> {
+    const event = await this.prisma.event.findUnique({
+      where: { id: eventId },
+      include: { participants: { where: { id: userId } } },
+    });
+
+    return { isParticipating: !!event?.participants.length };
   }
 
   async getGoals(groupId: number): Promise<Goal[]> {

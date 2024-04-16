@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, HttpStatus, HttpException, NotFoundException, UseGuards, Request, UseInterceptors, UploadedFiles, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, HttpStatus, HttpException, NotFoundException, UseGuards, Delete, Request, UseInterceptors, UploadedFiles, ParseIntPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
@@ -308,6 +308,50 @@ export class GroupController {
       return { comments };
     } catch (error) {
       throw new HttpException(error.message, error.status);
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post(':eventId/event-participate')
+  async participateInEvent(@Request() req, @Param('eventId') eventId: number) {
+    try {
+      const userId = req.user.id;
+      const eid = parseInt(eventId.toString(), 10);
+      
+      await this.groupService.participateInEvent(userId, eid);
+      
+      return { message: 'Participation successful' };
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post(':eventId/event-cancel-participation')
+  async cancelParticipation(@Request() req,@Param('eventId') eventId: number) {
+    try {
+      const userId = req.user.id;
+      const eid = parseInt(eventId.toString(), 10);
+
+      await this.groupService.cancelParticipation(eid, userId);
+
+      return { message: 'Participation cancel successful' };
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get(':eventId/user-participation')
+  async checkUserParticipation(@Request() req, @Param('eventId') eventId: number): Promise<{ isParticipating: boolean }> {
+    try {
+      const userId = req.user.id;
+      const eid = parseInt(eventId.toString(), 10);
+
+      return this.groupService.isUserParticipating(eid, userId);
+
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 

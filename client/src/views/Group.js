@@ -36,24 +36,6 @@ const InviteForm = () => {
       }
     };
 
-    const fetchEvents = async () => {
-      try {
-        const token = localStorage.getItem('accessToken');
-        const response = await axios.get(`http://localhost:3333/groups/${groupId}/events`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setEvents(response.data.events);
-  
-        response.data.events.forEach(event => {
-          fetchEventComments(event.id);
-        });
-      } catch (error) {
-        console.error('Error fetching events:', error);
-      }
-    };
-
     const fetchChallenges = async () => {
       try {
         const token = localStorage.getItem('accessToken');
@@ -87,6 +69,33 @@ const InviteForm = () => {
     fetchChallenges();
     fetchGoals();
   }, [groupId]);
+
+  const fetchEvents = async () => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.get(`http://localhost:3333/groups/${groupId}/events`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      const eventsWithParticipation = await Promise.all(
+        response.data.events.map(async (event) => {
+          const isParticipating = await userIsParticipating(event.id);
+          return { ...event, isParticipating };
+        })
+      );
+  
+      setEvents(eventsWithParticipation);
+  
+      response.data.events.forEach((event) => {
+        fetchEventComments(event.id);
+      });
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
+  
 
   const fetchEventComments = async (eventId) => {
     try {
@@ -122,11 +131,65 @@ const InviteForm = () => {
         [eventId]: [...(prevState[eventId] || []), response.data.comment],
       }));
       setCommentContent('');
-      window.location.reload(); // Refresh the page
+      fetchEvents();
     } catch (error) {
       console.error('Error posting comment:', error);
     }
   };
+
+  const handleParticipate = async (eventId) => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.post(
+        `http://localhost:3333/groups/${eventId}/event-participate`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      fetchEvents();
+    } catch (error) {
+      console.error('Error participating:', error);
+    }
+  };
+  
+  const handleCancelParticipation = async (eventId) => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.post(
+        `http://localhost:3333/groups/${eventId}/event-cancel-participation`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      fetchEvents();
+    } catch (error) {
+      console.error('Error canceling participation:', error);
+    }
+  };
+
+  const userIsParticipating = async (eventId) => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.get(
+        `http://localhost:3333/groups/${eventId}/user-participation`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data.isParticipating;
+    } catch (error) {
+      console.error('Error checking participation:', error);
+      return false;
+    }
+  };  
 
   const handleInvite = async (e) => {
     e.preventDefault();
@@ -200,8 +263,26 @@ const InviteForm = () => {
                     <p className='mb-3 text-sm text-gray-500'>{event.description}</p>
                     <div className='mt-4'>
                       <div className='my-auto text-sm text-nowrap'>
-                        to do {event.attendees} <i className="fa-solid fa-user-check text-gray-400"></i>
+                        Participants:
+                        {event.participants && event.participants.map(participant => (
+                          <span key={participant.id} className='mx-2'>{participant.username} </span> 
+                        ))} <i className="fa-solid fa-user-check text-gray-400"></i>
                       </div>
+                      {event.isParticipating ? (
+                        <button
+                          className='bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded mt-2'
+                          onClick={() => handleCancelParticipation(event.id)}
+                        >
+                          Cancel Participation
+                        </button>
+                      ) : (
+                        <button
+                          className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded mt-2'
+                          onClick={() => handleParticipate(event.id)}
+                        >
+                          Participate
+                        </button>
+                      )}
                       <h3 className='my-2 text-sm font-bold'>Comments:</h3>
                       {eventComments[event.id] && eventComments[event.id].map(comment => (
                         <div key={comment.id} className='border border-gray-200 p-3 mb-2 rounded'>
@@ -209,20 +290,20 @@ const InviteForm = () => {
                           <p className='text-xs text-gray-400'>{new Date(comment.createdAt).toLocaleString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })} {comment.createdBy && comment.createdBy.username && (<p>Created by: {comment.createdBy.username}</p>)}</p>
                         </div>
                       ))}
-                          <div className='mt-4'>
-                            <textarea
-                              className='w-full border border-gray-200 rounded p-2 mb-2 text-sm'
-                              placeholder='Write your comment here...'
-                              rows={3}
-                              value={commentContent}
-                              onChange={(e) => setCommentContent(e.target.value)}
-                            />
-                            <button
-                              className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded'
-                              onClick={() => handlePostComment(event.id)}
-                            >
-                              Post
-                            </button>
+                      <div className='mt-4'>
+                        <textarea
+                          className='w-full border border-gray-200 rounded p-2 mb-2 text-sm'
+                          placeholder='Write your comment here...'
+                          rows={3}
+                          value={commentContent}
+                          onChange={(e) => setCommentContent(e.target.value)}
+                        />
+                        <button
+                          className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded'
+                          onClick={() => handlePostComment(event.id)}
+                        >
+                          Post
+                        </button>
                       </div>
                     </div>
                   </div>

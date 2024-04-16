@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma, Group, Invitation, User, Goal, Event, EventComment, Challenge } from '@prisma/client';
+import { Prisma, Group, Invitation, User, Goal, Event, EventComment, Challenge, ChallengeParticipation } from '@prisma/client';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { MailService } from './mail/mail.service';
 import { JwtService } from "@nestjs/jwt";
@@ -258,7 +258,7 @@ export class GroupService {
   }
 
   async createChallenge(createChallengeDto: CreateChallengeDto, groupId: number): Promise<Challenge> {
-    const { title, description, start_date, end_date } =
+    const { title, description, start_date, end_date, target } =
     createChallengeDto;
 
     return this.prisma.challenge.create({
@@ -267,6 +267,7 @@ export class GroupService {
         description,
         start_date,
         end_date,
+        target,
         group: { connect: { id: groupId } },
       },
     });
@@ -370,6 +371,53 @@ export class GroupService {
         fk_Groupid: groupId
       }
     });
+  }
+
+  async markChallengeParticipation(
+    userId: number,
+    challengeId: number,
+    progress: number,
+  ): Promise<ChallengeParticipation> {
+    const challenge = await this.prisma.challenge.findUnique({
+      where: {
+        id: challengeId,
+      },
+    });
+  
+    if (!challenge) {
+      throw new Error(`Challenge with ID ${challengeId} not found.`);
+    }
+  
+    const existingParticipation = await this.prisma.challengeParticipation.findFirst({
+      where: {
+        userId: userId,
+        challengeId: challengeId,
+      },
+    });
+  
+    if (existingParticipation) {
+      // Jei challenge jau ivykdytas, daugiau nenaujint ivykdymo datos
+      const isCompleted = existingParticipation.progress >= challenge.target;
+      return this.prisma.challengeParticipation.update({
+        where: {
+          id: existingParticipation.id,
+        },
+        data: {
+          progress,
+          completionDate: isCompleted ? existingParticipation.completionDate :
+           progress >= challenge.target ? new Date() : null,
+        },
+      });
+    } else {
+      return this.prisma.challengeParticipation.create({
+        data: {
+          userId,
+          challengeId,
+          progress,
+          completionDate: progress >= challenge.target ? new Date() : null,
+        },
+      });
+    }
   }
 
   async getGroupInfo(groupId: number){

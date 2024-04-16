@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsDateString } from 'class-validator';
+import { IsNotEmpty, IsString, IsDateString, IsNumber } from 'class-validator';
 
 export class CreateChallengeDto {
   @IsNotEmpty()
@@ -8,6 +8,10 @@ export class CreateChallengeDto {
   @IsNotEmpty()
   @IsString()
   description: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  target: number;
 
   @IsNotEmpty()
   @IsDateString()

@@ -283,6 +283,32 @@ export class GroupController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @Get(':eventId/event-comments')
+  async getEventComments(@Request() req, @Param('eventId') eventId: number) {
+    const eid = parseInt(eventId.toString(), 10);
+    try {
+      const comments = await this.groupService.getEventComments(eid);
+      return { comments };
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post(':eventId/post-comment')
+  async postComment(@Request() req, @Param('eventId') eventId: number) {
+    const eid = parseInt(eventId.toString(), 10);
+    try {
+      const { content } = req.body;
+      const userId = req.user.id;
+      const comment = await this.groupService.createEventComment(eid, userId, content);
+      return { comment };
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
   @Get(':groupId/goals')
   async getAllGoals(@Request() req, @Param('groupId') groupId: number) {
     const userId = req.user.id;

@@ -112,6 +112,7 @@ model Event {
   //organization    Organization @relation(fields: [fk_Organization], references: [id])
   fk_Category Int
   category    EventCategory @relation(fields: [fk_Category], references: [id])
+  eventComments         EventComment[]
   activities  Activity[]
   //groupEvents GroupEvent[]
   fk_GroupId  Int
@@ -191,6 +192,7 @@ model User {
   statistics            Statistics[]
   completedAchievements AchievementsOnUsers[]
   colourRewards         ColourRewardsOnUsers[]
+  eventComments         EventComment[]
 
   @@map("users")
 }
@@ -403,4 +405,16 @@ model TrackingRecord {
   fk_Statisticsid Int
 
   @@map("tracking_records")
+}
+
+model EventComment {
+  id         Int       @id @default(autoincrement())
+  content    String?
+  createdAt  DateTime  @default(now())
+  createdBy  User      @relation(fields: [userId], references: [id])
+  userId     Int
+  event      Event     @relation(fields: [eventId], references: [id])
+  eventId    Int
+
+  @@map("event_comments")
 }

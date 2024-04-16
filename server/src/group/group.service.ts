@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma, Group, Invitation, User, Goal, Event, Challenge } from '@prisma/client';
+import { Prisma, Group, Invitation, User, Goal, Event, EventComment, Challenge } from '@prisma/client';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { MailService } from './mail/mail.service';
 import { JwtService } from "@nestjs/jwt";
@@ -312,6 +312,35 @@ export class GroupService {
       where: {
         fk_GroupId: groupId
       }
+    });
+  }
+
+  async getEventComments(eventId: number) {
+    try {
+      const comments = await this.prisma.eventComment.findMany({
+        where: {
+          eventId: eventId,
+        },
+        include: {
+          createdBy: true, 
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
+      return comments;
+    } catch (error) {
+      throw new Error(`Failed to fetch event comments: ${error.message}`);
+    }
+  }
+
+  async createEventComment(eventId: number, userId: number, content: string): Promise<EventComment> {
+    return this.prisma.eventComment.create({
+      data: {
+        eventId,
+        userId,
+        content,
+      },
     });
   }
 

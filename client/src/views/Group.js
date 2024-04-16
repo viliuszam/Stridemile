@@ -18,6 +18,8 @@ const InviteForm = () => {
   const [events, setEvents] = useState([]);
   const [challenges, setChallenges] = useState([]);
   const [goals, setGoals] = useState([]);
+  const [eventComments, setEventComments] = useState([]);
+  const [commentContent, setCommentContent] = useState('');
 
   useEffect(() => {
     const fetchGroupInfo = async () => {
@@ -43,6 +45,10 @@ const InviteForm = () => {
           },
         });
         setEvents(response.data.events);
+  
+        response.data.events.forEach(event => {
+          fetchEventComments(event.id);
+        });
       } catch (error) {
         console.error('Error fetching events:', error);
       }
@@ -81,6 +87,46 @@ const InviteForm = () => {
     fetchChallenges();
     fetchGoals();
   }, [groupId]);
+
+  const fetchEventComments = async (eventId) => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.get(`http://localhost:3333/groups/${eventId}/event-comments`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setEventComments(prevState => ({
+        ...prevState,
+        [eventId]: response.data.comments,
+      }));
+    } catch (error) {
+      console.error(`Error fetching comments for event ${eventId}:`, error);
+    }
+  };
+
+  const handlePostComment = async (eventId) => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.post(
+        `http://localhost:3333/groups/${eventId}/post-comment`,
+        { content: commentContent },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setEventComments(prevState => ({
+        ...prevState,
+        [eventId]: [...(prevState[eventId] || []), response.data.comment],
+      }));
+      setCommentContent('');
+      window.location.reload(); // Refresh the page
+    } catch (error) {
+      console.error('Error posting comment:', error);
+    }
+  };
 
   const handleInvite = async (e) => {
     e.preventDefault();
@@ -136,9 +182,11 @@ const InviteForm = () => {
 
             <div>
               {events.map(event => (
-                <div key={event.id} className='flex mb-3 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>
-                  <img className="my-auto w-24 h-24 object-cover rounded" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Ludovic_and_Lauren_%288425515069%29.jpg/640px-Ludovic_and_Lauren_%288425515069%29.jpg" alt="Event" />
-                  <div className='mx-4'>
+                <div key={event.id} className='flex mb-8 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>
+                  <div className="w-24 h-24">
+                    <img className="w-full h-full object-cover rounded" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Ludovic_and_Lauren_%288425515069%29.jpg/640px-Ludovic_and_Lauren_%288425515069%29.jpg" alt="Event" />
+                  </div>
+                  <div className='mx-4 flex-1'>
                     <div className='mb-1 flex text-xs text-gray-400'>
                       <p>Event</p>
                       <span className='mx-2'>|</span>
@@ -150,24 +198,43 @@ const InviteForm = () => {
                     </div>
                     <p className='mb-1 font-bold'>{event.title}</p>
                     <p className='mb-3 text-sm text-gray-500'>{event.description}</p>
-                    <div className='text-xs text-gray-400'>
-                      ORGANIZATION: to do
-                    </div>
-                  </div>
-                  <div className='flex ml-auto'>
-                    <div className='my-auto text-sm text-nowrap'>
-                     to do {event.attendees} <i className="fa-solid fa-user-check text-gray-400"></i>
+                    <div className='mt-4'>
+                      <div className='my-auto text-sm text-nowrap'>
+                        to do {event.attendees} <i className="fa-solid fa-user-check text-gray-400"></i>
+                      </div>
+                      <h3 className='my-2 text-sm font-bold'>Comments:</h3>
+                      {eventComments[event.id] && eventComments[event.id].map(comment => (
+                        <div key={comment.id} className='border border-gray-200 p-3 mb-2 rounded'>
+                          <p className='text-gray-600 mb-1'>{comment.content}</p>
+                          <p className='text-xs text-gray-400'>{new Date(comment.createdAt).toLocaleString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })} {comment.createdBy && comment.createdBy.username && (<p>Created by: {comment.createdBy.username}</p>)}</p>
+                        </div>
+                      ))}
+                          <div className='mt-4'>
+                            <textarea
+                              className='w-full border border-gray-200 rounded p-2 mb-2 text-sm'
+                              placeholder='Write your comment here...'
+                              rows={3}
+                              value={commentContent}
+                              onChange={(e) => setCommentContent(e.target.value)}
+                            />
+                            <button
+                              className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded'
+                              onClick={() => handlePostComment(event.id)}
+                            >
+                              Post
+                            </button>
+                      </div>
                     </div>
                   </div>
                   <div className='ml-auto'>
                     <div className='text-[#4edba1] hover:text-[#61E9B1] cursor-pointer'>
-                      <i className="fa-solid fa-circle-check"></i>
+                      <i className='fa-solid fa-circle-check'></i>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-            
+
             <div>
               {challenges.map(challenge => (
               <div key={challenge.id} className='flex mb-3 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>

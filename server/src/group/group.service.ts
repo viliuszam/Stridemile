@@ -385,20 +385,50 @@ export class GroupService {
     }
   }
 
-  async cancelParticipation(eventId: number, userId: number): Promise<void> {
+  async cancelEventParticipation(eventId: number, userId: number): Promise<void> {
     await this.prisma.event.update({
       where: { id: eventId },
       data: { participants: { disconnect: { id: userId } } },
     });
   }
 
-  async isUserParticipating(eventId: number, userId: number): Promise<{ isParticipating: boolean }> {
+  async cancelChallengeParticipation(challengeId: number, userId: number): Promise<void> {
+    const existingParticipation = await this.prisma.challengeParticipation.findFirst({
+      where: {
+        userId,
+        challengeId,
+      },
+    });
+  
+    if (existingParticipation) {
+      await this.prisma.challengeParticipation.delete({
+        where: {
+          id: existingParticipation.id,
+        },
+      });
+    }
+  }
+
+  async isUserParticipatingInEvent(eventId: number, userId: number): Promise<{ isParticipating: boolean }> {
     const event = await this.prisma.event.findUnique({
       where: { id: eventId },
       include: { participants: { where: { id: userId } } },
     });
 
     return { isParticipating: !!event?.participants.length };
+  }
+
+  async isUserParticipatingInChallenge(challengeId: number, userId: number): Promise<{ isParticipating: boolean }> {
+    const existingParticipation = await this.prisma.challengeParticipation.findFirst({
+      where: {
+        userId,
+        challengeId,
+      },
+    });
+  
+    return {
+      isParticipating: !!existingParticipation,
+    };
   }
 
   async getGoals(groupId: number): Promise<Goal[]> {
@@ -476,6 +506,18 @@ export class GroupService {
     }
   }
 
+  async getChallengeParticipants(cid: number): Promise<ChallengeParticipation[]> {
+    return this.prisma.challengeParticipation.findMany({
+      where: {
+        challengeId: cid,
+      },
+      include: {
+        user: true,
+      },
+    });
+  }
+
+  
   async getGroupInfo(groupId: number){
     try{
       const groupInfo = await this.prisma.group.findUnique({

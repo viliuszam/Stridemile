@@ -4,7 +4,7 @@ import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { SendInvitationDto } from './dto/send-invitation.dto';
 import { CreateGoalDto } from './dto/create-goal.dto';
-import { Group } from '@prisma/client';
+import { ChallengeParticipation, Group } from '@prisma/client';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import path = require('path');
 import { v4 as uuidv4 } from 'uuid';
@@ -156,6 +156,13 @@ export class GroupController {
     }
   }
 
+  @Get('/:challengeId/challenge-participants')
+  async getChallengeParticipants(
+    @Param('challengeId') challengeId: number,
+  ): Promise<ChallengeParticipation[]> {
+    return this.groupService.getChallengeParticipants(parseInt(challengeId.toString()));
+  }
+
   @UseGuards(AuthGuard('jwt'))
   @Get('userGroups')
   async findUserGroups(@Request() req) {
@@ -163,18 +170,18 @@ export class GroupController {
     return this.groupService.findCurrentUserGroups(userId);
   }
 
-  @Post('challengeParticipate')
+  @Post(':challengeId/challenge-participate')
   @UseGuards(AuthGuard('jwt'))
   async markChallengeParticipation(
     @Request() req,
-    @Body() dto: ParticipateChallengeDto) 
+    @Param('challengeId') challengeId: number) 
     {
     const userId = req.user.id;
-    const { challengeId } = dto;
+    const cid = parseInt(challengeId.toString()); //???
 
     return this.groupService.markChallengeParticipation(
       userId,
-      challengeId,
+      cid,
       0
     );
   }
@@ -328,12 +335,12 @@ export class GroupController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post(':eventId/event-cancel-participation')
-  async cancelParticipation(@Request() req,@Param('eventId') eventId: number) {
+  async cancelEventParticipation(@Request() req,@Param('eventId') eventId: number) {
     try {
       const userId = req.user.id;
       const eid = parseInt(eventId.toString(), 10);
 
-      await this.groupService.cancelParticipation(eid, userId);
+      await this.groupService.cancelEventParticipation(eid, userId);
 
       return { message: 'Participation cancel successful' };
     } catch (error) {
@@ -342,13 +349,42 @@ export class GroupController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get(':eventId/user-participation')
-  async checkUserParticipation(@Request() req, @Param('eventId') eventId: number): Promise<{ isParticipating: boolean }> {
+  @Post(':challengeId/challenge-cancel-participation')
+  async cancelChallengeParticipation(@Request() req,@Param('challengeId') challengeId: number) {
+    try {
+      const userId = req.user.id;
+      const cid = parseInt(challengeId.toString(), 10);
+
+      await this.groupService.cancelChallengeParticipation(cid, userId);
+
+      return { message: 'Participation cancel successful' };
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get(':challengeId/user-challenge-participation')
+  async checkUserChallengeParticipation(@Request() req, @Param('challengeId') challengeId: number): Promise<{ isParticipating: boolean }> {
+    try {
+      const userId = req.user.id;
+      const cid = parseInt(challengeId.toString(), 10);
+
+      return this.groupService.isUserParticipatingInChallenge(cid, userId);
+
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get(':eventId/user-event-participation')
+  async checkUserEventParticipation(@Request() req, @Param('eventId') eventId: number): Promise<{ isParticipating: boolean }> {
     try {
       const userId = req.user.id;
       const eid = parseInt(eventId.toString(), 10);
 
-      return this.groupService.isUserParticipating(eid, userId);
+      return this.groupService.isUserParticipatingInEvent(eid, userId);
 
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);

@@ -20,6 +20,7 @@ const InviteForm = () => {
   const [goals, setGoals] = useState([]);
   const [eventComments, setEventComments] = useState([]);
   const [commentContent, setCommentContent] = useState('');
+  const [challengeParticipants, setChallengeParticipants] = useState({});
 
   useEffect(() => {
     const fetchGroupInfo = async () => {
@@ -33,20 +34,6 @@ const InviteForm = () => {
         setGroupInfo(response.data);
       } catch (error) {
         console.error('Error fetching group info:', error);
-      }
-    };
-
-    const fetchChallenges = async () => {
-      try {
-        const token = localStorage.getItem('accessToken');
-        const response = await axios.get(`http://localhost:3333/groups/${groupId}/challenges`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setChallenges(response.data.challenges);
-      } catch (error) {
-        console.error('Error fetching challenges:', error);
       }
     };
 
@@ -70,6 +57,18 @@ const InviteForm = () => {
     fetchGoals();
   }, [groupId]);
 
+  const handleShowChallengeParticipants = async (challengeId) => {
+    try {
+      const response = await axios.get(`http://localhost:3333/groups/${challengeId}/challenge-participants`);
+      setChallengeParticipants((prevState) => ({
+        ...prevState,
+        [challengeId]: response.data,
+      }));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const fetchEvents = async () => {
     try {
       const token = localStorage.getItem('accessToken');
@@ -81,7 +80,7 @@ const InviteForm = () => {
   
       const eventsWithParticipation = await Promise.all(
         response.data.events.map(async (event) => {
-          const isParticipating = await userIsParticipating(event.id);
+          const isParticipating = await userIsParticipatingInEvent(event.id);
           return { ...event, isParticipating };
         })
       );
@@ -96,6 +95,29 @@ const InviteForm = () => {
     }
   };
   
+  const fetchChallenges = async () => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.get(`http://localhost:3333/groups/${groupId}/challenges`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const challengesWithParticipation = await Promise.all(
+        response.data.challenges.map(async (chal) => {
+          handleShowChallengeParticipants(chal.id);
+          const isParticipating = await userIsParticipatingInChallenge(chal.id);
+          return { ...chal, isParticipating };
+        })
+      );
+  
+      setChallenges(challengesWithParticipation);
+      //setChallenges(response.data.challenges);
+    } catch (error) {
+      console.error('Error fetching challenges:', error);
+    }
+  };
 
   const fetchEventComments = async (eventId) => {
     try {
@@ -137,7 +159,7 @@ const InviteForm = () => {
     }
   };
 
-  const handleParticipate = async (eventId) => {
+  const handleEventParticipate = async (eventId) => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.post(
@@ -154,8 +176,27 @@ const InviteForm = () => {
       console.error('Error participating:', error);
     }
   };
+
+  const handleChallengeParticipate = async (challengeId) => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.post(
+        `http://localhost:3333/groups/${challengeId}/challenge-participate`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      fetchChallenges();
+      handleShowChallengeParticipants(challengeId);
+    } catch (error) {
+      console.error('Error participating:', error);
+    }
+  };
   
-  const handleCancelParticipation = async (eventId) => {
+  const handleEventCancelParticipation = async (eventId) => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.post(
@@ -173,11 +214,30 @@ const InviteForm = () => {
     }
   };
 
-  const userIsParticipating = async (eventId) => {
+  const handleChallengeCancelParticipation = async (challengeId) => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.post(
+        `http://localhost:3333/groups/${challengeId}/challenge-cancel-participation`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      fetchChallenges();
+      handleShowChallengeParticipants(challengeId);
+    } catch (error) {
+      console.error('Error canceling participation:', error);
+    }
+  };
+
+  const userIsParticipatingInEvent = async (eventId) => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.get(
-        `http://localhost:3333/groups/${eventId}/user-participation`,
+        `http://localhost:3333/groups/${eventId}/user-event-participation`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -190,6 +250,24 @@ const InviteForm = () => {
       return false;
     }
   };  
+
+  const userIsParticipatingInChallenge = async (eventId) => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.get(
+        `http://localhost:3333/groups/${eventId}/user-challenge-participation`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data.isParticipating;
+    } catch (error) {
+      console.error('Error checking participation:', error);
+      return false;
+    }
+  }; 
 
   const handleInvite = async (e) => {
     e.preventDefault();
@@ -271,14 +349,14 @@ const InviteForm = () => {
                       {event.isParticipating ? (
                         <button
                           className='bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded mt-2'
-                          onClick={() => handleCancelParticipation(event.id)}
+                          onClick={() => handleEventCancelParticipation(event.id)}
                         >
                           Cancel Participation
                         </button>
                       ) : (
                         <button
                           className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded mt-2'
-                          onClick={() => handleParticipate(event.id)}
+                          onClick={() => handleEventParticipate(event.id)}
                         >
                           Participate
                         </button>
@@ -317,36 +395,45 @@ const InviteForm = () => {
             </div>
 
             <div>
-              {challenges.map(challenge => (
-              <div key={challenge.id} className='flex mb-3 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>
-              <img className="my-auto w-24 h-24 object-cover rounded" src="https://media.istockphoto.com/id/1266413326/vector/vector-challenge-sign-pop-art-comic-speech-bubble-with-expression-text-competition-bright.jpg?s=612x612&w=0&k=20&c=eYOQaCn7WvMAEo5ZxVHVVQ-pcNT8HZ-yPeTjueuXi28=" />
-              <div className='mx-4'>
-
-                  <div className='mb-1 flex text-xs text-gray-400'>
-                    <p>Challenge</p>
-                    <span className='mx-2'>|</span>
-                    <p>Starts {new Date(challenge.start_date).toLocaleString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</p>
-                    <span className='mx-2'>|</span>
-                    <p>Ends {new Date(challenge.end_date).toLocaleString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</p>
-                  </div>
-
-                  <p className='mb-1 font-bold'>{challenge.title}</p>
-
-                  <p className='mb-3 text-sm text-gray-500'>{challenge.description}</p>
-
-              </div>
-              <div className='flex ml-auto'>
-                <div className='my-auto text-sm text-nowrap'>
-                to do <i className="fa-solid fa-user-check text-gray-400"></i>
-                </div>
-              </div>
-              <div className='ml-auto'>
-                <div className='text-gray-400 hover:text-gray-300 cursor-pointer'>
-                  <i className="fa-solid fa-circle-check"></i>
-                </div>
-              </div>
-                </div>
-              ))}
+            {challenges.map(challenge => (
+  <div key={challenge.id} className='flex mb-3 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>
+    <img className="my-auto w-24 h-24 object-cover rounded" src="https://media.istockphoto.com/id/1266413326/vector/vector-challenge-sign-pop-art-comic-speech-bubble-with-expression-text-competition-bright.jpg?s=612x612&w=0&k=20&c=eYOQaCn7WvMAEo5ZxVHVVQ-pcNT8HZ-yPeTjueuXi28=" />
+    <div className='mx-4 flex-1'>
+      <div className='mb-1 flex text-xs text-gray-400'>
+        <p>Challenge</p>
+        <span className='mx-2'>|</span>
+        <p>Starts {new Date(challenge.start_date).toLocaleString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</p>
+        <span className='mx-2'>|</span>
+        <p>Ends {new Date(challenge.end_date).toLocaleString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</p>
+      </div>
+      <p className='mb-1 font-bold'>{challenge.title}</p>
+      <p className='mb-3 text-sm text-gray-500'>{challenge.description}</p>
+      <div className='flex ml-auto'>
+      <div className='my-auto text-sm text-nowrap'>
+        Participants:
+        {challengeParticipants[challenge.id] && challengeParticipants[challenge.id].map(participant => (
+          <span key={participant.id} className='mx-2'>{participant.user.username}</span>
+        ))} <i className="fa-solid fa-user-check text-gray-400"></i>
+      </div>
+    </div>
+      {challenge.isParticipating ? (
+        <button
+          className='bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded mt-2'
+          onClick={() => handleChallengeCancelParticipation(challenge.id)}
+        >
+          Cancel Participation
+        </button>
+      ) : (
+        <button
+          className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded mt-2'
+          onClick={() => handleChallengeParticipate(challenge.id)}
+        >
+          Participate
+        </button>
+      )}
+    </div>
+  </div>
+))}
             </div>
 
             <div>
@@ -366,6 +453,7 @@ const InviteForm = () => {
                   <p className='mb-1 font-bold'>{goal.title}</p>
 
                   <p className='mb-3 text-sm text-gray-500'>{goal.description}</p>
+
 
                   <div className='flex text-sm text-gray-400'>
                     <p className='mr-auto'>15</p>

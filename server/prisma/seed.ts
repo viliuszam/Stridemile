@@ -355,6 +355,7 @@ async function seed() {
           description: 'Compete to see who can make the most three-pointers in a week!',
           start_date: new Date('2024-04-01T00:00:00.000Z'),
           end_date: new Date('2024-04-08T23:59:59.999Z'),
+          target: 10000,
           fk_Groupid: 1
         },
         {
@@ -362,6 +363,7 @@ async function seed() {
           description: 'Challenge yourself to run the most kilometers in a week!',
           start_date: new Date('2024-04-01T00:00:00.000Z'),
           end_date: new Date('2024-04-07T23:59:59.999Z'),
+          target: 10000,
           fk_Groupid: 2
         },
         {
@@ -369,6 +371,7 @@ async function seed() {
           description: 'Participate in a structured training program to improve marathon performance!',
           start_date: new Date('2024-04-01T00:00:00.000Z'),
           end_date: new Date('2024-04-30T23:59:59.999Z'),
+          target: 10000,
           fk_Groupid: 3
         },
         {
@@ -376,6 +379,7 @@ async function seed() {
           description: 'Compete with your partner to win the most doubles matches in a week!',
           start_date: new Date('2024-04-01T00:00:00.000Z'),
           end_date: new Date('2024-04-07T23:59:59.999Z'),
+          target: 10000,
           fk_Groupid: 4
         }
       ],

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma, Group, Invitation, User, Goal, Event, Challenge } from '@prisma/client';
+import { Prisma, Group, Invitation, User, Goal, Event, EventComment, Challenge, ChallengeParticipation } from '@prisma/client';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { MailService } from './mail/mail.service';
 import { JwtService } from "@nestjs/jwt";
@@ -258,7 +258,7 @@ export class GroupService {
   }
 
   async createChallenge(createChallengeDto: CreateChallengeDto, groupId: number): Promise<Challenge> {
-    const { title, description, start_date, end_date } =
+    const { title, description, start_date, end_date, target } =
     createChallengeDto;
 
     return this.prisma.challenge.create({
@@ -267,6 +267,7 @@ export class GroupService {
         description,
         start_date,
         end_date,
+        target,
         group: { connect: { id: groupId } },
       },
     });
@@ -311,8 +312,93 @@ export class GroupService {
     return this.prisma.event.findMany({
       where: {
         fk_GroupId: groupId
+      },
+      include: {
+        participants: true 
       }
     });
+  }
+  
+
+  async getEventComments(eventId: number) {
+    try {
+      const comments = await this.prisma.eventComment.findMany({
+        where: {
+          eventId: eventId,
+        },
+        include: {
+          createdBy: true, 
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
+      return comments;
+    } catch (error) {
+      throw new Error(`Failed to fetch event comments: ${error.message}`);
+    }
+  }
+
+  async createEventComment(eventId: number, userId: number, content: string): Promise<EventComment> {
+    return this.prisma.eventComment.create({
+      data: {
+        eventId,
+        userId,
+        content,
+      },
+    });
+  }
+
+  async participateInEvent(userId: number, eventId: number): Promise<void> {
+    try {
+      const existingParticipant = await this.prisma.event.findUnique({
+        where: {
+          id: eventId,
+        },
+        select: {
+          participants: {
+            where: {
+              id: userId,
+            },
+          },
+        },
+      });
+
+      if (existingParticipant) {
+        //throw new Error('User is already participating in the event');
+      }
+
+      await this.prisma.event.update({
+        where: {
+          id: eventId,
+        },
+        data: {
+          participants: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+      });
+    } catch (error) {
+      throw new Error('Failed to participate in event: ' + error.message);
+    }
+  }
+
+  async cancelParticipation(eventId: number, userId: number): Promise<void> {
+    await this.prisma.event.update({
+      where: { id: eventId },
+      data: { participants: { disconnect: { id: userId } } },
+    });
+  }
+
+  async isUserParticipating(eventId: number, userId: number): Promise<{ isParticipating: boolean }> {
+    const event = await this.prisma.event.findUnique({
+      where: { id: eventId },
+      include: { participants: { where: { id: userId } } },
+    });
+
+    return { isParticipating: !!event?.participants.length };
   }
 
   async getGoals(groupId: number): Promise<Goal[]> {
@@ -341,6 +427,53 @@ export class GroupService {
         fk_Groupid: groupId
       }
     });
+  }
+
+  async markChallengeParticipation(
+    userId: number,
+    challengeId: number,
+    progress: number,
+  ): Promise<ChallengeParticipation> {
+    const challenge = await this.prisma.challenge.findUnique({
+      where: {
+        id: challengeId,
+      },
+    });
+  
+    if (!challenge) {
+      throw new Error(`Challenge with ID ${challengeId} not found.`);
+    }
+  
+    const existingParticipation = await this.prisma.challengeParticipation.findFirst({
+      where: {
+        userId: userId,
+        challengeId: challengeId,
+      },
+    });
+  
+    if (existingParticipation) {
+      // Jei challenge jau ivykdytas, daugiau nenaujint ivykdymo datos
+      const isCompleted = existingParticipation.progress >= challenge.target;
+      return this.prisma.challengeParticipation.update({
+        where: {
+          id: existingParticipation.id,
+        },
+        data: {
+          progress,
+          completionDate: isCompleted ? existingParticipation.completionDate :
+           progress >= challenge.target ? new Date() : null,
+        },
+      });
+    } else {
+      return this.prisma.challengeParticipation.create({
+        data: {
+          userId,
+          challengeId,
+          progress,
+          completionDate: progress >= challenge.target ? new Date() : null,
+        },
+      });
+    }
   }
 
   async getGroupInfo(groupId: number){

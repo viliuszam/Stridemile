@@ -172,6 +172,7 @@ async function seed() {
           resetPassToken: '',
           colourHex: '#000000',
           profile_picture: 'http://localhost:3333/uploads/userimages/6IDyCFja_400x400b2a454cb-6938-4b5b-8dee-43d6de8f76b2.jpeg',
+          registration_date: new Date(),
           fk_Roleid: 3
         },
         {
@@ -183,6 +184,7 @@ async function seed() {
           resetPassToken: '',
           colourHex: '#000000',
           profile_picture: 'http://localhost:3333/uploads/userimages/AoBGN5Dfbc1210a-7312-4915-8303-5bc8d5e765bd.png',
+          registration_date: new Date(),
           fk_Roleid: 3
         },
         {
@@ -194,6 +196,7 @@ async function seed() {
           resetPassToken: '',
           colourHex: '#000000',
           profile_picture: 'http://localhost:3333/uploads/userimages/couple-on-tennis-court-sq-400c84a1420-46dc-4073-b57d-96a10bf3a786.jpg',
+          registration_date: new Date(),
           fk_Roleid: 3
         },        
         {
@@ -205,6 +208,7 @@ async function seed() {
           resetPassToken: '',
           colourHex: '#000000',
           profile_picture: 'http://localhost:3333/uploads/userimages/golfer-sq-400246627ba-ba00-4154-8a99-e0914e75adaa.jpg',
+          registration_date: new Date(),
           fk_Roleid: 3
         },        
         {
@@ -216,6 +220,7 @@ async function seed() {
           resetPassToken: '',
           colourHex: '#000000',
           profile_picture: 'http://localhost:3333/uploads/userimages/unnamed2d72b078-49d5-4e6a-84bd-ffcd83c65155.jpg',
+          registration_date: new Date(),
           fk_Roleid: 3
         },
       ],

@@ -52,4 +52,12 @@ export class UserController {
         console.log(error);
       }
     }
+
+    
+  @UseGuards(AuthGuard('jwt'))
+  @Get('popup/:userId')
+  async getUserPopupInfo(@Param('userId') userId: number, @Req() req): Promise<any> {
+    const requestingUserId = req.user.id;
+    return this.userService.getUserPopupInfo(parseInt(userId.toString()), requestingUserId);
+  }
 }

@@ -64,7 +64,16 @@ export class ActivityService {
   
       // lavoninis kodas visiskai lol
       for (const challenge of activeChallenges) {
-        await this.groupService.markChallengeParticipation(userId, challenge.id, steps);
+        const existingParticipation = await this.prisma.challengeParticipation.findFirst({
+          where: {
+            userId,
+            challengeId: challenge.id,
+          },
+        });
+  
+        if (existingParticipation) {
+          await this.groupService.markChallengeParticipation(userId, challenge.id, steps);
+        }
       }
     }
   }

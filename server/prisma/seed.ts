@@ -98,6 +98,43 @@ async function seed() {
       ]
     })
 
+    await prisma.emojiReward.createMany({
+      data: [
+        {
+          pointsRequired: 5,
+          emoji: '🏃',
+        },
+        {
+          pointsRequired: 7,
+          emoji: '🚴',
+        },
+        {
+          pointsRequired: 10,
+          emoji: '🏀',
+        },
+        {
+          pointsRequired: 12,
+          emoji: '⚽',
+        },
+        {
+          pointsRequired: 15,
+          emoji: '⚾',
+        },
+        {
+          pointsRequired: 18,
+          emoji: '🎳',
+        },
+        {
+          pointsRequired: 20,
+          emoji: '🎣',
+        },
+        {
+          pointsRequired: 25,
+          emoji: '🎾',
+        },
+      ]
+    })
+
     await prisma.achievement.createMany({
       data: [
         {

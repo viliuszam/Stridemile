@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { isLoggedIn, logout } from '../classes/Auth';
 import { useNavigate } from 'react-router-dom';
 import { getUser } from '../classes/User';
+import { ApplyNicknameEmoji } from '../classes/Reward';
 
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -14,6 +15,8 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 
 import logo from '../images/logo.png'
+
+const UpdatedNickname = isLoggedIn() ? ApplyNicknameEmoji() : null
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -115,7 +118,7 @@ const NavBar = () => {
                   </Link>
                   */}
                   <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-                    <p style={{ color: getUser().colourHex }}>{getUser().username}</p>
+                    <p style={{ color: getUser().colourHex }}>{UpdatedNickname}</p>
                     <Tooltip title="Account settings">
                       <IconButton
                         onClick={handleClick}

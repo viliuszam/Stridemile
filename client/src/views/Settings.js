@@ -61,7 +61,9 @@ export default function Settings() {
   const [rePassword, setRePassword] = useState('');
   const [name, setName] = useState('');
   const [hexColor, setHexColor] = useState(getUser().colourHex)
+  const [userEmoji, setUserEmoji] = useState(getUser().emoji);
   const [unlockedHexColours, setUnlockedHexColours] = useState([]);
+  const [unlockedEmojies, setUnlockedEmojies] = useState([]);
 
   const validatePassword = () => {
     if (!currentPassword || !password || !rePassword) {
@@ -95,6 +97,22 @@ export default function Settings() {
       })
       .catch(error => {
         console.error('Error fetching unlocked colours: ', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+
+    axios.get('http://localhost:3333/rewards/unlockedEmojies', {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+      .then(response => {
+        setUnlockedEmojies(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching unlocked emojies: ', error);
       });
   }, []);
 
@@ -143,7 +161,7 @@ export default function Settings() {
       return;
     }
 
-    axios.post('http://localhost:3333/rewards/applyCustomisation', { hexColour: hexColor }, {
+    axios.post('http://localhost:3333/rewards/applyCustomisation', { hexColour: hexColor, emoji: userEmoji }, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json'
@@ -192,17 +210,6 @@ export default function Settings() {
       });
   }
   
-
-  const profileEmojies = [
-    '🏃',
-    '🚴',
-    '🏀',
-    '⚽',
-    '⚾',
-    '🎳',
-    '🎣',
-    '🎾',
-  ]
 
   return (
     <div>
@@ -308,9 +315,11 @@ export default function Settings() {
 
                   <div className="mb-3">
                     <div className="text-base mb-2">Emoji</div>
-                    <select className='w-full p-3 border-[1px] border-gray-400 rounded-lg hover:border-[#61E9B1] bg-white'>
-                      <option value="" defaultValue>None</option>
-                        {profileEmojies.map((emoji, i) => <option key={i} value={emoji}>{emoji}</option>)}
+                    <select value={userEmoji} onChange={(e) => setUserEmoji(e.target.value)} className='w-full p-3 border-[1px] border-gray-400 rounded-lg hover:border-[#61E9B1] bg-white'>
+                      <option value="">None</option>
+                        {unlockedEmojies.map((emoji, i) => (
+                          <option key={i} value={emoji.emoji}>{emoji.emoji}</option>
+                        ))}
                     </select>
                   </div>
 

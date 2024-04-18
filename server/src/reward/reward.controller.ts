@@ -20,8 +20,9 @@ export class RewardController {
     @Post('applyCustomisation')
     async ApplyCustomiastion(@Request() req){
         const userId = req.user.id;
-        const colourHex = req.body.hexColour
-        return this.rewardService.ApplyCustomisation(userId, colourHex);
+        const colourHex = req.body.hexColour;
+        const emoji = req.body.emoji;
+        return this.rewardService.ApplyCustomisation(userId, colourHex, emoji);
     }
 
     @UseGuards(AuthGuard('jwt'))
@@ -29,7 +30,14 @@ export class RewardController {
     async GetColours(@Request() req){
         const userId = req.user.id;
         const unlockedColours = await this.rewardService.UserColours(userId);
-        console.log(unlockedColours);
         return unlockedColours;
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Get('unlockedEmojies')
+    async GetEmojies(@Request() req){
+        const userId = req.user.id;
+        const unlockedEmojies = await this.rewardService.UserEmojies(userId);
+        return unlockedEmojies;
     }
 }

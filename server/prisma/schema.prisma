@@ -103,21 +103,21 @@ model PersonGender {
 }
 
 model Event {
-  title       String?
-  description String?
-  date        DateTime?
-  location    String?
-  id          Int           @id @default(autoincrement())
+  title         String?
+  description   String?
+  date          DateTime?
+  location      String?
+  id            Int            @id @default(autoincrement())
   //fk_Organization Int     
   //organization    Organization @relation(fields: [fk_Organization], references: [id])
-  fk_Category Int
-  category    EventCategory @relation(fields: [fk_Category], references: [id])
-  eventComments         EventComment[]
-  activities  Activity[]
+  fk_Category   Int
+  category      EventCategory  @relation(fields: [fk_Category], references: [id])
+  eventComments EventComment[]
+  activities    Activity[]
   //groupEvents GroupEvent[]
-  fk_GroupId  Int
-  group       Group         @relation(fields: [fk_GroupId], references: [id])
-  participants  User[]    @relation("EventParticipants")
+  fk_GroupId    Int
+  group         Group          @relation(fields: [fk_GroupId], references: [id])
+  participants  User[]         @relation("EventParticipants")
 
   @@map("events")
 }
@@ -180,6 +180,7 @@ model User {
   resetPassToken String   @default("")
   isResetValid   Boolean  @default(false)
   colourHex      String   @default("#000000")
+  emoji          String   @default("")
 
   role                    Role?                    @relation(fields: [fk_Roleid], references: [id])
   fk_Roleid               Int                      @default(3)
@@ -195,8 +196,8 @@ model User {
   colourRewards           ColourRewardsOnUsers[]
   challengeParticipations ChallengeParticipation[]
   eventComments           EventComment[]
-  events                  Event[]                   @relation("EventParticipants")
-
+  events                  Event[]                  @relation("EventParticipants")
+  emojiRewards            EmojiRewardsOnUsers[]
 
   @@map("users")
 }
@@ -221,6 +222,25 @@ model ColourReward {
   users          ColourRewardsOnUsers[]
 
   @@map("colour_rewards")
+}
+
+model EmojiReward {
+  id                  Int                   @id @default(autoincrement())
+  pointsRequired      Int
+  emoji               String
+  EmojiRewardsOnUsers EmojiRewardsOnUsers[]
+
+  @@map("emoji_rewards")
+}
+
+model EmojiRewardsOnUsers {
+  user          User        @relation(fields: [userId], references: [id])
+  userId        Int
+  emojiReward   EmojiReward @relation(fields: [emojiRewardId], references: [id])
+  emojiRewardId Int
+
+  @@id([userId, emojiRewardId])
+  @@map("emoji_rewards_on_users")
 }
 
 model ColourRewardsOnUsers {
@@ -426,13 +446,13 @@ model TrackingRecord {
 }
 
 model EventComment {
-  id         Int       @id @default(autoincrement())
-  content    String?
-  createdAt  DateTime  @default(now())
-  createdBy  User      @relation(fields: [userId], references: [id])
-  userId     Int
-  event      Event     @relation(fields: [eventId], references: [id])
-  eventId    Int
+  id        Int      @id @default(autoincrement())
+  content   String?
+  createdAt DateTime @default(now())
+  createdBy User     @relation(fields: [userId], references: [id])
+  userId    Int
+  event     Event    @relation(fields: [eventId], references: [id])
+  eventId   Int
 
   @@map("event_comments")
 }

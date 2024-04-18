@@ -380,8 +380,9 @@ model Achievement {
   id              Int                   @id @default(autoincrement())
   title           String                @unique
   description     String?
-  steps_required  Int
+  steps_required  Int?
   time_required_s Int?
+  logs_required   Int?
   points          Int
   users           AchievementsOnUsers[]
   //date_achieved DateTime?

@@ -23,6 +23,7 @@ export class AchievementService {
             description: true,
             steps_required: true,
             time_required_s: true,
+            logs_required: true,
             points: true,
         },
       });
@@ -31,18 +32,25 @@ export class AchievementService {
         let progress = 0;
         let completed = await this.checkIfCompleted(userId, achievement.id);
         let date = null;
-        if (achievement.time_required_s === null) {
+        if (achievement.time_required_s === null && achievement.steps_required !== null) {
             progress = totalSteps / achievement.steps_required * 100;
             if (progress >= 100) {
                 progress = 100;
             }
         }
-        if (achievement.time_required_s !== null){
+        if (achievement.time_required_s !== null && achievement.steps_required !== null){
           let steps = await this.findFastestTimeSteps(userId, achievement.time_required_s);
           progress = steps / achievement.steps_required * 100;
           if (progress >= 100) {
             progress = 100;
           }
+        }
+        if(achievement.logs_required !== null){
+          let userStatisticsCount = await this.FindStatisticLogs(userId);
+          progress = userStatisticsCount / achievement.logs_required * 100;
+          if (progress >= 100) {
+            progress = 100;
+        }
         }
         if (completed) {
             date = await this.getAchievementCompletionDate(userId, achievement.id);
@@ -145,7 +153,7 @@ export class AchievementService {
       return achievementsWithDate;
     }
 
-    async updateCompletedAchievements(userId) {
+    async updateCompletedAchievements(userId: number) {
       const activityEntries = await this.prisma.activityEntry.findMany({
         where: {
           user: { id: userId },
@@ -166,17 +174,23 @@ export class AchievementService {
           id:true,
           steps_required: true,
           time_required_s: true,
+          logs_required: true,
         }
       });
       const totalSteps = activityEntries.reduce((sum, entry) => sum + entry.steps, 0);
 
       for (const achievement of missingAchievements) {
         let isCompleted = false;
-        if (achievement.time_required_s === null && totalSteps > achievement.steps_required) {
+        if (achievement.time_required_s === null && totalSteps > achievement.steps_required && achievement.steps_required !== null) {
           isCompleted = true;
         }
-        if (achievement.time_required_s !== null){
+        if (achievement.time_required_s !== null && achievement.steps_required !== null){
           if(achievement.steps_required <= await this.findFastestTimeSteps(userId, achievement.time_required_s)){
+            isCompleted = true;
+          }
+        }
+        if (achievement.logs_required !== null){
+          if(achievement.logs_required <= await this.FindStatisticLogs(userId)){
             isCompleted = true;
           }
         }
@@ -237,6 +251,14 @@ export class AchievementService {
 
       return mostSteps;
 
+    }
+
+    async FindStatisticLogs(userId: number){
+      return this.prisma.statistics.count({
+        where: {
+          fk_UserId: userId
+        }
+      });
     }
 
     /*

@@ -169,6 +169,12 @@ async function seed() {
           steps_required: 1500,
           points: 10,
         },
+        {
+          title: 'Begginer logger',
+          description: 'Log your intake 5 times',
+          logs_required: 5,
+          points: 10,
+        },
       ]
     })
 

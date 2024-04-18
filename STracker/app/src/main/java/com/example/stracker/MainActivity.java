@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.example.stracker.tracking.MovementTracker;
 import com.example.stracker.tracking.TrackingService;
 import com.example.stracker.utility.FormatUtil;
+import com.example.stracker.utility.NotificationUtil;
 import com.google.android.material.color.utilities.MathUtils;
 
 import java.text.DecimalFormat;
@@ -96,7 +97,7 @@ public class MainActivity extends AppCompatActivity /*implements SensorEventList
         greetingTextView = findViewById(R.id.greeting);
         greetingTextView.setText("Welcome, " + getUsername() + "!");
 
-        String[] perms = {Manifest.permission.ACTIVITY_RECOGNITION};
+        String[] perms = {Manifest.permission.ACTIVITY_RECOGNITION, Manifest.permission.POST_NOTIFICATIONS};
         if (EasyPermissions.hasPermissions(this, perms)) {
             startService(new Intent(this, TrackingService.class));
             if (stepCountReceiver == null) {
@@ -155,8 +156,12 @@ public class MainActivity extends AppCompatActivity /*implements SensorEventList
 
         } else {
             // TODO: viskas luzta kai pirma kart paleidi ir suteiki permissionus
-            EasyPermissions.requestPermissions(this, "Please grant activity permission",
-                    1001, perms);
+            EasyPermissions.requestPermissions(
+                    this,
+                    "We need these permissions to track your activity and to send you notifications",
+                    1001,
+                    perms
+            );
         }
 
     }

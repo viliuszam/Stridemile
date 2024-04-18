@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Avatar } from '@mui/material';
+import { ApplyNicknameEmoji, ApplyNicknameEmojiFromUsername } from '../classes/Reward';
+
+const UpdatedNickname = ApplyNicknameEmoji()
 
 export default () => {
   const token = localStorage.getItem('accessToken');
@@ -37,11 +40,11 @@ export default () => {
           <div className='flex bg-[#61E9B1] pt-12 pb-0 rounded-lg items-end'>
             {(() => {
               // Second place
-              if (leaderboard[1]) {
+              if (leaderboard?.users?.[1]) {
                 return (
                   <div className='mx-auto'>
                     <div className='mb-3 text-center font-bold flex items-center'>
-                      <Avatar sx={{ width: 32, height: 32 }} src={undefined} /> <p className='ml-2'>{leaderboard[1]['username']}</p>
+                      <Avatar sx={{ width: 32, height: 32 }} src={leaderboard.users[1].picture} /> <p className='ml-2' style={{ color: leaderboard.users[1].colour }}>{ApplyNicknameEmojiFromUsername(leaderboard.users[1].username, leaderboard.users[1].emoji)}</p>
                     </div>
                     <div className='h-24 w-20 h-10 bg-blue-500 mx-auto rounded-t-lg border-2 border-b-0 flex justify-center items-center'>
                       <p className='text-white text-2xl font-semibold'>2</p>
@@ -53,11 +56,11 @@ export default () => {
 
             {(() => {
               // First place
-              if (leaderboard[0]) {
+              if (leaderboard?.users?.[0]) {
                 return (
                   <div className='mx-auto justify-center'>
                     <div className='mb-3 text-center font-bold flex items-center'>
-                      <Avatar sx={{ width: 32, height: 32 }} src={undefined} /> <p className='ml-2'>{leaderboard[0]['username']}</p>
+                      <Avatar sx={{ width: 32, height: 32 }} src={leaderboard.users[0].picture} /> <p className='ml-2' style={{ color: leaderboard.users[0].colour }}>{ApplyNicknameEmojiFromUsername(leaderboard.users[0].username, leaderboard.users[0].emoji)}</p>
                     </div>
                     <div className='h-36 w-20 bg-yellow-500 mx-auto rounded-t-lg border-2 border-b-0 flex justify-center items-center'>
                       <p className='text-white text-2xl font-semibold'>1</p>
@@ -69,11 +72,11 @@ export default () => {
 
             {(() => {
               // Third place
-              if (leaderboard[2]) {
+              if (leaderboard?.users?.[2]) {
                 return (
                   <div className='mx-auto'>
                     <div className='mb-3 text-center font-bold flex items-center'>
-                      <Avatar sx={{ width: 32, height: 32 }} src={undefined} /> <p className='ml-2'>{leaderboard[2]['username']}</p>
+                      <Avatar sx={{ width: 32, height: 32 }} src={leaderboard.users[2].picture} /> <p className='ml-2' style={{ color: leaderboard.users[2].colour }}>{ApplyNicknameEmojiFromUsername(leaderboard.users[2].username, leaderboard.users[2].emoji)}</p>
                     </div>
                     <div className='h-16 w-20 bg-red-500 mx-auto rounded-t-lg border-2 border-b-0 flex justify-center items-center'>
                       <p className='text-white text-2xl font-semibold'>3</p>
@@ -84,13 +87,13 @@ export default () => {
             })()}
           </div>
 
-          {leaderboard.map((data, i) => (
+          {leaderboard?.users?.map((data, i) => (
             <div key={i}>
               <div className="grid grid-cols-4 gap-4 p-4 items-center">
                 <div>{i + 1}</div>
                 <div className='col-span-2'>
                   <Link className='flex items-center' to={`/profile/${data.username}`}>
-                    <Avatar src={undefined} /> <p className='ml-3'>{data.username}</p>
+                    <Avatar src={data.picture} /> <p className='ml-3' style={{ color: data.colour }}>{ApplyNicknameEmojiFromUsername(data.username, data.emoji)}</p>
                   </Link>
                 </div>
                 <div>{data.points} pts</div>
@@ -107,7 +110,7 @@ export default () => {
             <p className='mb-3 text-xs text-gray-600'>Personal statistics in leaderboard</p>
             <div className='flex my-auto place-items-center'>
               <p className='flex text-center text-gray-500 text-5xl font-bold items-center'>
-                <i className="fa-solid fa-trophy text-4xl"></i> 1
+                <i className="fa-solid fa-trophy text-4xl"></i> {leaderboard?.userRating}
               </p>
 
             </div>
@@ -118,7 +121,7 @@ export default () => {
             <p className='mb-3 text-xs text-gray-600'>Collected points by completing various achievements</p>
             <div className='flex my-auto place-items-center'>
               <p className='flex text-center text-gray-500 text-5xl font-bold items-center'>
-                300
+              {leaderboard?.userPoints}
               </p>
 
             </div>

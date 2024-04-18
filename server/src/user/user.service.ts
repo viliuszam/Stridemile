@@ -99,10 +99,13 @@ export class UserService {
         });
     }
 
-    async getTop10UsersByPoints() {
+    async getTop10UsersByPoints(userId: number) {
       const usersWithPoints = await this.prisma.user.findMany({
         select: {
           username: true,
+          profile_picture: true,
+          colourHex: true,
+          emoji: true,
           completedAchievements: {
             select: {
               achievement: {
@@ -121,7 +124,7 @@ export class UserService {
           return sum + achievement.achievement.points;
         }, 0);
         const lastAchievementDate = this.getLastAchievementDate(user.completedAchievements);
-        return { username: user.username, points: totalPoints, lastAchievementDate };
+        return { username: user.username, points: totalPoints, picture: user.profile_picture, emoji: user.emoji, colour: user.colourHex, lastAchievementDate };
       });
     
       usersWithTotalPoints.sort((a, b) => {
@@ -131,10 +134,22 @@ export class UserService {
     
         return a.lastAchievementDate.getTime() - b.lastAchievementDate.getTime();
       });
-    
+      
+      const userUsername = await this.prisma.user.findUnique({
+        where: {id: userId},
+        select: {username: true}
+      });
+
+      const index = usersWithTotalPoints.findIndex(user => user.username === userUsername.username) + 1;
+      const user = usersWithTotalPoints.find(user => user.username === userUsername.username);
+
       const topUsers = usersWithTotalPoints.slice(0, 10);
     
-      return topUsers;
+      return ({
+        users: topUsers,
+        userRating: index,
+        userPoints: user.points
+      });
     }
 
     getLastAchievementDate(completedAchievements) {

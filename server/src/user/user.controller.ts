@@ -45,9 +45,10 @@ export class UserController {
 
     @UseGuards(AuthGuard('jwt'))
     @Get('leaderboard/top10')
-    async getTop10UsersByPoints() {
+    async getTop10UsersByPoints(@Req() req) {
+      const userId = req.user.id;
       try {
-        return this.userService.getTop10UsersByPoints();
+        return this.userService.getTop10UsersByPoints(userId);
       } catch (error) {
         console.log(error);
       }

@@ -10,5 +10,12 @@ const ApplyNicknameEmoji = () => {
     return nickname;
 }
 
+const ApplyNicknameEmojiFromUsername = (username, emoji) => {
+    if(emoji !== ""){
+        return emoji + username + emoji;
+    }
+    return username;
+}
 
-export { ApplyNicknameEmoji };
+
+export { ApplyNicknameEmoji, ApplyNicknameEmojiFromUsername };

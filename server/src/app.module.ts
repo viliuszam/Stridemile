@@ -13,10 +13,11 @@ import { StatusOptionsModule } from './group/status-options/status-options.modul
 import { AchievementModule } from './achievement/achievement.module';
 import { RewardModule } from './reward/reward.module';
 import { HealthTrackingModule } from './health-tracking/health-tracking.module'; 
+import { WebsocketModule } from './websockets/websocket.module';
  
 
 @Module({
-  imports: [ConfigModule.forRoot({isGlobal: true}), HealthTrackingModule, AuthModule, UserModule, PrismaModule, ActivityModule, GroupModule, GroupVisibilityModule, AchievementModule, CategoryOptionsModule, RewardModule, StatusOptionsModule],
+  imports: [ConfigModule.forRoot({isGlobal: true}), HealthTrackingModule, AuthModule, UserModule, PrismaModule, ActivityModule, GroupModule, GroupVisibilityModule, AchievementModule, CategoryOptionsModule, RewardModule, StatusOptionsModule, WebsocketModule],
   controllers: [],
   providers: [],
 })

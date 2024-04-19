@@ -33,6 +33,7 @@ import FAQ from "./views/FAQ";
 import Profile from "./views/Profile";
 import Reviews from "./views/Reviews";
 import Leaderboard from "./views/Leaderboard";
+import AboutUs from "./views/AboutUs";
 
 export default function App() {
   const navigate = useNavigate();
@@ -69,6 +70,7 @@ export default function App() {
         <Route path="/settings" element={<Settings />} />
         <Route path="/health-tracking" element={<HealthTracking />} />
         <Route path="/contact-us" element={<ContactUs />} />
+        <Route path="/about-us" element={<AboutUs />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/reviews" element={<Reviews />} />
         <Route path="/leaderboard" element={<Leaderboard />} />

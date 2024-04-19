@@ -40,7 +40,7 @@ const NavBar = () => {
         {(() => {
           if (isLoggedIn()) {
             return (
-              <Link to="/dashboard" className="ml-20 my-auto flex pl-2 text-medium hover:text-[#61E9B1]">
+              <Link to="/dashboard" className="ml-5 my-auto flex pl-2 text-medium hover:text-[#61E9B1]">
                 <div className='flex hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
                   <div className='pl-2 pr-2'>
                     Home
@@ -51,7 +51,7 @@ const NavBar = () => {
           }
           else {
             return (
-              <Link to="/" className="ml-20 my-auto flex pl-2 text-medium hover:text-[#61E9B1]">
+              <Link to="/" className="ml-5 my-auto flex pl-2 text-medium hover:text-[#61E9B1]">
                 <div className='flex hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
                   <div className='pl-2 pr-2'>
                     Home
@@ -88,7 +88,7 @@ const NavBar = () => {
             </div>
           </div>
         </Link>
-        <Link to="/aboutus" className="pl-2 pr-4 text-medium my-auto flex hover:text-[#61E9B1]">
+        <Link to="/about-us" className="pl-2 pr-4 text-medium my-auto flex hover:text-[#61E9B1]">
           <div className='flex ml-2 hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
             <div className='pl-2 pr-2'>
               About us

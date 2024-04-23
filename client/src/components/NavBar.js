@@ -88,6 +88,13 @@ const NavBar = () => {
             </div>
           </div>
         </Link>
+        <Link to="/shop" className="pl-2 text-medium my-auto flex hover:text-[#61E9B1]">
+          <div className='flex ml-2 hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
+            <div className='pl-2 pr-2'>
+              Shop
+            </div>
+          </div>
+        </Link>
         <Link to="/about-us" className="pl-2 pr-4 text-medium my-auto flex hover:text-[#61E9B1]">
           <div className='flex ml-2 hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
             <div className='pl-2 pr-2'>
@@ -100,7 +107,7 @@ const NavBar = () => {
             if (!isLoggedIn()) {
               return (
                 <div>
-                  <Link to="/login" className="bg-[#61E9B1] border-[1px] border-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 md:m-2 text-sm md:ml-24 border border-solid border-[#61E9B1]">
+                  <Link to="/login" className="bg-[#61E9B1] border-[1px] border-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 md:m-2 text-sm md:ml-2 border border-solid border-[#61E9B1]">
                     Log in
                   </Link>
                   <Link to="/register" className="bg-[#61E9B1] border-[1px] border-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm border border-solid border-[#61E9B1]">

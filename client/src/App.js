@@ -34,6 +34,10 @@ import Profile from "./views/Profile";
 import Reviews from "./views/Reviews";
 import Leaderboard from "./views/Leaderboard";
 import AboutUs from "./views/AboutUs";
+import Shop from "./views/Shop";
+import CreateShopItem from "./views/CreateShopItem";
+import EditShopItem from "./views/EditShopItem";
+import AllPurchases from "./views/AllPurchases";
 
 export default function App() {
   const navigate = useNavigate();
@@ -74,6 +78,10 @@ export default function App() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/reviews" element={<Reviews />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/shop" element={<Shop />} />
+        <Route path="/all-purchases" element={<AllPurchases />} />
+        <Route path="/create-shop-item" element={<CreateShopItem />} />
+        <Route path="/edit-shop-item/:itemId" element={<EditShopItem />} />
       </Route>
 
       <Route element={<AuthLayout />}>

@@ -16,7 +16,7 @@ const Footer = () => {
         <h2 className='font-semibold mx-auto flex'>Information</h2>
       </div>
       <div className='pt-2 flex'>
-        <Link to="/aboutus" className="text-black hover:text-white hover:text-decoration hover:underline mx-auto flex">
+        <Link to="/about-us" className="text-black hover:text-white hover:text-decoration hover:underline mx-auto flex">
           About us
         </Link>
       </div>

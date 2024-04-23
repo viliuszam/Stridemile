@@ -75,7 +75,7 @@ export default () => {
         
       }
 
-  return !isLoggedIn() ? (
+  return isLoggedIn() ? (
     <div>
     <div className="container bg-white pt-12">
         <div className="text-[#61E9B1]">

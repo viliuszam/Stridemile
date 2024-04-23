@@ -97,7 +97,8 @@ public class MainActivity extends AppCompatActivity /*implements SensorEventList
         greetingTextView = findViewById(R.id.greeting);
         greetingTextView.setText("Welcome, " + getUsername() + "!");
 
-        String[] perms = {Manifest.permission.ACTIVITY_RECOGNITION, Manifest.permission.POST_NOTIFICATIONS};
+        String[] perms = {Manifest.permission.ACTIVITY_RECOGNITION, Manifest.permission.POST_NOTIFICATIONS,
+                Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
         if (EasyPermissions.hasPermissions(this, perms)) {
             startService(new Intent(this, TrackingService.class));
             if (stepCountReceiver == null) {

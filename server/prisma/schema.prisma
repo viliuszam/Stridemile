@@ -198,8 +198,18 @@ model User {
   eventComments           EventComment[]
   events                  Event[]                  @relation("EventParticipants")
   emojiRewards            EmojiRewardsOnUsers[]
+  lastLocation            LastLocation?
 
   @@map("users")
+}
+
+model LastLocation {
+  id         Int      @id @default(autoincrement())
+  userId     Int      @unique
+  longitude  Float
+  latitude   Float
+  lastSeenAt DateTime
+  user       User     @relation(fields: [userId], references: [id])
 }
 
 model ChallengeParticipation {

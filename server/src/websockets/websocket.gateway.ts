@@ -84,6 +84,29 @@ export class WebsocketGateway implements OnGatewayConnection, OnGatewayDisconnec
             console.log(`leave group-${groupId}`);
           });
         });
+
+        const lastLocation = client.data.lastLocation;
+        if (lastLocation) {
+          this.prisma.lastLocation.upsert({
+            where: { userId: userId },
+            update: {
+              longitude: lastLocation.longitude,
+              latitude: lastLocation.latitude,
+              lastSeenAt: new Date()
+            },
+            create: {
+              userId: userId,
+              longitude: lastLocation.longitude,
+              latitude: lastLocation.latitude,
+              lastSeenAt: new Date()
+            }
+          }).then(() => {
+            console.log('created/updated user last seen.');
+          }).catch((error) => {
+            console.error('error saving last seen', error);
+          });
+        }
+
     }
   }
 
@@ -97,6 +120,8 @@ export class WebsocketGateway implements OnGatewayConnection, OnGatewayDisconnec
     }
 
     const { location } = payload;
+
+    client.data.lastLocation = location;
 
     this.prisma.groupMember
       .findMany({

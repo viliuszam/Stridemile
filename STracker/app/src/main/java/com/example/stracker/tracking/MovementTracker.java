@@ -3,11 +3,15 @@ package com.example.stracker.tracking;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.PowerManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.stracker.LoginActivity;
 import com.example.stracker.networking.RetrofitClient;
+import com.example.stracker.networking.WebSocketService;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -15,6 +19,9 @@ import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,9 +44,12 @@ public class MovementTracker {
 
     private Date lastSendTime;
 
+    private WebSocketService webSocketService;
+
     public MovementTracker(Context context){
         this.reset();
         this.context = context;
+        this.webSocketService = new WebSocketService(context);
         this.trackingWebService = RetrofitClient.getClient().create(TrackingWebService.class);
         this.scheduler = Executors.newScheduledThreadPool(2);
 
@@ -54,13 +64,37 @@ public class MovementTracker {
 
         scheduler.scheduleWithFixedDelay(this::postMovementData, POLLING_INTERVAL, POLLING_INTERVAL, TimeUnit.SECONDS);
         scheduler.scheduleWithFixedDelay(this::sendTimeUpdate, 1, 1, TimeUnit.SECONDS);
+        scheduler.scheduleWithFixedDelay(this::trackLocation, 300, 300, TimeUnit.MILLISECONDS);
+    }
+
+    private void trackLocation(){
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        try {
+            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+            if (lastKnownLocation == null) {
+                lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            }
+
+            if (lastKnownLocation != null) {
+                double latitude = lastKnownLocation.getLatitude();
+                double longitude = lastKnownLocation.getLongitude();
+
+                // Send user location data
+                JSONObject location = new JSONObject();
+                location.put("latitude", latitude);
+                location.put("longitude", longitude);
+                webSocketService.sendUserLocation(location);
+            }
+        } catch (SecurityException | JSONException e) {
+            Log.e(this.getClass().getSimpleName(), "Error getting location or creating location data", e);
+        }
     }
 
     private void sendTimeUpdate(){
         // Lokaliai atnaujinamas "total" time
         ((TrackingService)context).updateTime();
     }
-
 
     private void retrieveSummary() {
         String accessToken = getAccessToken();
@@ -135,6 +169,7 @@ public class MovementTracker {
     }
 
     public void shutdown() {
+        webSocketService.disconnect();
         if (scheduler != null && !scheduler.isShutdown()) {
             scheduler.shutdown();
         }

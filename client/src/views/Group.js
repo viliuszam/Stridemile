@@ -5,6 +5,7 @@ import axios from 'axios';
 import { getUser } from '../classes/User';
 import { AlertTypes } from '../styles/modules/AlertStyles';
 import Alert from '../components/Alert';
+import { io } from "socket.io-client";
 
 const getMapsUrl = (loc) => {
   return `https://www.google.com/maps/place/${loc}/`
@@ -21,6 +22,48 @@ const InviteForm = () => {
   const [eventComments, setEventComments] = useState([]);
   const [commentContent, setCommentContent] = useState('');
   const [challengeParticipants, setChallengeParticipants] = useState({});
+
+  const [userLocations, setUserLocations] = useState([]);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    const socket = io('http://192.168.1.101:3333', {
+      transportOptions: {
+        polling: {
+          extraHeaders: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        }
+      }
+    });
+
+    socket.on("connect", () => {
+      //console.log(socket.id);
+    });
+
+    socket.onAny((event, ...args) => {
+      //console.log(`got ${event}`);
+    });
+
+    socket.on('userLocation', (data) => {
+      if (data.group == groupId) {
+        console.log("Received userLocation:", data.group, groupId);
+        
+        setUserLocations((prevState) => ({
+          ...prevState,
+          [data.userId]: {
+            latitude: data.location.latitude,
+            longitude: data.location.longitude,
+          },
+        }));
+        
+      }
+    });
+  
+    return () => {
+      socket.disconnect();
+    };
+  }, [groupId]);
 
   useEffect(() => {
     const fetchGroupInfo = async () => {
@@ -570,6 +613,21 @@ const InviteForm = () => {
                 ))}
               </div>
             )}
+            
+            <div className='relative mt-10 mb-20'>
+              <h2 className='text-lg font-semibold mb-4'>User Locations</h2>
+              <div className='grid grid-cols-2 gap-4'>
+                {Object.entries(userLocations).map(([userId, location]) => (
+                  <div key={userId} className='p-4 bg-gray-100 rounded-lg'>
+                    <p>User ID: {userId}</p>
+                    <p>
+                      Location: {location.latitude}, {location.longitude}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
           </div>
         </div>
 

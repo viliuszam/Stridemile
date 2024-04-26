@@ -10,6 +10,21 @@ export class UserService {
     constructor(private prisma: PrismaService) {
     }
 
+    async getLastSeenLocation(userId: number) {
+      try {
+        // Query the LastLocation table to find the user's last seen location
+        const lastLocation = await this.prisma.lastLocation.findUnique({
+          where: { userId },
+        });
+  
+        return lastLocation;
+      } catch (error) {
+        // Handle any errors that occur during the database query
+        console.error('Error retrieving last seen location:', error);
+        throw error;
+      }
+    }
+
     // TODO: fix dep injection and add step count
     async getUserPopupInfo(userId: number, requestingUserId: number): Promise<any> {
       const user = await this.prisma.user.findUnique({

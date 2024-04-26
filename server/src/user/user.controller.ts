@@ -14,6 +14,12 @@ export class UserController {
         return req.user;
     }
 
+    @UseGuards(AuthGuard('jwt'))
+    @Get('users/:userId/last-seen')
+    async getLastSeenLocation(@Param('userId') userId: number) {
+      return this.userService.getLastSeenLocation(userId);
+    }
+
     @Get(':id')
     async getUserById(@Param('id') id: string) {
         try {

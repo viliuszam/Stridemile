@@ -8,7 +8,7 @@ import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'src/prisma/prisma.service'; 
 
 // TODO: pagreitinimui storint issaugot grupes, kad nereiktu daryt daug prisma queries
-@WebSocketGateway()
+@WebSocketGateway({ cors: true })
 export class WebsocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
@@ -19,7 +19,12 @@ export class WebsocketGateway implements OnGatewayConnection, OnGatewayDisconnec
     private prisma: PrismaService,
   ) {}
 
+  // TODO: try/catch del jwt
   async handleConnection(client: Socket) {
+    this.server.emit('headers', {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': 'true',
+    });
     console.log('WebSocket connection established');
 
     const token = client.handshake.headers.authorization?.split(' ')[1];
@@ -44,8 +49,8 @@ export class WebsocketGateway implements OnGatewayConnection, OnGatewayDisconnec
         console.log('Connected user:', user);
 
         // prijoinint prie user grupiu
-        client.join(`user-${userId}`);
-        console.log(`join user-${userId}`);
+        //client.join(`user-${userId}`);
+        //console.log(`join user-${userId}`);
 
         this.prisma.groupMember
           .findMany({
@@ -54,9 +59,9 @@ export class WebsocketGateway implements OnGatewayConnection, OnGatewayDisconnec
           })
           .then((userGroups) => {
             userGroups.forEach((groupMember) => {
-              const groupId = groupMember.group.id;
-              client.join(`group-${groupId}`);
-              console.log(`join group-${groupId}`);
+              //const groupId = groupMember.group.id;
+              //client.join(`group-${groupId}`);
+              //console.log(`join group-${groupId}`);
             });
           });
     }
@@ -69,8 +74,8 @@ export class WebsocketGateway implements OnGatewayConnection, OnGatewayDisconnec
     const userId = user?.id;
 
     if (userId) {
-      client.leave(`user-${userId}`);
-      console.log(`leave user-${userId}`);
+      //client.leave(`user-${userId}`);
+      //console.log(`leave user-${userId}`);
 
       this.prisma.groupMember
         .findMany({
@@ -80,8 +85,8 @@ export class WebsocketGateway implements OnGatewayConnection, OnGatewayDisconnec
         .then((userGroups) => {
           userGroups.forEach((groupMember) => {
             const groupId = groupMember.group.id;
-            client.leave(`group-${groupId}`);
-            console.log(`leave group-${groupId}`);
+            //client.leave(`group-${groupId}`);
+            //console.log(`leave group-${groupId}`);
           });
         });
 
@@ -131,7 +136,8 @@ export class WebsocketGateway implements OnGatewayConnection, OnGatewayDisconnec
       .then((userGroups) => {
         userGroups.forEach((groupMember) => {
           const groupId = groupMember.group.id;
-          client.to(`group-${groupId}`).emit('userLocation', { userId, location });
+          /**/
+          this.server.emit('userLocation', { group: groupId, userId, location });
           console.log(`userLocation to group-${groupId} from ${userId}, location: ${location.latitude},
            ${location.longitude}`);
         });

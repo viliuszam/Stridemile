@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.PowerManager;
 import android.util.Log;
@@ -64,9 +65,37 @@ public class MovementTracker {
 
         scheduler.scheduleWithFixedDelay(this::postMovementData, POLLING_INTERVAL, POLLING_INTERVAL, TimeUnit.SECONDS);
         scheduler.scheduleWithFixedDelay(this::sendTimeUpdate, 1, 1, TimeUnit.SECONDS);
-        scheduler.scheduleWithFixedDelay(this::trackLocation, 300, 300, TimeUnit.MILLISECONDS);
+        //scheduler.scheduleWithFixedDelay(this::trackLocation, 300, 300, TimeUnit.MILLISECONDS);
+        startLocationUpdates();
     }
 
+    private final LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+            // Send user location data
+            JSONObject locationData = new JSONObject();
+            try {
+                locationData.put("latitude", latitude);
+                locationData.put("longitude", longitude);
+                webSocketService.sendUserLocation(locationData);
+            } catch (JSONException e) {
+                Log.e(this.getClass().getSimpleName(), "Error creating location data", e);
+            }
+        }
+    };
+
+    private void startLocationUpdates() {
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        try {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 300L, 0F, locationListener);
+        } catch (SecurityException e) {
+            Log.e(this.getClass().getSimpleName(), "Error requesting location updates", e);
+        }
+    }
+
+/*
     private void trackLocation(){
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         try {
@@ -90,7 +119,7 @@ public class MovementTracker {
             Log.e(this.getClass().getSimpleName(), "Error getting location or creating location data", e);
         }
     }
-
+*/
     private void sendTimeUpdate(){
         // Lokaliai atnaujinamas "total" time
         ((TrackingService)context).updateTime();

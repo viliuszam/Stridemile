@@ -1,49 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="@drawable/login">
 
-    <TextView
-        android:id="@+id/loginLabel"
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:foregroundGravity="center"
+        android:layout_margin="30dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="20dp">
+
+        <TextView
+            android:id="@+id/loginLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="-80dp"
+            android:layout_gravity="center"
+            android:text="Login"
+            android:textColor="@android:color/black"
+            android:textSize="24sp" />
+
+
+        <EditText
+            android:id="@+id/usernameEditText"
+            android:layout_width="243dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/loginLabel"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="0dp"
+            android:hint="Username"
+            android:inputType="text"
+            android:textAlignment="center"
+            android:textColor="@android:color/black" />
+
+        <EditText
+            android:id="@+id/passwordEditText"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/usernameEditText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:layout_gravity="center"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textAlignment="center"
+            android:textColor="@android:color/black" />
+
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/passwordEditText"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="100dp"
+            android:text="Login"
+            android:background="@color/colorAccent"
+            android:textAlignment="center" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="150dp"
+            android:layout_height="119dp"
+            app:srcCompat="@drawable/center_login" />
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
-        android:textSize="24sp"
-        android:textColor="@android:color/black"
-        android:layout_marginBottom="16dp"
-        android:layout_centerHorizontal="true"/>
-
-    <EditText
-        android:id="@+id/usernameEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/loginLabel"
-        android:textColor="@android:color/black"
-        android:layout_marginTop="12dp"
-        android:layout_centerHorizontal="true"
-        android:hint="Username"
-        android:inputType="text" />
-
-    <EditText
-        android:id="@+id/passwordEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/usernameEditText"
-        android:textColor="@android:color/black"
-        android:layout_marginTop="12dp"
-        android:layout_centerHorizontal="true"
-        android:hint="Password"
-        android:inputType="textPassword" />
-
-    <Button
-        android:id="@+id/loginButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/passwordEditText"
-        android:layout_marginTop="16dp"
-        android:layout_centerHorizontal="true"
-        android:text="Login" />
+        android:layout_marginTop="-100dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/logo" />
 
 </RelativeLayout>

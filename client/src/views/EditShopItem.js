@@ -1,4 +1,4 @@
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { useState, useEffect } from 'react'
 import { AlertTypes } from "../styles/modules/AlertStyles";
 import axios from 'axios';
@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 
 export default () => {
   const { setAlert } = useOutletContext();
+
+  const { itemId } = useParams();
 
   const [itemTitle, setItemTitle] = useState('');
   const [itemDescription, setItemDescription] = useState('');
@@ -18,7 +20,7 @@ export default () => {
 
   useEffect(() => {
     // Fetch visibility options from the server
-    axios.get('http://localhost:3333/item-category-options')
+    axios.get('http://localhost:3333/shop-item/categories')
       .then(response => {
         setCategoryOptions(response.data);
       })
@@ -45,12 +47,10 @@ export default () => {
     const formData = new FormData();
     formData.append('title', itemTitle);
     formData.append('description', itemDescription);
-    formData.append('categoryId', selectedCategory);
+    formData.append('category', selectedCategory);
+    formData.append('price', itemPrice);
     formData.append('imageFile', imageFile);
-    for (let entry of formData.entries()) {
-      console.log(entry);
-    }
-    axios.post('http://localhost:3333/shopItems/createShopItem', formData, {
+    axios.patch(`http://localhost:3333/shop-item/edit/${itemId}`, formData, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'multipart/form-data'
@@ -94,7 +94,7 @@ export default () => {
           <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="w-full p-3 border-[1px] border-gray-400 rounded-lg bg-white hover:border-[#61E9B1]">
             <option value="">Select category</option>
             {categoryOptions.map(option => (
-              <option key={option.id} value={option.id}>{option.name.charAt(0).toUpperCase() + option.name.slice(1)}</option>
+              <option key={option} value={option}>{option}</option>
             ))}
           </select>
         </div>

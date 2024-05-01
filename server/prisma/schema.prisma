@@ -467,3 +467,17 @@ model EventComment {
 
   @@map("event_comments")
 }
+
+enum ShopCategories {
+  CUSTUMISATION
+  HEALTH
+}
+
+model ShopItem {
+  id          Int            @id @default(autoincrement())
+  title       String
+  description String
+  price       Decimal
+  category    ShopCategories
+  image_url   String
+}

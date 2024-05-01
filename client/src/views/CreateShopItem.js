@@ -17,8 +17,7 @@ export default () => {
   const [imageFile, setImageFile] = useState(null);
 
   useEffect(() => {
-    // Fetch visibility options from the server
-    axios.get('http://localhost:3333/item-category-options')
+    axios.get('http://localhost:3333/shop-item/categories')
       .then(response => {
         setCategoryOptions(response.data);
       })
@@ -45,12 +44,14 @@ export default () => {
     const formData = new FormData();
     formData.append('title', itemTitle);
     formData.append('description', itemDescription);
-    formData.append('categoryId', selectedCategory);
+    formData.append('price', itemPrice);
+    formData.append('category', selectedCategory);
     formData.append('imageFile', imageFile);
-    for (let entry of formData.entries()) {
-      console.log(entry);
-    }
-    axios.post('http://localhost:3333/shopItems/createShopItem', formData, {
+    console.log(itemTitle);
+    console.log(itemDescription);
+    console.log(itemPrice);
+    console.log(selectedCategory);
+    axios.post('http://localhost:3333/shop-item/create', formData, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'multipart/form-data'
@@ -94,7 +95,7 @@ export default () => {
           <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="w-full p-3 border-[1px] border-gray-400 rounded-lg bg-white hover:border-[#61E9B1]">
             <option value="">Select category</option>
             {categoryOptions.map(option => (
-              <option key={option.id} value={option.id}>{option.name.charAt(0).toUpperCase() + option.name.slice(1)}</option>
+              <option key={option} value={option}>{option}</option>
             ))}
           </select>
         </div>

@@ -19,7 +19,7 @@ export default () => {
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
 
-        axios.get('http://localhost:3333/achievements/all', {
+        axios.get('http://localhost:3333/shop-item/all', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -91,7 +91,7 @@ export default () => {
             
             <div className="h-[465px] rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-[#61E9B1]">
             <div className="rounded-4xl pb-3 flex">
-                <img src="https://cdn.pixabay.com/photo/2019/03/17/15/42/basketball-4061225_1280.png" alt="steps" className="rounded-4xl mx-auto" height={100} width={100}/>
+            <img src={item.image_url} alt="steps" className="rounded-4xl mx-auto" height="100" width="100"/>
             </div>
             <h2 className="font-semibold">{item.title}</h2>
             <p className="text-sm">Category: {item.category}</p>
@@ -117,8 +117,8 @@ export default () => {
             </div>
             <div className="flex mx-auto">
             <p></p>
-                <Link to="/shop-item" className="bg-white border-[1px] border-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 md:m-2 md:ml-[70px] text-sm border border-solid border-[#61E9B1] flex">
-                    View item
+                <Link to={`/edit-shop-item/${item.id}`} className="bg-white border-[1px] border-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 md:m-2 md:ml-[70px] text-sm border border-solid border-[#61E9B1] flex">
+                    Edit Item
                 </Link>
             </div>
         </div>

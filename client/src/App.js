@@ -38,6 +38,7 @@ import Shop from "./views/Shop";
 import CreateShopItem from "./views/CreateShopItem";
 import EditShopItem from "./views/EditShopItem";
 import AllPurchases from "./views/AllPurchases";
+import ShopItem from "./views/ShopItem";
 
 export default function App() {
   const navigate = useNavigate();
@@ -79,6 +80,7 @@ export default function App() {
         <Route path="/reviews" element={<Reviews />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/shop" element={<Shop />} />
+        <Route path="/shop-item/:itemId" element={<ShopItem />} />
         <Route path="/all-purchases" element={<AllPurchases />} />
         <Route path="/create-shop-item" element={<CreateShopItem />} />
         <Route path="/edit-shop-item/:itemId" element={<EditShopItem />} />

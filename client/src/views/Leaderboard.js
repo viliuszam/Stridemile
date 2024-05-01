@@ -37,7 +37,7 @@ export default () => {
       <div className='mt-4 flex'>
         <div className='w-full mr-6'>
 
-          <div className='flex bg-[#61E9B1] pt-12 pb-0 rounded-lg items-end'>
+          <div className='flex bg-[#dcfaee] border-[1px] border-green-100 pt-12 pb-0 rounded-lg items-end'>
             {(() => {
               // Second place
               if (leaderboard?.users?.[1]) {

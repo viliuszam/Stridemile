@@ -241,9 +241,9 @@ export default () => {
               slotProps={{ legend: { hidden: true } }}
               series={[
                 {
-                  data: [ 
-                    { id: 0, value: 100 - percentage, color: '#e1e1e1', label: 'Not done' },
-                    { id: 1, value: percentage, color: '#61E9B1', label: 'Completed' }, 
+                  data: [
+                    { id: 0, value: percentage, color: '#61E9B1', label: 'Completed' },  
+                    { id: 1, value: 100 - percentage, color: '#e1e1e1', label: 'Not done' },
                   ],
                   innerRadius: 20,
                   outerRadius: 30,

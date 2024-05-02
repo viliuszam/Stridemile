@@ -98,7 +98,7 @@ const NavBar = () => {
         <Link to="/about-us" className="pl-2 pr-4 text-medium my-auto flex hover:text-[#61E9B1]">
           <div className='flex ml-2 hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
             <div className='pl-2 pr-2'>
-              About us
+              About
             </div>
           </div>
         </Link>

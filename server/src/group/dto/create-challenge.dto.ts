@@ -10,7 +10,7 @@ export class CreateChallengeDto {
   description: string;
 
   @IsNotEmpty()
-  @IsNumber()
+  @IsString()
   target: number;
 
   @IsNotEmpty()

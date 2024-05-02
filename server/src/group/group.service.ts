@@ -258,8 +258,10 @@ export class GroupService {
   }
 
   async createChallenge(createChallengeDto: CreateChallengeDto, groupId: number): Promise<Challenge> {
-    const { title, description, start_date, end_date, target } =
+    const { title, description, start_date, end_date } =
     createChallengeDto;
+
+    const targetValue = parseInt(createChallengeDto.target.toString(), 10);
 
     return this.prisma.challenge.create({
       data: {
@@ -267,23 +269,24 @@ export class GroupService {
         description,
         start_date,
         end_date,
-        target,
+        target: targetValue,
         group: { connect: { id: groupId } },
       },
     });
   }
 
   async createGoal(createGoalDto: CreateGoalDto, groupId: number): Promise<Goal> {
-    const { title, description, start_date, end_date, target_value, statusId, categoryId } =
-      createGoalDto;
-
+    const { title, description, start_date, end_date, statusId, categoryId } = createGoalDto;
+  
+    const targetValue = parseInt(createGoalDto.target_value.toString(), 10);
+  
     return this.prisma.goal.create({
       data: {
         title,
         description,
         start_date,
         end_date,
-        target_value,
+        target_value: targetValue,
         current_value: 0,
         status: statusId ? { connect: { id: statusId } } : undefined,
         category: categoryId ? { connect: { id: categoryId } } : undefined,
@@ -291,7 +294,7 @@ export class GroupService {
       },
     });
   }
-
+  
   async createEvent(createEventDto: CreateEventDto, groupId: number): Promise<Event> {
     const { title, description, date, location, fk_Category } =
       createEventDto;

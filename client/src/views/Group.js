@@ -521,11 +521,7 @@ const InviteForm = () => {
                     </div>
 
                   </div>
-                  <div className='flex ml-auto'>
-                    <div className='my-auto text-sm text-nowrap'>
-                      to do <i className="fa-solid fa-user-check text-gray-400"></i>
-                    </div>
-                  </div>
+
                   <div className='ml-auto'>
                     <div className='text-gray-400 hover:text-gray-300 cursor-pointer'>
                       <i className="fa-solid fa-circle-check"></i>
@@ -591,7 +587,6 @@ const InviteForm = () => {
                 <p className='text-xs'>Members</p>
               </div>
               <div>
-                <p>to do</p>
                 <i className="fa-solid fa-trophy"></i>
                 <p className='text-xs'>Achievements</p>
               </div>

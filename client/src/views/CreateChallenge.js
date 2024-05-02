@@ -41,11 +41,12 @@ export default () => {
 
   const [challengeTitle, setChallengeTitle] = useState('');
   const [challengeDescription, setChallengeDescription] = useState('');
+  const [target, setTarget] = useState('');
   const [startDate, setStartDate] = React.useState(dayjs());
   const [endDate, setEndDate] = React.useState(dayjs());
 
   const validate = () => {
-    if (!challengeTitle || !challengeDescription ) {
+    if (!challengeTitle || !challengeDescription || !target) {
       setAlert({ text: 'There are empty fields', type: AlertTypes.warning });
       return false;
     }
@@ -75,6 +76,7 @@ export default () => {
     const requestData = {
       title: challengeTitle,
       description: challengeDescription,
+      target: target,
       start_date: startDate,
       end_date: endDate
     };
@@ -111,6 +113,11 @@ export default () => {
         <div className="mb-3">
           <div className="text-base mb-2">Description</div>
           <input value={challengeDescription} onChange={(e) => setChallengeDescription(e.target.value)} type="text" placeholder="Description" className="w-full p-3 border-[1px] border-gray-400 rounded-lg hover:border-[#61E9B1]" />
+        </div>
+
+        <div className="mb-3">
+          <div className="text-base mb-2">Target</div>
+          <input value={target} onChange={(e) => setTarget(e.target.value)} type="number" placeholder="Target" className="w-full p-3 border-[1px] border-gray-400 rounded-lg hover:border-[#61E9B1]" />
         </div>
 
         <div className="mb-3">

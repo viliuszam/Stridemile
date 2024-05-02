@@ -2,12 +2,20 @@ import '../styles/Home.css';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { useParams, Link, useOutletContext } from "react-router-dom";
 
 export default () => {
+  const { groupId } = useParams();
   const [points, setPoints] = useState([]);
   const [monthlySteps, setMonthlySteps] = useState([]);
   const [dailySteps, setDailySteps] = useState();
+  const [groupInfo, setGroupInfo] = useState('');
+  const [events, setEvents] = useState([]);
+  const [challenges, setChallenges] = useState([]);
+  const [goals, setGoals] = useState([]);
+  const [eventComments, setEventComments] = useState([]);
+  const [commentContent, setCommentContent] = useState('');
+  const [challengeParticipants, setChallengeParticipants] = useState({});
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
@@ -24,6 +32,254 @@ export default () => {
         console.error('Error fetching points: ', error);
       });
   }, []);
+
+
+  useEffect(() => {
+    const fetchGroupInfo = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
+        const response = await axios.get(`http://localhost:3333/groups/group/${groupId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setGroupInfo(response.data);
+      } catch (error) {
+        console.error('Error fetching group info:', error);
+      }
+    };
+
+    const fetchGoals = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
+        const response = await axios.get(`http://localhost:3333/groups/getAllGroupsGoals`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setGoals(response.data.goals);
+      } catch (error) {
+        console.error('Error fetching goals:', error);
+      }
+    };
+
+    fetchGroupInfo();
+    fetchEvents();
+    fetchChallenges();
+    fetchGoals();
+  }, [groupId]);
+
+  const handleShowChallengeParticipants = async (challengeId) => {
+    try {
+      const response = await axios.get(`http://localhost:3333/groups/${challengeId}/challenge-participants`);
+      setChallengeParticipants((prevState) => ({
+        ...prevState,
+        [challengeId]: response.data,
+      }));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const fetchEvents = async () => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.get(`http://localhost:3333/groups/getAllGroupsEvents`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const eventsWithParticipation = await Promise.all(
+        response.data.events.map(async (event) => {
+          const isParticipating = await userIsParticipatingInEvent(event.id);
+          return { ...event, isParticipating };
+        })
+      );
+
+      setEvents(eventsWithParticipation);
+
+      response.data.events.forEach((event) => {
+        fetchEventComments(event.id);
+      });
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
+
+  const fetchChallenges = async () => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.get(`http://localhost:3333/groups/getAllGroupsChallenges`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const challengesWithParticipation = await Promise.all(
+        response.data.challenges.map(async (chal) => {
+          handleShowChallengeParticipants(chal.id);
+          const isParticipating = await userIsParticipatingInChallenge(chal.id);
+          return { ...chal, isParticipating };
+        })
+      );
+
+      setChallenges(challengesWithParticipation);
+      //setChallenges(response.data.challenges);
+    } catch (error) {
+      console.error('Error fetching challenges:', error);
+    }
+  };
+
+  const fetchEventComments = async (eventId) => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.get(`http://localhost:3333/groups/${eventId}/event-comments`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setEventComments(prevState => ({
+        ...prevState,
+        [eventId]: response.data.comments,
+      }));
+    } catch (error) {
+      console.error(`Error fetching comments for event ${eventId}:`, error);
+    }
+  };
+
+  const handlePostComment = async (eventId) => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.post(
+        `http://localhost:3333/groups/${eventId}/post-comment`,
+        { content: commentContent },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setEventComments(prevState => ({
+        ...prevState,
+        [eventId]: [...(prevState[eventId] || []), response.data.comment],
+      }));
+      setCommentContent('');
+      fetchEvents();
+    } catch (error) {
+      console.error('Error posting comment:', error);
+    }
+  };
+
+  const handleEventParticipate = async (eventId) => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.post(
+        `http://localhost:3333/groups/${eventId}/event-participate`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      fetchEvents();
+    } catch (error) {
+      console.error('Error participating:', error);
+    }
+  };
+
+  const handleChallengeParticipate = async (challengeId) => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.post(
+        `http://localhost:3333/groups/${challengeId}/challenge-participate`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      fetchChallenges();
+      handleShowChallengeParticipants(challengeId);
+    } catch (error) {
+      console.error('Error participating:', error);
+    }
+  };
+
+  const handleEventCancelParticipation = async (eventId) => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.post(
+        `http://localhost:3333/groups/${eventId}/event-cancel-participation`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      fetchEvents();
+    } catch (error) {
+      console.error('Error canceling participation:', error);
+    }
+  };
+
+  const handleChallengeCancelParticipation = async (challengeId) => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.post(
+        `http://localhost:3333/groups/${challengeId}/challenge-cancel-participation`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      fetchChallenges();
+      handleShowChallengeParticipants(challengeId);
+    } catch (error) {
+      console.error('Error canceling participation:', error);
+    }
+  };
+
+  const userIsParticipatingInEvent = async (eventId) => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.get(
+        `http://localhost:3333/groups/${eventId}/user-event-participation`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data.isParticipating;
+    } catch (error) {
+      console.error('Error checking participation:', error);
+      return false;
+    }
+  };
+
+  const userIsParticipatingInChallenge = async (eventId) => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.get(
+        `http://localhost:3333/groups/${eventId}/user-challenge-participation`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data.isParticipating;
+    } catch (error) {
+      console.error('Error checking participation:', error);
+      return false;
+    }
+  };
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
@@ -107,145 +363,178 @@ export default () => {
           <a className='text-[#4edba1] font-bold pb-2 border-b-4 border-[#4edba1]' href="#">Latest</a>
           <hr className='mb-3 mt-2' />
 
-          <div className='mb-3 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>
-            <div className='flex'>
-              <img className="my-auto w-24 h-24 object-cover rounded" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Ludovic_and_Lauren_%288425515069%29.jpg/640px-Ludovic_and_Lauren_%288425515069%29.jpg" />
-              <div className='mx-4'>
-
+          <div>
+            {events.map(event => (
+              <div key={event.id} className='flex mb-8 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>
+                <div className="w-24 h-24">
+                  <img className="w-full h-full object-cover rounded" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Ludovic_and_Lauren_%288425515069%29.jpg/640px-Ludovic_and_Lauren_%288425515069%29.jpg" alt="Event" />
+                </div>
+                <div className='mx-4 flex-1'>
                   <div className='mb-1 flex text-xs text-gray-400'>
                     <p>Event</p>
                     <span className='mx-2'>|</span>
-                    <p>2024-03-06</p>
+                    <p>{new Date(event.date).toLocaleString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</p>
                     <span className='mx-2'>|</span>
-                    <a href={getMapsUrl("Kaunas, Pilies g. 17")} target="_blank" rel="noopener noreferrer" className='text-[#74cfda]'>
-                      <i className="fa-solid fa-location-dot"></i> Kaunas, Pilies g. 17
+                    <a href={getMapsUrl(event.location)} target="_blank" rel="noopener noreferrer" className='text-[#74cfda]'>
+                      <i className="fa-solid fa-location-dot"></i> {event.location}
                     </a>
                   </div>
-
-                  <p className='mb-1 font-bold'>Event title</p>
-
-                  <p className='mb-3 text-sm text-gray-500'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin consequat ornare nibh, nec vestibulum velit commodo nec. In varius pharetra ornare.</p>
-
-                  <div className='text-xs text-gray-400'>
-                    ORANIZATION UAB "Sportiva"
+                  <p className='mb-1 font-bold'>{event.title}</p>
+                  <p className='mb-3 text-sm text-gray-500'>{event.description}</p>
+                  <div className='mt-4'>
+                    <div className='my-auto text-sm text-nowrap'>
+                      Participants:
+                      {event.participants && event.participants.map(participant => (
+                        <span key={participant.id} className='mx-2'>{participant.username} </span>
+                      ))} <i className="fa-solid fa-user-check text-gray-400"></i>
+                    </div>
+                    {event.isParticipating ? (
+                      <button
+                        className='bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded mt-2'
+                        onClick={() => handleEventCancelParticipation(event.id)}
+                      >
+                        Cancel Participation
+                      </button>
+                    ) : (
+                      <button
+                        className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded mt-2'
+                        onClick={() => handleEventParticipate(event.id)}
+                      >
+                        Participate
+                      </button>
+                    )}
+                    <h3 className='my-2 text-sm font-bold'>Comments:</h3>
+                    {eventComments[event.id] && eventComments[event.id].map(comment => (
+                      <div key={comment.id} className='border border-gray-200 p-3 mb-2 rounded'>
+                        <p className='text-gray-600 mb-1'>{comment.content}</p>
+                        <p className='text-xs text-gray-400'>{new Date(comment.createdAt).toLocaleString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })} {comment.createdBy && comment.createdBy.username && (<p>Created by: {comment.createdBy.username}</p>)}</p>
+                      </div>
+                    ))}
+                    <div className='mt-4'>
+                      <textarea
+                        className='w-full border border-gray-200 rounded p-2 mb-2 text-sm'
+                        placeholder='Write your comment here...'
+                        rows={3}
+                        value={commentContent}
+                        onChange={(e) => setCommentContent(e.target.value)}
+                      />
+                      <button
+                        className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded'
+                        onClick={() => handlePostComment(event.id)}
+                      >
+                        Post
+                      </button>
+                    </div>
                   </div>
-
-              </div>
-              <div className='flex ml-auto'>
-                <div className='my-auto text-sm text-nowrap'>
-                50 <i className="fa-solid fa-user-check text-gray-400"></i>
+                </div>
+                <div className='ml-auto'>
+                  <div className='text-[#4edba1] hover:text-[#61E9B1] cursor-pointer'>
+                    <i className='fa-solid fa-circle-check'></i>
+                  </div>
                 </div>
               </div>
-              <div className='ml-auto'>
-                <div className='text-[#4edba1] hover:text-[#61E9B1] cursor-pointer'>
-                  <i className="fa-solid fa-circle-check"></i>
-                </div>
-              </div>
-            </div>
-            <hr className='my-4'/>
-            <div className='flex items-center'>
-              <img className='w-10 h-10 rounded-full' src="https://wearecardinals.com/wp-content/uploads/2020/04/u1Re9qgMfM8d6kumlW85PS6s55jQh5fbdmppgQsP.jpeg" />
-              <div className='ml-3'>
-                <p className='text-[14px]'><Link to='/group/1' className='hover:text-[#4edba1]'>Furious group</Link></p>
-                <p className='text-xs text-gray-700'>By <Link to='/group/1' className='hover:text-[#4edba1]'>Tautvydas</Link> {dateDiffToString('2024-03-11 12:20:05')} ago</p>
-              </div>
-            </div>
+            ))}
           </div>
 
-          <div className='mb-3 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>
-            <div className='flex'>
-              <img className="my-auto w-24 h-24 object-cover rounded" src="https://media.istockphoto.com/id/1266413326/vector/vector-challenge-sign-pop-art-comic-speech-bubble-with-expression-text-competition-bright.jpg?s=612x612&w=0&k=20&c=eYOQaCn7WvMAEo5ZxVHVVQ-pcNT8HZ-yPeTjueuXi28=" />
-              <div className='mx-4'>
 
-                  <div className='mb-1 flex text-xs text-gray-400'>
-                    <p>Challenge</p>
-                    <span className='mx-2'>|</span>
-                    <p>Starts 2024-03-06 10:30</p>
-                    <span className='mx-2'>|</span>
-                    <p>Ends 2024-03-10 10:30</p>
+          <div>
+              {challenges.map(challenge => (
+                <div key={challenge.id} className='flex mb-3 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>
+                  <img className="my-auto w-24 h-24 object-cover rounded" src="https://media.istockphoto.com/id/1266413326/vector/vector-challenge-sign-pop-art-comic-speech-bubble-with-expression-text-competition-bright.jpg?s=612x612&w=0&k=20&c=eYOQaCn7WvMAEo5ZxVHVVQ-pcNT8HZ-yPeTjueuXi28=" />
+                  <div className='mx-4 flex-1'>
+                    <div className='mb-1 flex text-xs text-gray-400'>
+                      <p>Challenge</p>
+                      <span className='mx-2'>|</span>
+                      <p>Starts {new Date(challenge.start_date).toLocaleString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</p>
+                      <span className='mx-2'>|</span>
+                      <p>Ends {new Date(challenge.end_date).toLocaleString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</p>
+                    </div>
+                    <p className='mb-1 font-bold'>{challenge.title}</p>
+                    <p className='mb-3 text-sm text-gray-500'>{challenge.description}</p>
+                    <div className='flex ml-auto'>
+                      <div className='my-auto text-sm text-nowrap'>
+                        Participants:
+                        {challengeParticipants[challenge.id] && challengeParticipants[challenge.id].map(participant => (
+                          <span key={participant.id} className='mx-2'>{participant.user.username}</span>
+                        ))} <i className="fa-solid fa-user-check text-gray-400"></i>
+                      </div>
+                    </div>
+                    {challenge.isParticipating ? (
+                      <button
+                        className='bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded mt-2'
+                        onClick={() => handleChallengeCancelParticipation(challenge.id)}
+                      >
+                        Cancel Participation
+                      </button>
+                    ) : (
+                      <button
+                        className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded mt-2'
+                        onClick={() => handleChallengeParticipate(challenge.id)}
+                      >
+                        Participate
+                      </button>
+                    )}
+                    <div className='mt-4 flex text-sm text-gray-400'>
+                      <p className='mr-auto'>15</p>
+                      <p className='text-xs'>15%</p>
+                      <p className='ml-auto'>100</p>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
+                      <div className="bg-[#61E9B1] h-1.5 rounded-full" style={{ width: "15%" }}></div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+
+
+            <div>
+              {goals.map(goal => (
+                <div key={goal.id} className='flex mb-3 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>
+                  <img className="my-auto w-24 h-24 object-cover rounded" src="https://www.speexx.com/wp-content/uploads/goal-setting-basics.jpg" />
+                  <div className='mx-4'>
+
+                    <div className='mb-1 flex text-xs text-gray-400'>
+                      <p>Goal</p>
+                      <span className='mx-2'>|</span>
+                      <p>Starts {new Date(goal.start_date).toLocaleString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</p>
+                      <span className='mx-2'>|</span>
+                      <p>Ends {new Date(goal.end_date).toLocaleString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })}</p>
+                    </div>
+
+                    <p className='mb-1 font-bold'>{goal.title}</p>
+
+                    <p className='mb-3 text-sm text-gray-500'>{goal.description}</p>
+
+
+                    <div className='flex text-sm text-gray-400'>
+                      <p className='mr-auto'>15</p>
+                      <p className='text-xs'>15%</p>
+                      <p className='ml-auto'>100</p>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
+                      <div className="bg-[#61E9B1] h-1.5 rounded-full" style={{ width: "15%" }}></div>
+                    </div>
+
+                    <div className='flex text-xs text-gray-400'>
+                      <p>STATUS: {goal.status.name}</p>
+                      <p className='ml-6'>CATEGORY: {goal.category.name}</p>
+                    </div>
+
                   </div>
 
-                  <p className='mb-1 font-bold'>Challenge title</p>
-
-                  <p className='mb-3 text-sm text-gray-500'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin consequat ornare nibh, nec vestibulum velit commodo nec. In varius pharetra ornare.</p>
-
-              </div>
-              <div className='flex ml-auto'>
-                <div className='my-auto text-sm text-nowrap'>
-                50 <i className="fa-solid fa-user-check text-gray-400"></i>
+                  <div className='ml-auto'>
+                    <div className='text-gray-400 hover:text-gray-300 cursor-pointer'>
+                      <i className="fa-solid fa-circle-check"></i>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className='ml-auto'>
-                <div className='text-gray-400 hover:text-gray-300 cursor-pointer'>
-                  <i className="fa-solid fa-circle-check"></i>
-                </div>
-              </div>
+              ))}
             </div>
-            <hr className='my-4'/>
-            <div className='flex items-center'>
-              <img className='w-10 h-10 rounded-full' src="https://wearecardinals.com/wp-content/uploads/2020/04/u1Re9qgMfM8d6kumlW85PS6s55jQh5fbdmppgQsP.jpeg" />
-              <div className='ml-3'>
-                <p className='text-[14px]'><Link to='/group/1' className='hover:text-[#4edba1]'>Furious group</Link></p>
-                <p className='text-xs text-gray-700'>By <Link to='/group/1' className='hover:text-[#4edba1]'>Tautvydas</Link> {dateDiffToString('2024-03-11 12:20:05')} ago</p>
-              </div>
-            </div>
+
           </div>
-
-          <div className='mb-3 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>
-            <div className='flex'>
-              <img className="my-auto w-24 h-24 object-cover rounded" src="https://www.speexx.com/wp-content/uploads/goal-setting-basics.jpg" />
-              <div className='mx-4'>
-
-                  <div className='mb-1 flex text-xs text-gray-400'>
-                    <p>Goal</p>
-                    <span className='mx-2'>|</span>
-                    <p>Starts 2024-03-06 10:30</p>
-                    <span className='mx-2'>|</span>
-                    <p>Ends 2024-03-10 10:30</p>
-                  </div>
-
-                  <p className='mb-1 font-bold'>Goal title</p>
-
-                  <p className='mb-3 text-sm text-gray-500'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin consequat ornare nibh, nec vestibulum velit commodo nec. In varius pharetra ornare.</p>
-
-                  <div className='flex text-sm text-gray-400'>
-                    <p className='mr-auto'>15</p>
-                    <p className='text-xs'>15%</p>
-                    <p className='ml-auto'>100</p>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
-                    <div className="bg-[#61E9B1] h-1.5 rounded-full" style={{ width: "15%" }}></div>
-                  </div>
-                  
-                  <div className='flex text-xs text-gray-400'>
-                    <p>STATUS: [STATUS GOES HERE]</p>
-                    <p className='ml-6'>CATEGORY: [CATEGORY GOES HERE]</p>
-                  </div>
-
-              </div>
-              <div className='flex ml-auto'>
-                <div className='my-auto text-sm text-nowrap'>
-                50 <i className="fa-solid fa-user-check text-gray-400"></i>
-                </div>
-              </div>
-              <div className='ml-auto'>
-                <div className='text-gray-400 hover:text-gray-300 cursor-pointer'>
-                  <i className="fa-solid fa-circle-check"></i>
-                </div>
-              </div>
-            </div>
-            <hr className='my-4'/>
-            <div className='flex items-center'>
-              <img className='w-10 h-10 rounded-full' src="https://wearecardinals.com/wp-content/uploads/2020/04/u1Re9qgMfM8d6kumlW85PS6s55jQh5fbdmppgQsP.jpeg" />
-              <div className='ml-3'>
-                <p className='text-[14px]'><Link to='/group/1' className='hover:text-[#4edba1]'>Furious group</Link></p>
-                <p className='text-xs text-gray-700'>By <Link to='/group/1' className='hover:text-[#4edba1]'>Tautvydas</Link> {dateDiffToString('2024-03-11 12:20:05')} ago</p>
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <div className='w-96 text-sm text-gray-600'>
+          <div className='w-96 text-sm text-gray-600'>
 
           <div className='mb-4 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100 text-sm text-gray-600'>
             <p className='text-black font-bold'>Achievements</p>

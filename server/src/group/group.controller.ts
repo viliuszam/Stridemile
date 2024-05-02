@@ -307,6 +307,22 @@ export class GroupController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @Get('getAllGroupsEvents')
+  async getAllGroupsEvents(@Request() req) {
+    try {
+      const userGroups = await this.groupService.findCurrentUserGroups(req.user.id);
+
+      const events = await Promise.all(
+        userGroups.map(group => this.groupService.getEvents(group.id))
+      );
+  
+      return { events: events.flat() };
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
   @Get(':eventId/event-comments')
   async getEventComments(@Request() req, @Param('eventId') eventId: number) {
     const eid = parseInt(eventId.toString(), 10);
@@ -433,6 +449,22 @@ export class GroupController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @Get('getAllGroupsGoals')
+  async getAllGroupsGoals(@Request() req) {
+    try {
+      const userGroups = await this.groupService.findCurrentUserGroups(req.user.id);
+
+      const goals = await Promise.all(
+        userGroups.map(group => this.groupService.getGoals(group.id))
+      );
+  
+      return { goals: goals.flat() };
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
   @Get(':groupId/challenges')
   async getAllChallenges(@Request() req, @Param('groupId') groupId: number) {
     const gid = parseInt(groupId.toString(), 10);
@@ -453,6 +485,22 @@ export class GroupController {
   
       const challenges = await this.groupService.getChallenges(gid);
       return { challenges };
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('getAllGroupsChallenges')
+  async getAllGroupsChallenges(@Request() req) {
+    try {
+      const userGroups = await this.groupService.findCurrentUserGroups(req.user.id);
+
+      const challenges = await Promise.all(
+        userGroups.map(group => this.groupService.getChallenges(group.id))
+      );
+  
+      return { challenges: challenges.flat() };
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }

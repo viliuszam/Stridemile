@@ -9,7 +9,7 @@ export class ActivityService {
   constructor(
     private prisma: PrismaService,
     private groupService: GroupService,
-  ) {}
+  ) { }
 
   async createActivityEntry(
     activityEntry: ActivityEntry,
@@ -48,7 +48,7 @@ export class ActivityService {
         group: true,
       },
     });
-  
+
     for (const group of userGroups) {
       const activeChallenges = await this.prisma.challenge.findMany({
         where: {
@@ -61,7 +61,7 @@ export class ActivityService {
           },
         },
       });
-  
+
       // lavoninis kodas visiskai lol
       for (const challenge of activeChallenges) {
         const existingParticipation = await this.prisma.challengeParticipation.findFirst({
@@ -70,7 +70,7 @@ export class ActivityService {
             challengeId: challenge.id,
           },
         });
-  
+
         if (existingParticipation) {
           await this.groupService.markChallengeParticipation(userId, challenge.id, steps);
         }
@@ -88,7 +88,7 @@ export class ActivityService {
         group: true,
       },
     });
-  
+
     for (const groupMember of userGroups) {
       const activeGoals = await this.prisma.goal.findMany({
         where: {
@@ -101,7 +101,7 @@ export class ActivityService {
           },
         },
       });
-  
+
       for (const goal of activeGoals) {
         // Update the current_value based on the activity entry
         await this.prisma.goal.update({
@@ -165,5 +165,38 @@ export class ActivityService {
 
     const monthlySteps = activityEntries.reduce((sum, entry) => sum + entry.steps, 0);
     return monthlySteps;
+  }
+
+  async countDaysWith5000Steps(userId: number): Promise<number> {
+    const entries = await this.prisma.activityEntry.findMany({
+      where: {
+        fk_Userid: userId,
+        steps: {
+          not: null,
+        }
+      },
+      select: {
+        steps: true,
+        start_time: true,
+      }
+    });
+
+    const dailySteps = entries.reduce((acc: Record<string, number>, entry) => {
+      const day = entry.start_time.toISOString().split('T')[0];
+      if (!acc[day]) {
+        acc[day] = 0;
+      }
+      if (entry.steps) {
+        acc[day] += entry.steps;
+      }
+      return acc;
+    }, {} as Record<string, number>);
+
+    return Object.values(dailySteps).reduce((count: number, steps: number) => {
+      if (steps >= 5000) {
+        count++;
+      }
+      return count;
+    }, 0);
   }
 }

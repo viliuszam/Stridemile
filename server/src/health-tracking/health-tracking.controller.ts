@@ -7,15 +7,15 @@ import { Get, Param, HttpStatus, HttpException, NotFoundException, UseGuards, Re
 
 @Controller('health-tracking')
 export class HealthTrackingController {
-  constructor(private readonly healthTrackingService: HealthTrackingService) {}
+  constructor(private readonly healthTrackingService: HealthTrackingService) { }
 
   @UseGuards(AuthGuard('jwt'))
   @Post('createStats')
-  async createStats(@Body() createStatisticsDto: CreateStatisticsDto,  @Request() req) {
+  async createStats(@Body() createStatisticsDto: CreateStatisticsDto, @Request() req) {
     try {
       const userId = req.user.id;
       var { sleep, calories, macroelements, water, weight } = req.body;
-      
+
       const createStatisticsDto: CreateStatisticsDto = {
         sleep,
         calories,

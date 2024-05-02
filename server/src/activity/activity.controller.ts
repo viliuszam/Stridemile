@@ -5,7 +5,7 @@ import { ActivityService } from './activity.service';
 
 @Controller('activity')
 export class ActivityController {
-  constructor(private activityService: ActivityService) {}
+  constructor(private activityService: ActivityService) { }
 
   @UseGuards(AuthGuard('jwt'))
   @UsePipes(new ValidationPipe())
@@ -18,7 +18,7 @@ export class ActivityController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('monthlySteps')
-  async getMonthlySteps(@Request() req){
+  async getMonthlySteps(@Request() req) {
     const userId = req.user.id;
     return this.activityService.getMonthlyUserSteps(userId);
   }
@@ -33,5 +33,12 @@ export class ActivityController {
     const userId = req.user.id;
     return this.activityService.getUserActivitySummary(userId);
   }
-  
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('dailysteps')
+  async calculateDailySteps(@Request() req) {
+    const userId = req.user.id;
+    return this.activityService.countDaysWith5000Steps(userId);
+  }
+
 }

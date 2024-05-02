@@ -387,14 +387,15 @@ model Person {
 }
 
 model Achievement {
-  id              Int                   @id @default(autoincrement())
-  title           String                @unique
-  description     String?
-  steps_required  Int?
-  time_required_s Int?
-  logs_required   Int?
-  points          Int
-  users           AchievementsOnUsers[]
+  id                   Int                   @id @default(autoincrement())
+  title                String                @unique
+  description          String?
+  steps_required       Int?
+  time_required_s      Int?
+  logs_required        Int?
+  daily_steps_required Int?
+  points               Int
+  users                AchievementsOnUsers[]
   //date_achieved DateTime?
   //points_count  Int?
   //person        Person   @relation(fields: [fk_Personid], references: [id])

@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 export default () => {
   const [points, setPoints] = useState([]);
   const [monthlySteps, setMonthlySteps] = useState([]);
+  const [dailySteps, setDailySteps] = useState();
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
@@ -53,6 +54,22 @@ export default () => {
       })
       .catch(error => {
         console.error('Error fetching steps: ', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+
+    axios.get('http://localhost:3333/activity/dailysteps', {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+      .then(response => {
+        setDailySteps(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching daily steps count: ', error);
       });
   }, []);
 

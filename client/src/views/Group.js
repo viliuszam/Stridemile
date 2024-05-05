@@ -60,6 +60,14 @@ const InviteForm = () => {
       }
     });
 
+    socket.on('leave', (data) => {
+      setUserLocations((prevState) => {
+        const updatedLocations = { ...prevState };
+        delete updatedLocations[data.userId];
+        return updatedLocations;
+      });
+    });
+
     return () => {
       socket.disconnect();
     };

@@ -90,6 +90,7 @@ export class WebsocketGateway implements OnGatewayConnection, OnGatewayDisconnec
           });
         });
 
+        this.server.emit('leave', { userId });
         const lastLocation = client.data.lastLocation;
         if (lastLocation) {
           this.prisma.lastLocation.upsert({

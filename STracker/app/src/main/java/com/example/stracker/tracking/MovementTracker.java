@@ -1,14 +1,21 @@
 package com.example.stracker.tracking;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationRequest;
 import android.os.PowerManager;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.stracker.LoginActivity;
 import com.example.stracker.networking.RetrofitClient;
@@ -24,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pub.devrel.easypermissions.EasyPermissions;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -86,7 +94,17 @@ public class MovementTracker {
         }
     };
 
+
     private void startLocationUpdates() {
+        // Kai kuriuose tel. pagal nutylejima isjungtas GPS sekimas fone, reikia pakeist per nustatymus,
+        // net pirma kart paleidus aplikacija neduoda requestint sekimo fone (bent jau pas mane)
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) context,
+                    new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},
+                    1002);
+            return;
+        }
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         try {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 300L, 0F, locationListener);

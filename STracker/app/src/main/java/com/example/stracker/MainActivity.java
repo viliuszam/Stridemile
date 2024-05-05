@@ -1,5 +1,6 @@
 package com.example.stracker;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity /*implements SensorEventList
         greetingTextView.setText("Welcome, " + getUsername() + "!");
 
         String[] perms = {Manifest.permission.ACTIVITY_RECOGNITION, Manifest.permission.POST_NOTIFICATIONS,
-                Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+                Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, /*Manifest.permission.ACCESS_BACKGROUND_LOCATION*/};
         if (EasyPermissions.hasPermissions(this, perms)) {
             startService(new Intent(this, TrackingService.class));
             if (stepCountReceiver == null) {

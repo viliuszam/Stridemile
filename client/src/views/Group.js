@@ -26,6 +26,8 @@ const InviteForm = () => {
   const [userLocations, setUserLocations] = useState([]);
 
   useEffect(() => {
+    // Darant mapa, detalesne user info parodymui galima gaut is groupInfo.groupMembers
+    // Also yra endpointas su lastSeen informacija - users/:userId/last-seen
     const accessToken = localStorage.getItem('accessToken');
     const socket = io('http://192.168.1.101:3333', {
       transportOptions: {

@@ -39,6 +39,8 @@ import CreateShopItem from "./views/CreateShopItem";
 import EditShopItem from "./views/EditShopItem";
 import AllPurchases from "./views/AllPurchases";
 import ShopItem from "./views/ShopItem";
+import AllChats from "./views/AllChats";
+import Chat from "./views/Chat";
 
 export default function App() {
   const navigate = useNavigate();
@@ -84,6 +86,8 @@ export default function App() {
         <Route path="/all-purchases" element={<AllPurchases />} />
         <Route path="/create-shop-item" element={<CreateShopItem />} />
         <Route path="/edit-shop-item/:itemId" element={<EditShopItem />} />
+        <Route path="/all-chats" element={<AllChats />} />
+        <Route path="/chats/:chatId" element={<Chat />} />
       </Route>
 
       <Route element={<AuthLayout />}>

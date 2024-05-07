@@ -15,10 +15,11 @@ import { RewardModule } from './reward/reward.module';
 import { HealthTrackingModule } from './health-tracking/health-tracking.module'; 
 import { WebsocketModule } from './websockets/websocket.module';
 import { ShopItemModule } from './shop-item/shop-item.module';
+import { ChatModule } from './chat/chat.module';
  
 
 @Module({
-  imports: [ConfigModule.forRoot({isGlobal: true}), HealthTrackingModule, AuthModule, UserModule, PrismaModule, ActivityModule, GroupModule, GroupVisibilityModule, AchievementModule, CategoryOptionsModule, RewardModule, StatusOptionsModule, WebsocketModule, ShopItemModule],
+  imports: [ConfigModule.forRoot({isGlobal: true}), ChatModule, HealthTrackingModule, AuthModule, UserModule, PrismaModule, ActivityModule, GroupModule, GroupVisibilityModule, AchievementModule, CategoryOptionsModule, RewardModule, StatusOptionsModule, WebsocketModule, ShopItemModule],
   controllers: [],
   providers: [],
 })

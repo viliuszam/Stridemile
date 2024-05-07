@@ -87,7 +87,7 @@ export default function App() {
         <Route path="/create-shop-item" element={<CreateShopItem />} />
         <Route path="/edit-shop-item/:itemId" element={<EditShopItem />} />
         <Route path="/all-chats" element={<AllChats />} />
-        <Route path="/chats/:chatId" element={<Chat />} />
+        <Route path="/chats/:id"  element={<Chat />} />
       </Route>
 
       <Route element={<AuthLayout />}>

@@ -23,7 +23,13 @@ export default () => {
     if (currentUser) {
       fetchChats();
     }
-  }, [id]);
+
+    const interval = setInterval(() => {
+      fetchChats();
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [setAlert, id]);
 
   const fetchCurrentUser = async () => {
     const accessToken = localStorage.getItem('accessToken');
@@ -121,7 +127,11 @@ export default () => {
     const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
     const minutesDifference = Math.floor((timeDifference / (1000 * 60)) % 60);
   
-    if (hoursDifference > 0) {
+    if (hoursDifference >= 24) {
+      const daysDifference = Math.floor(hoursDifference / 24);
+      const remainingHours = hoursDifference % 24;
+      return `${daysDifference} days ${remainingHours} hours ago`;
+    } else if (hoursDifference > 0) {
       return `${hoursDifference} hours ${minutesDifference} minutes ago`;
     } else if (minutesDifference > 0) {
       return `${minutesDifference} minutes ago`;
@@ -129,6 +139,7 @@ export default () => {
       return 'Just now';
     }
   }
+  
   
   return (
     <div className="w-full">

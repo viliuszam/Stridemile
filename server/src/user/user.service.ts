@@ -97,6 +97,10 @@ export class UserService {
         }
     }
 
+    async findAllUsers() {
+      return this.prisma.user.findMany();
+    }
+
     async changeUsername(userId: number, newUsername: string): Promise<void> {
         const existingUser = await this.prisma.user.findUnique({
           where: { username: newUsername },

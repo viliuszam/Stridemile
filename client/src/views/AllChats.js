@@ -17,6 +17,12 @@ export default () => {
     if (currentUser) {
       fetchAllChats();
     }
+
+    const interval = setInterval(() => {
+      fetchAllChats();
+    }, 10000);
+
+    return () => clearInterval(interval);
   }, [setAlert]);
 
   const fetchCurrentUser = async () => {
@@ -87,7 +93,11 @@ export default () => {
     const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
     const minutesDifference = Math.floor((timeDifference / (1000 * 60)) % 60);
   
-    if (hoursDifference > 0) {
+    if (hoursDifference >= 24) {
+      const daysDifference = Math.floor(hoursDifference / 24);
+      const remainingHours = hoursDifference % 24;
+      return `${daysDifference} days ${remainingHours} hours ago`;
+    } else if (hoursDifference > 0) {
       return `${hoursDifference} hours ${minutesDifference} minutes ago`;
     } else if (minutesDifference > 0) {
       return `${minutesDifference} minutes ago`;
@@ -95,6 +105,7 @@ export default () => {
       return 'Just now';
     }
   }
+  
 
   return (
     <div className="w-full">
@@ -121,9 +132,11 @@ export default () => {
         
         <hr className="my-9 mt-9" />
 
-        <button onClick={fetchAllChats} className="w-full mb-3 p-3 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1]">
-        <i class="fa-solid fa-message"></i> Create a new message
-        </button>
+        <Link to="/create-message">
+          <button className="w-full mb-3 p-3 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1]">
+            <i class="fa-solid fa-message"></i> Create a new message
+          </button>
+        </Link>
       </div>
       <div className="w-3/6 sm:mx-8 mx-auto">
         <h2 className="pb-3 pt-6 font-semibold text-xl">Who can create message others?</h2>

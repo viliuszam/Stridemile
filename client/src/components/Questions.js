@@ -41,7 +41,7 @@ const Footer = () => {
             <b>Should I use the same account for website and mobile app?</b>
           </AccordionSummary>
           <AccordionDetails>
-            Yes. StrideMile is a cross-platform, therefore, users should use the same account on any device.
+            Yes. StrideMile is cross-platform, therefore, users should use the same account on any device.
           </AccordionDetails>
         </Accordion>
         <Accordion className='py-3'>
@@ -65,7 +65,7 @@ const Footer = () => {
             <b>Why should I join StrideMile community?</b>
           </AccordionSummary>
           <AccordionDetails>
-            To increase your physical activity levels, be motivated and improve health by interacting with others.
+          To elevate your physical activity, find motivation, and enhance your health through engaging interactions with like-minded individuals.
           </AccordionDetails>
         </Accordion>
         <Accordion className='py-3'>
@@ -77,7 +77,7 @@ const Footer = () => {
             <b>Who can create a group?</b>
           </AccordionSummary>
           <AccordionDetails>
-            Everyone with a huge willingness and motivation to unite people.
+            Any user with motivation to unite people in physical activity.
           </AccordionDetails>
         </Accordion>
   </div>

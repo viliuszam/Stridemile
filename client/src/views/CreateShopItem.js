@@ -117,19 +117,16 @@ export default () => {
       </div>
       <div className="w-3/6 sm:mx-8 mx-auto">
         <h2 className="pb-3 pt-1 font-semibold text-xl">What are shop items?</h2>
-        <p>Things StrideMile's users can purchase in the shop. There are different categories of items, therefore,
-           everybody should really find what they are searching for.
-        </p>
+        <p>Shop items are products available for purchase within the StrideMile platform. They span across various categories, ensuring that every user can find what they're looking for.</p>
+        
         <h2 className="pb-3 pt-6 font-semibold text-xl">How can you pay for shop items?</h2>
-        <p>You pay by your points. When buying an item, your points are decreased by item's price.
-        </p>
-        <h2 className="pb-3 pt-6 font-semibold text-xl">How can you get points?</h2>
-        <p>You can earn them by completing achievements.
-        </p>
-        <h2 className="pb-3 pt-6 font-semibold text-xl">Is it true that you can buy an item only one time?</h2>
-        <p>Yes. We decided that it would be fare if all users had a possibility to buy items. If all users bought many items,
-          we would not be able to provide everybody with items.
-        </p>
+        <p>You can pay for shop items using your points. Each purchase deducts the item's price from your points balance.</p>
+        
+        <h2 className="pb-3 pt-6 font-semibold text-xl">How can you earn points?</h2>
+        <p>Points can be earned by completing achievements.</p>
+        
+        <h2 className="pb-3 pt-6 font-semibold text-xl">Is it true that you can buy an item only once?</h2>
+        <p>Yes, that's correct. We've implemented a one-time purchase policy to ensure fairness among all users.</p>
       </div>
     </div>
     </div>

@@ -34,7 +34,7 @@ export default () => {
                     <div className="mx-auto flex pt-3 pb-4">
                     <h2 className="text-xl">Support</h2>
                     </div>
-                    <p className="pb-4">Ask your questions and we will respond them as soon as we can!</p>
+                    <p className="pb-4">Ask your questions and we will respond to them as soon as we can!</p>
                     <p className="text-[#61E9B1] hover:underline"><a href="">snoozy053@gmail.com</a></p>
                 </div>
                 <div className="ml-auto mr-auto pl-2 pr-2">

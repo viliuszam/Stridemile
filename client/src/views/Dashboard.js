@@ -538,7 +538,7 @@ export default () => {
 
           <div className='mb-4 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100 text-sm text-gray-600'>
             <p className='text-black font-bold'>Achievements</p>
-            <p className='mb-3 text-xs text-gray-600'>Statistics of your completed achievements</p>
+            <p className='mb-3 text-xs text-gray-600'>Percentage of total achievements completed</p>
             <div className='flex my-auto place-items-center'>
               <p className='flex text-center text-gray-500 text-5xl font-bold'>
                 {((points.userPoints / points.totalPoints) * 100).toFixed(0)} <i className="fa-solid fa-percent"></i>
@@ -567,7 +567,7 @@ export default () => {
 
           <div className='p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100 text-sm text-gray-600'>
             <p className='text-black font-bold'>Steps</p>
-            <p className='mb-3 text-xs text-gray-600'>In this month you made this much steps:</p>
+            <p className='mb-3 text-xs text-gray-600'>You took this many steps this month:</p>
             <div className='py-4 flex my-auto place-items-center'>
               <p className='flex text-center text-gray-500 text-5xl font-bold'>
                 {monthlySteps}

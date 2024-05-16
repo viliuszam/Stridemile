@@ -248,8 +248,9 @@ const HealthTracking = () => {
         </div>
       </div>
 
+      
       <form onSubmit={createStatistics}>
-        <div className='grid grid-cols-4 gap-4'>
+        <div className='grid grid-cols-4 gap-4 mt-4'>
           <div className='mb-3 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>
             <p className='text-black font-bold'>Sleep</p>
             <input
@@ -258,7 +259,7 @@ const HealthTracking = () => {
               value={formData.sleep}
               onChange={(e) => setFormData({ ...formData, sleep: e.target.value })} 
               placeholder="Hours of sleep" 
-              className='text-sm text-gray-500 text-4xl font-bold'
+              className='mt-2 p-3 bg-white rounded-lg text-sm font-bold border-[1px] border-gray-400 text-gray-500 font-bold'
             />
           </div>
 
@@ -270,7 +271,7 @@ const HealthTracking = () => {
               value={formData.calories}
               onChange={(e) => setFormData({ ...formData, calories: e.target.value })} 
               placeholder="Calories burned" 
-              className='text-sm text-gray-500 text-4xl font-bold'
+              className='mt-2 p-3 bg-white rounded-lg text-sm font-bold border-[1px] border-gray-400 text-gray-500 font-bold'
             />
           </div>
 
@@ -282,7 +283,7 @@ const HealthTracking = () => {
               value={formData.macroelements}
               onChange={(e) => setFormData({ ...formData, macroelements: e.target.value })} 
               placeholder="kCal consumed"
-              className='text-sm text-gray-500 text-4xl font-bold'
+              className='mt-2 p-3 bg-white rounded-lg text-sm font-bold border-[1px] border-gray-400 text-gray-500 font-bold'
             />
           </div>
 
@@ -294,13 +295,13 @@ const HealthTracking = () => {
               value={formData.water}
               onChange={(e) => setFormData({ ...formData, water: e.target.value })} 
               placeholder="Water liters consumed"
-              className='text-sm text-gray-500 text-4xl font-bold'
+              className='mt-2 p-3 bg-white rounded-lg text-sm font-bold border-[1px] border-gray-400 text-gray-500 font-bold'
             />
           </div>
         </div>
 
-        <button type='submit' className='text-[#4edba1] font-bold pb-2 border-b-4 border-[#4edba1]'>
-          Submit
+        <button type='submit' className='bg-[#61E9B1] border-[1px] border-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 text-sm border border-solid border-[#61E9B1] block w-full mb-3 p-3 text-center border-[1px] rounded-lg'>
+        <i class="fa-solid fa-notes-medical"></i> Submit
         </button>
       </form>
 

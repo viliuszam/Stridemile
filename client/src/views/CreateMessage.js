@@ -35,15 +35,19 @@ const CreateMessage = ({ currentUser, setAlert, history }) => {
   };
 
   return (
-    <div>
-      <h1>Select a recipient:</h1>
+    <div className='mt-10'>
+      <h1 className="text-2xl text-center font-medium">Create a message</h1>
+      <hr className="my-6" />
+      <div className='mx-auto text-center'>
+      <h1 className="text-lg text-center font-medium mb-4">Select a recipient:</h1>
       <ul>
         {allUsers.map(user => (
-          <li key={user.id} onClick={() => handleRecipientSelection(user.id)}>
+          <li key={user.id} onClick={() => handleRecipientSelection(user.id)} className='text-medium hover:text-[#61E9B1] pb-2'>
             {user.username}
           </li>
         ))}
       </ul>
+      </div>
     </div>
   );
 };

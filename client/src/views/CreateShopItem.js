@@ -127,6 +127,14 @@ export default () => {
         
         <h2 className="pb-3 pt-6 font-semibold text-xl">Is it true that you can buy an item only once?</h2>
         <p>Yes, that's correct. We've implemented a one-time purchase policy to ensure fairness among all users.</p>
+
+        <hr className="my-9 mt-12 mr-6" />
+
+        <div className="pt-3 pb-4 text-right">
+          <Link to="/shop" className="bg-[#61E9B1] border-[1px] border-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 md:m-6 md:ml-[83px] text-sm border border-solid border-[#61E9B1]">
+            Back to shop
+          </Link>
+        </div>
       </div>
     </div>
     </div>

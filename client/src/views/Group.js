@@ -1,11 +1,14 @@
 import '../styles/Home.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useOutletContext } from "react-router-dom";
 import axios from 'axios';
 import { getUser } from '../classes/User';
 import { AlertTypes } from '../styles/modules/AlertStyles';
 import Alert from '../components/Alert';
 import { io } from "socket.io-client";
+import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet'
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
 
 const getMapsUrl = (loc) => {
   return `https://www.google.com/maps/place/${loc}/`
@@ -360,6 +363,27 @@ const InviteForm = () => {
     }
   };
 
+  const [map, setMap] = useState(null)
+  const [position, setPosition] = useState(() => null)
+
+  const onMove = useCallback(() => {
+    setPosition(map.getCenter())
+  }, [map])
+
+  useEffect(() => {
+    if (!map) return
+    map.on('move', onMove)
+    return () => {
+      map.off('move', onMove)
+    }
+  }, [map, onMove])
+
+  const ResizeMap = () => {
+    const map = useMap();
+    map._onResize();
+    return null;
+  };
+
   if (groupInfo)
     return (
       <div className='container'>
@@ -628,8 +652,43 @@ const InviteForm = () => {
             )}
 
             <div className='relative mt-10 mb-20'>
-              <h2 className='text-lg font-semibold mb-4'>User Locations</h2>
-              <div className='grid grid-cols-2 gap-4'>
+              <h2 className='mb-4 text-black font-bold'>User Locations</h2>
+              <div className=''>
+
+                {/* position ?
+                  <>latitude: {position.lat.toFixed(4)}, longitude: {position.lng.toFixed(4)}{' '}</>
+                  : null
+                */}
+
+                <MapContainer
+                  className="markercluster-map w-full h-60 z-0 rounded-xl border-[1px] border-gray-100 overflow-auto"
+                  center={[55.1663, 23.8513]}
+                  zoom={6}
+                  minZoom={6}
+                  maxZoom={6}
+                  ref={setMap}
+                  zoomControl={false}
+                  //dragging={false}
+                >
+                  <ResizeMap />
+                  <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                  />
+
+                  <Marker className='cursor-none' position={[54.6852, 25.2823]} icon={new L.Icon({
+                    iconUrl: require('../images/mapIcon.png'),
+                    iconSize: [22, 22],
+                  })} />
+
+                  <Marker position={[54.6852, 24.2823]} icon={new L.Icon({
+                    iconUrl: require('../images/mapIcon.png'),
+                    iconSize: [22, 22],
+                  })} />
+
+                </MapContainer>
+
+                {/* 
                 {Object.entries(userLocations).map(([userId, location]) => (
                   <div key={userId} className='p-4 bg-gray-100 rounded-lg'>
                     <p>User ID: {userId}</p>
@@ -638,12 +697,12 @@ const InviteForm = () => {
                     </p>
                   </div>
                 ))}
+                */}
               </div>
             </div>
 
           </div>
         </div>
-
       </div>
     );
 };

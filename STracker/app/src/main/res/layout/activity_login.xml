@@ -83,6 +83,18 @@
             app:srcCompat="@drawable/center_login" />
     </androidx.cardview.widget.CardView>
 
+    <Button
+        android:id="@+id/faq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="end|top"
+        android:layout_marginTop="-170dp"
+        android:background="@drawable/btn_bg"
+        android:text="FAQ/About Us" />
+
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"

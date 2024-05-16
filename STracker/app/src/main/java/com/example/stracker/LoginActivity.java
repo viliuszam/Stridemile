@@ -21,8 +21,6 @@ import org.json.JSONObject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -42,6 +40,16 @@ public class LoginActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //Atidaro FAQ langą paspaudus
+        Button faq = (Button) findViewById(R.id.faq);
+        faq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent faqintent = new Intent(LoginActivity.this, FAQActivity.class);
+                startActivity(faqintent);
+            }
+        });
 
         // Atkomentuot viska toliau jeigu reikia debugginimui
         /*

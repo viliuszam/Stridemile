@@ -9,53 +9,29 @@
     android:padding="20dp"
     tools:context=".MainActivity">
 
-    <LinearLayout
-        android:layout_width="369dp"
+    <TextView
+        android:id="@+id/greeting"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="50dp"
-        android:orientation="vertical">
+        android:layout_gravity="start|top"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:text="TextView"
+        android:textColor="@color/white" />
 
-
-        <TextView
-            android:id="@+id/greeting"
-            android:layout_width="242dp"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textColor="@color/black" />
-
-        <TextView
-            android:id="@+id/totalStepsDisplay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textColor="@color/black" />
-
-        <TextView
-            android:id="@+id/totalDistanceDisplay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textColor="@color/black" />
-
-        <TextView
-            android:id="@+id/totalTimeDisplay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textColor="@color/black" />
-
-    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="6dp"
+        android:background="@drawable/text_bg"
         android:padding="24dp"
-        android:text="Step counter"
-        android:textColor="@color/black"
-        android:textSize="40sp"
+        android:text="Step Counter"
+        android:textColor="@color/white"
+        android:textSize="30sp"
         android:textStyle="bold" />
 
     <TextView
@@ -63,9 +39,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:text="Sample goal: 5000"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="20sp" />
 
     <ProgressBar
@@ -75,14 +51,63 @@
         android:layout_height="89dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:background="@drawable/circular"
+        android:background="@android:drawable/ic_media_play"
         android:padding="10dp"
         android:progressDrawable="@drawable/progress" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/totalStepsDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:text="TextView"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/totalDistanceDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:text="TextView"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/totalTimeDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:text="TextView"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:foregroundGravity="center"
+        android:layout_margin="10dp"
+        android:layout_gravity="center">
 
         <ImageView
             android:layout_width="60dp"
@@ -94,10 +119,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="#45FFFFFF"
+            android:background="@drawable/text_bg"
             android:padding="20dp"
             android:text="Steps: 0"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="24sp" />
 
     </LinearLayout>
@@ -105,7 +130,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:foregroundGravity="center"
+        android:layout_margin="10dp"
+        android:layout_gravity="center">
 
         <ImageView
             android:layout_width="60dp"
@@ -117,10 +145,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="#45FFFFFF"
+            android:background="@drawable/text_bg"
             android:padding="20dp"
             android:text="Distance: 0"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="24sp" />
 
     </LinearLayout>
@@ -128,7 +156,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:foregroundGravity="center"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"
+        >
 
         <ImageView
             android:layout_width="60dp"
@@ -140,10 +172,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="#45FFFFFF"
+            android:background="@drawable/text_bg"
             android:padding="20dp"
             android:text="Time: 0"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="24sp" />
 
     </LinearLayout>
@@ -152,8 +184,9 @@
         android:id="@+id/logoutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right|top"
-        android:layout_marginTop="-600dp"
+        android:layout_gravity="end|top"
+        android:layout_marginTop="-680dp"
+        android:background="@drawable/btn_bg"
         android:onClick="onLogoutButtonPressed"
         android:text="Logout" />
 

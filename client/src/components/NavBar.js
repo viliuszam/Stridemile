@@ -32,7 +32,7 @@ const NavBar = () => {
   return (
     <div className='bg-white border-b border-b-solid border-b-gray-100 drop-shadow fixed top-0 w-full py-1 z-10'>
       <div className="md:flex bg-white container justify-center items-center">
-        <div className='text-black pt-4 pb-4 pl-2 text-sm my-auto flex' >
+        <div className='text-black pt-4 pb-4 text-sm my-auto flex' >
           <Link to="/">
             <img src={logo} className='h-6' alt="Logo" />
           </Link>
@@ -42,7 +42,7 @@ const NavBar = () => {
             return (
               <Link to="/dashboard" className="ml-5 my-auto flex pl-2 text-medium hover:text-[#61E9B1]">
                 <div className='flex hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
-                  <div className='pl-2 pr-2'>
+                  <div className='pl-1 pr-2'>
                     Home
                   </div>
                 </div>
@@ -104,7 +104,7 @@ const NavBar = () => {
         </Link>
         <Link to="/about-us" className="pl-2 pr-4 text-medium my-auto flex hover:text-[#61E9B1]">
           <div className='flex ml-2 hover:border-b hover:border-b-solid hover:border-b-[#61E9B1]'>
-            <div className='pl-2 pr-2'>
+            <div className='pl-2 pr-1'>
               About
             </div>
           </div>

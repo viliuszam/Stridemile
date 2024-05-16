@@ -24,14 +24,15 @@ export default () => {
     <div className="w-full">
       <div className="container pt-12">
         <div className="container md:flex mx-auto">
-          <div className='container pb-10 mx-auto'>
+          <div className='container mx-auto'>
             <p className='mb-4 text-2xl text-center font-semibold'>About us</p>
             <p className="pb-4 text-center">Get to know us!</p>
-            <p className="pb-12 text-center">The StrideMile team consists of six people: Deividas Grinius, Gvidas Garadauskas,
+            <p className="pb-8 text-center">The StrideMile team consists of six people: Deividas Grinius, Gvidas Garadauskas,
              Vilius Zamuiskas, Rimantas Mockus, Austėja Laurikaitytė and Martynas Lukoševičius. We, as students of KTU's IT faculty,
               are delighted to develop this product with the aim of helping individuals in achieving their goals and enhancing their quality of life by tenfold.</p>
           </div>
         </div>
+        <img src={require("../images/pvpkomanda.jpg")} alt="komanda" className="h-96 mx-auto"/>
       </div>
     </div>
   );

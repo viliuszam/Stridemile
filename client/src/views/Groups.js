@@ -97,7 +97,7 @@ const Home = () => {
                 filteredUserGroups.map((group) => (
                   <div key={group.id} className="bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-[#61E9B1]">
                     <div className="rounded-4xl pb-3 flex">
-                      <img src={group.image_url} alt="Group" className="rounded-4xl mx-auto" height={100} width={100} />
+                      <img src={group.image_url} alt="Group" className="rounded-4xl mx-auto object-cover h-24 w-24" />
                     </div>
                     <h2 className="font-semibold">{group.name}</h2>
                     <hr className="ml-6 mr-6 mt-4 mb-4" />
@@ -140,7 +140,7 @@ const Home = () => {
             filteredPublicGroups.map((group) => (
               <div key={group.id} className="bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-[#61E9B1]">
                 <div className="rounded-4xl pb-3 flex">
-                  <img src={group.image_url} alt="Group" className="rounded-4xl mx-auto" height={100} width={100} />
+                  <img src={group.image_url} alt="Group" className="rounded-4xl mx-auto object-cover h-24 w-24" />
                 </div>
                 <h2 className="font-semibold">{group.name}</h2>
                 <hr className="ml-6 mr-6 mt-4 mb-4" />

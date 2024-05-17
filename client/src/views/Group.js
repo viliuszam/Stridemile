@@ -677,15 +677,16 @@ const InviteForm = () => {
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                   />
 
-                  <Marker className='cursor-none' position={[54.6852, 25.2823]} icon={new L.Icon({
-                    iconUrl: require('../images/mapIcon.png'),
-                    iconSize: [22, 22],
-                  })} />
-
-                  <Marker position={[54.6852, 24.2823]} icon={new L.Icon({
-                    iconUrl: require('../images/mapIcon.png'),
-                    iconSize: [22, 22],
-                  })} />
+                  {Object.entries(userLocations).map(([userId, location]) => (
+                    <Marker className='cursor-none' position={[location.latitude, location.longitude]} icon={new L.Icon({
+                      iconUrl: require('../images/mapIcon.png'),
+                      iconSize: [22, 22],
+                    })}>
+                      <Popup>
+                        <p>User ID: {userId}</p>
+                      </Popup>
+                    </Marker>
+                  ))}
 
                 </MapContainer>
 

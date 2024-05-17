@@ -63,6 +63,9 @@ export class UserService {
     }
 
     private calculateAccountAge(registrationDate: Date): string {
+      if (!registrationDate) 
+        return 'Account is too old'
+
       const now = new Date();
       const diffMilliseconds = now.getTime() - registrationDate.getTime();
       const diffSeconds = Math.floor(diffMilliseconds / 1000);

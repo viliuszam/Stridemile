@@ -9,6 +9,7 @@ import { io } from "socket.io-client";
 import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import ProfileIcon from '../components/ProfileIcon';
 
 const getMapsUrl = (loc) => {
   return `https://www.google.com/maps/place/${loc}/`
@@ -633,7 +634,7 @@ const InviteForm = () => {
             <hr className='my-6' />
             <p className='mb-4 text-black font-bold'>Mentor</p>
             <div className='text-center inline-block'>
-              <img className='mx-auto w-10 h-10 rounded-full' src={groupInfo.mentor.profile_picture} />
+              <ProfileIcon username={groupInfo.mentor.username} imageUrl={groupInfo.mentor.profile_picture} userId={groupInfo.mentorId} />
               <p className='text-xs'>{groupInfo.mentor.username}</p>
             </div>
             <hr className='my-6' />

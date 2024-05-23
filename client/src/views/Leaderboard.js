@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Avatar } from '@mui/material';
 import { ApplyNicknameEmoji, ApplyNicknameEmojiFromUsername } from '../classes/Reward';
+import ProfileIcon from '../components/ProfileIcon';
 
 const UpdatedNickname = ApplyNicknameEmoji()
 
@@ -93,7 +94,10 @@ export default () => {
                 <div>{i + 1}</div>
                 <div className='col-span-2'>
                   <Link className='flex items-center' to={`/profile/${data.username}`}>
-                    <Avatar src={data.picture} /> <p className='ml-3' style={{ color: data.colour }}>{ApplyNicknameEmojiFromUsername(data.username, data.emoji)}</p>
+                    <ProfileIcon imageUrl={data.picture} username={data.username} userId={data.id} />
+                    <p className='ml-3' style={{ color: data.colour }}>
+                      {ApplyNicknameEmojiFromUsername(data.username, data.emoji)}
+                    </p>
                   </Link>
                 </div>
                 <div>{data.points} pts</div>
@@ -121,7 +125,7 @@ export default () => {
             <p className='mb-3 text-xs text-gray-600'>Collected points by completing various achievements</p>
             <div className='flex my-auto place-items-center'>
               <p className='flex text-center text-gray-500 text-5xl font-bold items-center'>
-              {leaderboard?.userPoints}
+                {leaderboard?.userPoints}
               </p>
 
             </div>

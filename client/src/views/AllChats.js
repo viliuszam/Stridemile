@@ -4,6 +4,7 @@ import { AlertTypes } from "../styles/modules/AlertStyles";
 import axios from 'axios';
 import NavBar from "../components/NavBar";
 import { Link } from "react-router-dom";
+import ProfileIcon from "../components/ProfileIcon";
 
 export default () => {
   const {setAlert } = useOutletContext();
@@ -119,7 +120,7 @@ export default () => {
           <Link key={index} to={`/chats/${chat.senderId !== currentUser ? chat.senderId : chat.receiverId}`}>
             <div className="mb-3 flex hover:bg-[#61E9B1] border border-solid border-[#61E9B1] rounded-lg">
               <div className="m-3">
-                <img src={chat.senderData.profile_picture} alt="photo" height={100} width={100} />
+                <ProfileIcon imageUrl={chat.senderData.profile_picture} username={chat.senderData.username} userId={chat.senderData.id} iconSize={100}/>
               </div>
               <div className="m-3">
                 <div className="text-xl mb-2 font-semibold">{chat.senderData.username}</div>

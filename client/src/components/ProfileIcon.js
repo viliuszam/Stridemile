@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 
 
-export default function ProfileIcon({ imageUrl, username, userId }) {
+export default function ProfileIcon({ imageUrl, username, userId, iconSize }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [popupData, setPopupData] = useState(null);
 
@@ -52,6 +52,7 @@ export default function ProfileIcon({ imageUrl, username, userId }) {
           src={imageUrl}
           onMouseEnter={handlePopoverOpen}
           onMouseLeave={handlePopoverClose}
+          sx={{ width: iconSize, height: iconSize }}
         />
       </Link>
 

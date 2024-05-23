@@ -642,13 +642,18 @@ const InviteForm = () => {
             {groupInfo.groupMembers.length === 0 ? (
               <p>No members.</p>
             ) : (
-              <div className='grid grid-cols-3 gap-4'>
-                {groupInfo.groupMembers.map((member) => (
-                  <div key={member.user.id} className='text-center'>
-                    <img className='mx-auto w-10 h-10 rounded-full' src={member.user.profile_picture} alt={member.user.username} />
-                    <p className='text-xs'>{member.user.username}</p>
-                  </div>
-                ))}
+              <div className=''>
+                {groupInfo.groupMembers.map((member, i) => {
+                  console.log(member)
+                  if (i < 2)
+                    return (
+                      <div key={member.user.id} className='text-center inline-block'>
+                        <ProfileIcon username={member.user.username} imageUrl={member.user.profile_picture} userId={member.userId} />
+                        <p className='text-xs'>{member.user.username}</p>
+                      </div>
+                    )
+                }
+                )}
               </div>
             )}
 
@@ -669,7 +674,7 @@ const InviteForm = () => {
                   maxZoom={6}
                   ref={setMap}
                   zoomControl={false}
-                  //dragging={false}
+                //dragging={false}
                 >
                   <ResizeMap />
                   <TileLayer

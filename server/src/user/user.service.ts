@@ -122,6 +122,7 @@ export class UserService {
     async getTop10UsersByPoints(userId: number) {
       const usersWithPoints = await this.prisma.user.findMany({
         select: {
+          id: true,
           username: true,
           profile_picture: true,
           colourHex: true,
@@ -144,7 +145,7 @@ export class UserService {
           return sum + achievement.achievement.points;
         }, 0);
         const lastAchievementDate = this.getLastAchievementDate(user.completedAchievements);
-        return { username: user.username, points: totalPoints, picture: user.profile_picture, emoji: user.emoji, colour: user.colourHex, lastAchievementDate };
+        return { id: user.id, username: user.username, points: totalPoints, picture: user.profile_picture, emoji: user.emoji, colour: user.colourHex, lastAchievementDate };
       });
     
       usersWithTotalPoints.sort((a, b) => {

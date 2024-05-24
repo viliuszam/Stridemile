@@ -97,16 +97,13 @@ const Home = () => {
                 filteredUserGroups.map((group) => (
                   <div key={group.id} className="bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-[#61E9B1]">
                     <div className="rounded-4xl pb-3 flex">
-                      <img src={group.image_url} alt="Group" className="rounded-4xl mx-auto object-cover h-24 w-24" />
+                      <img src={group.image_url} alt="Group" className="rounded-4xl mx-auto object-cover h-28 w-full mx-6 bg-gray-100 items-center justify-center flex text-gray-500" />
                     </div>
                     <h2 className="font-semibold">{group.name}</h2>
                     <hr className="ml-6 mr-6 mt-4 mb-4" />
                     <p className="text-sm">{group.visibility}</p>
                     <p className="text-sm"><span style={{ color: 'green', fontWeight: 'bold' }}>Mentor: {group.mentor.username}</span></p>
                     <p className="text-sm">{group.groupMembers.length} member(s)</p>
-                    {group.groupMembers.map((member) => (
-                      <p key={member.id} style={{ color: member.user.colourHex }}>{member.user.username}</p>
-                    ))}
                     <hr className="ml-6 mr-6 mt-4 mb-6" />
                     <Link to={`/group/${group.id}`} className="bg-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm border border-solid border-[#61E9B1]">
                       More information
@@ -140,16 +137,13 @@ const Home = () => {
             filteredPublicGroups.map((group) => (
               <div key={group.id} className="bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-[#61E9B1]">
                 <div className="rounded-4xl pb-3 flex">
-                  <img src={group.image_url} alt="Group" className="rounded-4xl mx-auto object-cover h-24 w-24" />
+                  <img src={group.image_url} alt="Group" className="rounded-4xl mx-auto object-cover h-28 w-full mx-6 bg-gray-100 items-center justify-center flex text-gray-500" />
                 </div>
                 <h2 className="font-semibold">{group.name}</h2>
                 <hr className="ml-6 mr-6 mt-4 mb-4" />
                 <p className="text-sm">{group.visibility}</p>
                 <p className="text-sm"><span style={{ color: 'green', fontWeight: 'bold' }}>Mentor: {group.mentor.username}</span></p>
                 <p className="text-sm">{group.groupMembers.length} member(s)</p>
-                {group.groupMembers.map((member) => (
-                  <p key={member.id} style={{ color: member.user.colourHex }}>{member.user.username}</p>
-                ))}
                 <hr className="ml-6 mr-6 mt-4 mb-6" />
                 <Link to={`/group/${group.id}`} className="bg-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 m-2 text-sm border border-solid border-[#61E9B1]">
                   More information

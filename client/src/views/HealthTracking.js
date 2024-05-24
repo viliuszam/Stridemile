@@ -154,7 +154,7 @@ const HealthTracking = () => {
               <p className='text-black font-bold'>Sleep</p>
               <p className='mb-3 text-xs text-gray-600'>Average amount of sleep per day</p>
               <p className='flex text-center text-gray-500 text-4xl font-bold'>
-                {averages.averageSleep.toFixed(2)} <span className='text-sm'>hr</span>
+                {averages.averageSleep ? averages.averageSleep.toFixed(2) : 0} <span className='text-sm'>hr</span>
               </p>
             </div>
 
@@ -162,7 +162,7 @@ const HealthTracking = () => {
               <p className='text-black font-bold'>Calories</p>
               <p className='mb-3 text-xs text-gray-600'>Average caloric intake per day</p>
               <p className='flex text-center text-gray-500 text-4xl font-bold'>
-                {averages.averageCalories.toFixed(2)}
+                {averages.averageCalories ?averages.averageCalories.toFixed(2) : 0}
               </p>
             </div>
 
@@ -170,7 +170,7 @@ const HealthTracking = () => {
               <p className='text-black font-bold leading-5'>Macroelements</p>
               <p className='mb-3 text-xs text-gray-600'>Average consumption of macroelements per day</p>
               <p className='flex text-center text-gray-500 text-4xl font-bold'>
-                {averages.averageMacroelements.toFixed(2)} <span className='text-sm'>kCal</span>
+                {averages.averageMacroelements ? averages.averageMacroelements.toFixed(2) : 0} <span className='text-sm'>kCal</span>
               </p>
             </div>
 
@@ -179,7 +179,7 @@ const HealthTracking = () => {
               <p className='text-black font-bold'>Water</p>
               <p className='mb-3 text-xs text-gray-600'>Average water consumption per day</p>
               <p className='flex text-center text-gray-500 text-4xl font-bold'>
-                {averages.averageWater.toFixed(2)} <span className='text-sm'>L</span>
+                {averages.averageWater ? averages.averageWater.toFixed(2) : 0} <span className='text-sm'>L</span>
               </p>
             </div>
           </div>        
@@ -236,8 +236,9 @@ const HealthTracking = () => {
                   type='text'
                   name='weight'
                   value={formData.weight}
+                  placeholder='0'
                   onChange={(e) => setFormData({ ...formData, weight: e.target.value })} 
-                  className='text-lg font-bold border-none outline-none bg-transparent'
+                  className='text-lg text-center font-bold border-none outline-none bg-transparent'
                   style={{ width: '30px' }}
                 /> kg
               </p>

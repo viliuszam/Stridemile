@@ -1,9 +1,10 @@
-import { useOutletContext, useParams } from "react-router-dom";
+import { useOutletContext, useParams, Navigate } from "react-router-dom";
 import { useState, useEffect } from 'react'
 import { AlertTypes } from "../styles/modules/AlertStyles";
 import axios from 'axios';
 import NavBar from "../components/NavBar";
 import { Link } from "react-router-dom";
+import { isLoggedIn } from "../classes/Auth";
 
 export default () => {
   const {setAlert } = useOutletContext();
@@ -107,7 +108,7 @@ export default () => {
   }
   
 
-  return (
+  return isLoggedIn() ? (
     <div className="w-full">
    
     <div className="container sm:flex pt-12">
@@ -145,5 +146,7 @@ export default () => {
       </div>
     </div>
     </div>
+  ) : (
+    <Navigate to='/login' />
   );
 };

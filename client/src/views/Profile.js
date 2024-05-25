@@ -1,6 +1,6 @@
 import '../styles/Home.css';
 import React from 'react';
-import { useParams, useOutletContext, Link } from "react-router-dom";
+import { useParams, useOutletContext, Link, Navigate } from "react-router-dom";
 import Avatar from '@mui/material/Avatar';
 import { AvatarGroup } from '@mui/material';
 import { getUser } from '../classes/User';
@@ -9,6 +9,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import { isLoggedIn } from "../classes/Auth";
 
 const getMapsUrl = (loc) => {
   return `https://www.google.com/maps/place/${loc}/`
@@ -76,7 +77,7 @@ const Profile = (props) => {
     return `${seconds} seconds`
   }
 
-  return (
+  return isLoggedIn() ? (
     <div className='container'>
 
       <div className='relative mt-10 h-32 w-full bg-gradient-to-b from-gray-100 to-gray-200 rounded-xl'>
@@ -306,6 +307,8 @@ const Profile = (props) => {
       </div>
 
     </div>
+  ) : (
+    <Navigate to='/login' />
   );
 };
 

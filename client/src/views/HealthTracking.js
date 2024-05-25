@@ -1,9 +1,10 @@
 import '../styles/Home.css';
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useOutletContext } from "react-router-dom";
+import { useParams, Link, useOutletContext, Navigate } from "react-router-dom";
 import personBody from '../images/person-body.png'
 import { AlertTypes } from "../styles/modules/AlertStyles";
 import axios from 'axios';
+import { isLoggedIn } from "../classes/Auth";
 
 const HealthTracking = () => {
   const { setAlert } = useOutletContext();
@@ -142,7 +143,7 @@ const HealthTracking = () => {
       }
     };
 
-  return (
+  return isLoggedIn() ? (
     <div className='container'>
 
       <div className='mt-10 flex'>
@@ -306,6 +307,8 @@ const HealthTracking = () => {
       </form>
 
     </div>
+  ) : (
+    <Navigate to='/login' />
   );
 };
 

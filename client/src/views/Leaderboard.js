@@ -2,9 +2,10 @@ import '../styles/Home.css';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { Avatar } from '@mui/material';
 import { ApplyNicknameEmoji, ApplyNicknameEmojiFromUsername } from '../classes/Reward';
+import { isLoggedIn } from "../classes/Auth";
 
 const UpdatedNickname = ApplyNicknameEmoji()
 
@@ -27,7 +28,7 @@ export default () => {
       });
   }, []);
 
-  return (
+  return isLoggedIn() ? (
     <div className="container bg-white pt-12">
 
       <div className="text-[#61E9B1]">
@@ -131,5 +132,7 @@ export default () => {
       </div>
 
     </div>
+  ) : (
+    <Navigate to='/login' />
   );
 };

@@ -39,7 +39,7 @@ const CreateMessage = ({ currentUser, history }) => {
 
   return isLoggedIn() ? (
     <div className='mt-10'>
-      <h1 className="text-2xl text-center font-medium">Create a message</h1>
+      <h1 className="text-2xl text-center font-medium text-[#61E9B1]">Create a message</h1>
       <hr className="my-6" />
       <div className='mx-auto text-center'>
       <h1 className="text-lg text-center font-medium mb-4">Select a recipient:</h1>

@@ -113,7 +113,7 @@ export default () => {
    
     <div className="container sm:flex pt-12">
       <div className="w-3/6 sm:mx-8 mx-auto">
-        <h1 className="text-2xl text-center font-medium">All chats</h1>
+        <h1 className="text-2xl text-center font-medium text-[#61E9B1]">All chats</h1>
         <hr className="my-6 mb-9" />
 
         {allChats.filter(chat => chat).sort((a, b) => getTimeDifference(b.createdAt) - getTimeDifference(a.createdAt)).map((chat, index) => (

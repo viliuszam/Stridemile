@@ -147,7 +147,7 @@ export default () => {
    
     <div className="container  pt-12">
       <div className=" sm:mx-8 mx-auto">
-        <h1 className="text-2xl text-center font-medium">Personal chat</h1>
+        <h1 className="text-2xl text-center font-medium text-[#61E9B1]">Personal chat</h1>
         <hr className="my-6" />
 
         {chats.sort((a, b) => getTimeDifference(b.createdAt) - getTimeDifference(a.createdAt)).map((chat, index) => (

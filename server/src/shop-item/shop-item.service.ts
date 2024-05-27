@@ -32,7 +32,19 @@ export class ShopItemService {
     }
 
     async GetAllItems() {
-        return this.prisma.shopItem.findMany();
+        return this.prisma.shopItem.findMany({
+            where: {
+                userId: null
+            }
+        });
+    }
+
+    async GetAllMyItems(id: number) {
+        return this.prisma.shopItem.findMany({
+            where: {
+                userId: id
+            }
+        });
     }
 
     async UpdateItem(dto: ItemCreateDto, itemFN: string, itemID: number) {
@@ -65,6 +77,20 @@ export class ShopItemService {
             console.error("Item wasnt updated", 455);
         } else {
             return item;
+        }
+    }
+
+    async BuyItem(userId: number, itemId: number, itemPrice: number, points: number) {
+        if (itemPrice <= points) {
+            await this.prisma.shopItem.update({
+                where: { id: itemId },
+                data: {
+                    userId: userId
+                }
+            })
+        }
+        else {
+            throw new ForbiddenException("Not enough points!");
         }
     }
 }

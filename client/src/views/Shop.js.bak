@@ -35,7 +35,7 @@ export default () => {
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
 
-        axios.get('http://localhost:3333/shop-item/getMyItems', {
+        axios.get('http://localhost:3333/achievements/userAchievements', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -98,7 +98,7 @@ export default () => {
             <h2 className="text-center text-2xl">Shop</h2>
         </div>
         <div className="mt-4 mb-4 mr-7 text-right">
-            <p>My points: {points.userPoints}</p>
+            <p>My points: {getUser().points}</p>
         </div>
         <div className="md:flex">
         <div className="w-full grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 pl-5 pr-5">
@@ -151,9 +151,9 @@ export default () => {
                         <div>
                             <div className="flex">
                                 <p><i class="fa-solid fa-cart-shopping"></i></p><p className="pl-2"> <b> {item.title}</b> </p>
-                                <p className="text-[#61E9B1] pl-2"> -{item.price} points</p>
+                                <p className="text-[#61E9B1] pl-2"> -{item.points} points</p>
                             </div>
-                            <p className="pl-6">({item.boughtAt ? item.boughtAt.split('T')[0] : null})</p>
+                            <p className="pl-6">({item.date})</p>
                         </div>
                 ))}
                 <div className="pt-6 pb-4">

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Req, UseGuards, Request, UseInterceptors, UploadedFiles, Patch, ParseIntPipe } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Req, UseGuards, UseInterceptors, UploadedFiles, Patch, ParseIntPipe } from "@nestjs/common";
 import { ShopItemService } from './shop-item.service';
 import { AuthGuard } from "@nestjs/passport";
 import { AnyFilesInterceptor } from "@nestjs/platform-express";
@@ -6,7 +6,7 @@ import { diskStorage, Multer } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import path = require('path');
 import { ItemCreateDto } from "./dto/itemcreate.dto";
-
+import { Request } from 'express';
 
 @Controller('shop-item')
 export class ShopItemController {
@@ -41,14 +41,20 @@ export class ShopItemController {
     }
 
     @Get('categories')
-    async FetchCategories(@Request() req) {
+    async FetchCategories(@Req() req) {
         return await this.shopItemService.FetchCategories();
     }
 
     @UseGuards(AuthGuard('jwt'))
     @Get('all')
-    async FetchItems(@Request() req) {
+    async FetchItems(@Req() req) {
         return await this.shopItemService.GetAllItems();
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Get('getMyItems')
+    async FetchMyItems(@Req() req) {
+        return await this.shopItemService.GetAllMyItems(req.user.id);
     }
 
     @UseGuards(AuthGuard('jwt'))
@@ -76,5 +82,13 @@ export class ShopItemController {
         }
 
         return this.shopItemService.UpdateItem(dto, itemFN, itemId);
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Post('buy')
+    async BuyItem(@Req() req, @Body() body) {
+        const userId = req.user.id;
+        console.log("AAA")
+        return this.shopItemService.BuyItem(userId, body.itemId, body.itemPrice, body.userP);
     }
 }

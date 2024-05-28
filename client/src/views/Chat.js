@@ -1,9 +1,10 @@
-import { useOutletContext, useParams } from 'react-router-dom';
+import { useOutletContext, useParams, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react'
 import { AlertTypes } from "../styles/modules/AlertStyles";
 import axios from 'axios';
 import NavBar from "../components/NavBar";
 import { Link } from "react-router-dom";
+import { isLoggedIn } from "../classes/Auth";
 
 export default () => {
   const { setAlert } = useOutletContext();
@@ -141,12 +142,12 @@ export default () => {
   }
   
   
-  return (
+  return isLoggedIn() ? (
     <div className="w-full">
    
     <div className="container  pt-12">
       <div className=" sm:mx-8 mx-auto">
-        <h1 className="text-2xl text-center font-medium">Personal chat</h1>
+        <h1 className="text-2xl text-center font-medium text-[#61E9B1]">Personal chat</h1>
         <hr className="my-6" />
 
         {chats.sort((a, b) => getTimeDifference(b.createdAt) - getTimeDifference(a.createdAt)).map((chat, index) => (
@@ -176,5 +177,7 @@ export default () => {
       
     </div>
     </div>
+  ) : (
+    <Navigate to='/login' />
   );
 };

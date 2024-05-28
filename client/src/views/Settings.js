@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, Navigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { isLoggedIn } from '../classes/Auth';
@@ -211,7 +211,7 @@ export default function Settings() {
   }
   
 
-  return (
+  return isLoggedIn() ? (
     <div>
       {isLoggedIn() && (
         <div className="container bg-white pt-12 pb-8 px-2">
@@ -339,5 +339,7 @@ export default function Settings() {
         </div>
       )}
     </div>
+  ) : (
+    <Navigate to='/login' />
   );
 }

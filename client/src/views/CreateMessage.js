@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { AlertTypes } from "../styles/modules/AlertStyles";
+import { isLoggedIn } from "../classes/Auth";
+import { Navigate, useOutletContext } from "react-router-dom";
 
 
-const CreateMessage = ({ currentUser, setAlert, history }) => {
+const CreateMessage = ({ currentUser, history }) => {
+  const { setAlert } = useOutletContext();
   const [allUsers, setAllUsers] = useState([]);
 
   useEffect(() => {
@@ -34,9 +37,9 @@ const CreateMessage = ({ currentUser, setAlert, history }) => {
     window.location.href = `/chats/${recipientId}`;
   };
 
-  return (
+  return isLoggedIn() ? (
     <div className='mt-10'>
-      <h1 className="text-2xl text-center font-medium">Create a message</h1>
+      <h1 className="text-2xl text-center font-medium text-[#61E9B1]">Create a message</h1>
       <hr className="my-6" />
       <div className='mx-auto text-center'>
       <h1 className="text-lg text-center font-medium mb-4">Select a recipient:</h1>
@@ -49,6 +52,8 @@ const CreateMessage = ({ currentUser, setAlert, history }) => {
       </ul>
       </div>
     </div>
+  ) : (
+    <Navigate to='/login' />
   );
 };
 

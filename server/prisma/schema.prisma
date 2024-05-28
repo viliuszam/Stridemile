@@ -28,16 +28,6 @@ model Announcement {
   @@map("announcements")
 }
 
-//model Organization {
-//  name                 String?
-//  responsible_employee String?
-//  department           String?
-//  id                   Int      @id @default(autoincrement())
-//  events Event[]
-//
-//  @@map("organizations")
-//}
-
 model Role {
   name          String?
   description   String?
@@ -108,13 +98,10 @@ model Event {
   date          DateTime?
   location      String?
   id            Int            @id @default(autoincrement())
-  //fk_Organization Int     
-  //organization    Organization @relation(fields: [fk_Organization], references: [id])
   fk_Category   Int
   category      EventCategory  @relation(fields: [fk_Category], references: [id])
   eventComments EventComment[]
   activities    Activity[]
-  //groupEvents GroupEvent[]
   fk_GroupId    Int
   group         Group          @relation(fields: [fk_GroupId], references: [id])
   participants  User[]         @relation("EventParticipants")
@@ -130,7 +117,6 @@ model Group {
   id           Int           @id @default(autoincrement())
   visibilityId Int?
   invitations  Invitation[]
-  //groupEvents GroupEvent[]
   events       Event[]
   groupMembers GroupMember[]
   goals        Goal[]
@@ -330,16 +316,6 @@ model Goal {
   @@map("goals")
 }
 
-//model GroupEvent {
-//  id       Int     @id @default(autoincrement())
-//  event    Event   @relation(fields: [fk_Eventid], references: [id])
-//  fk_Eventid Int  
-//  group    Group   @relation(fields: [fk_Groupid], references: [id])
-//  fk_Groupid Int  
-
-//  @@map("group_events")
-//}
-
 model Mentor {
   expertise_area String?
   experience     String?
@@ -380,9 +356,7 @@ model Person {
   fk_Mentorid   Int?
   gender        Int? // Scalar field representing the foreign key to PersonGender
   user          User       @relation(fields: [id], references: [id])
-  //statistics    Statistics[]
   reminders     Reminder[]
-  //achievements Achievement[]
 
   @@map("persons")
 }
@@ -396,11 +370,7 @@ model Achievement {
   logs_required        Int?
   daily_steps_required Int?
   points               Int
-  users                AchievementsOnUsers[]
-  //date_achieved DateTime?
-  //points_count  Int?
-  //person        Person   @relation(fields: [fk_Personid], references: [id])
-  //fk_Personid   Int      
+  users                AchievementsOnUsers[]    
 
   @@map("achievements")
 }

@@ -665,8 +665,7 @@ const InviteForm = () => {
                   className="markercluster-map w-full h-60 z-0 rounded-xl border-[1px] border-gray-100 overflow-auto"
                   center={[55.1663, 23.8513]}
                   zoom={6}
-                  minZoom={6}
-                  maxZoom={6}
+                  
                   ref={setMap}
                   zoomControl={false}
                   //dragging={false}

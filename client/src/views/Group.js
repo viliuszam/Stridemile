@@ -29,6 +29,45 @@ const InviteForm = () => {
 
   const [userLocations, setUserLocations] = useState([]);
 
+
+  const [locationBuffer, setLocationBuffer] = useState({});
+  const [lastInterpolationTime, setLastInterpolationTime] = useState(null);
+  const interpolationInterval = 50;
+
+  const interpolatePosition = (prevPos, currPos, t) => {
+    if (!prevPos) return currPos;
+  
+    const lat = prevPos.latitude + (currPos.latitude - prevPos.latitude) * t;
+    const lng = prevPos.longitude + (currPos.longitude - prevPos.longitude) * t;
+  
+    return { latitude: lat, longitude: lng };
+  };
+
+  useEffect(() => {
+    const interpolateLocations = () => {
+      const now = Date.now();
+      const timeSinceLastInterpolation = lastInterpolationTime ? now - lastInterpolationTime : 0;
+      const deltaTime = Math.min(timeSinceLastInterpolation, interpolationInterval) / interpolationInterval;
+  
+      setUserLocations((prevLocations) => {
+        const updatedLocations = { ...prevLocations };
+  
+        for (const [userId, currPos] of Object.entries(locationBuffer)) {
+          const prevPos = prevLocations[userId] || null;
+          const interpolatedPos = interpolatePosition(prevPos, currPos, deltaTime);
+          updatedLocations[userId] = interpolatedPos;
+        }
+  
+        return updatedLocations;
+      });
+  
+      setLastInterpolationTime(now);
+      requestAnimationFrame(interpolateLocations);
+    };
+  
+    interpolateLocations();
+  }, [locationBuffer, lastInterpolationTime]);
+
   useEffect(() => {
     // Darant mapa, detalesne user info parodymui galima gaut is groupInfo.groupMembers
     // Also yra endpointas su lastSeen informacija - users/:userId/last-seen
@@ -55,7 +94,7 @@ const InviteForm = () => {
       if (data.group == groupId) {
         console.log("Received userLocation:", data.group, groupId);
 
-        setUserLocations((prevState) => ({
+        setLocationBuffer((prevState) => ({
           ...prevState,
           [data.userId]: {
             latitude: data.location.latitude,

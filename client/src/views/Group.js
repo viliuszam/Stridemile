@@ -542,12 +542,12 @@ const InviteForm = () => {
 
 
                     <div className='flex text-sm text-gray-400'>
-                      <p className='mr-auto'>15</p>
-                      <p className='text-xs'>15%</p>
-                      <p className='ml-auto'>100</p>
+                      <p className='mr-auto'>0%</p>
+                      <p className='text-xs'>50%</p>
+                      <p className='ml-auto'>100%</p>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
-                      <div className="bg-[#61E9B1] h-1.5 rounded-full" style={{ width: "15%" }}></div>
+                      <div className="bg-[#61E9B1] h-1.5 rounded-full" style={{ width: goal.progress }}></div>
                     </div>
 
                     <div className='flex text-xs text-gray-400'>

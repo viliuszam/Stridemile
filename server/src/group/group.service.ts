@@ -15,7 +15,7 @@ import { CreateChallengeDto } from './dto/create-challenge.dto';
 export class GroupService {
   constructor(private prisma: PrismaService, private mailService: MailService, private jwt: JwtService, private config: ConfigService,
     private userService: UserService
-    ) {}
+  ) { }
 
   async createGroup(createGroupDto: CreateGroupDto, groupFN, bannerFN): Promise<Group> {
     const { name, description, mentorId, visibilityId } = createGroupDto;
@@ -33,26 +33,26 @@ export class GroupService {
 
   async updateGroup(groupId: number, updateGroupDto: CreateGroupDto, groupFN, bannerFN): Promise<Group> {
     const { name, description, visibilityId } = updateGroupDto;
-  
+
     const dataToUpdate: any = {
-        name,
-        description,
-        visibilityId
+      name,
+      description,
+      visibilityId
     };
 
     if (groupFN !== null) {
-        dataToUpdate.image_url = groupFN;
+      dataToUpdate.image_url = groupFN;
     }
 
     if (bannerFN !== null) {
-        dataToUpdate.banner_url = bannerFN;
+      dataToUpdate.banner_url = bannerFN;
     }
 
     return this.prisma.group.update({
-        where: {
-            id: groupId,
-        },
-        data: dataToUpdate,
+      where: {
+        id: groupId,
+      },
+      data: dataToUpdate,
     });
   }
 
@@ -75,7 +75,7 @@ export class GroupService {
           name: 'public'
         }
       });
-  
+
       return publicVisibility?.id ?? null;
     } catch (error) {
       console.error('Error finding public visibility:', error);
@@ -85,7 +85,7 @@ export class GroupService {
 
   async findAllPublicGroups(): Promise<Group[]> {
     const publicVisibilityId = await this.findPublicVisibilityId();
-  
+
     if (publicVisibilityId !== null) {
       return this.prisma.group.findMany({
         where: {
@@ -161,25 +161,25 @@ export class GroupService {
       const group = await this.prisma.group.findUnique({
         where: { id: dto.groupId },
       });
-  
+
       if (!group) {
         throw new NotFoundException('Group not found.');
       }
-  
+
       if (group.mentorId !== userId) {
         throw new ForbiddenException('You are not the mentor of this group.');
       }
-  
+
       const user = await this.prisma.user.findUnique({
-        where: { email: dto.userEmail  },
+        where: { email: dto.userEmail },
       });
-  
+
       if (!user) {
         throw new NotFoundException('User not found.');
       }
-  
+
       const token = await this.inviteToken(group.id, user.email);
-  
+
       await this.prisma.invitation.create({
         data: {
           token: token,
@@ -187,13 +187,13 @@ export class GroupService {
           group: { connect: { id: group.id } },
         },
       });
-  
+
       await this.mailService.sendGroupInvitation(user, group.name, token);
       return true;
     } catch (e) {
       throw e;
     }
-  } 
+  }
 
   async inviteToken(groupId: number, email: string) {
     const payload = {
@@ -232,10 +232,10 @@ export class GroupService {
         await this.prisma.invitation.update({
           where: { id: invitation.id },
           data: {
-              date_responded: new Date(),
-              invitationStatus: 2,
+            date_responded: new Date(),
+            invitationStatus: 2,
           },
-      });
+        });
       }
 
       return { groupId: invitation.fk_GroupId, userId: invitation.fk_UserId };
@@ -259,7 +259,7 @@ export class GroupService {
 
   async createChallenge(createChallengeDto: CreateChallengeDto, groupId: number): Promise<Challenge> {
     const { title, description, start_date, end_date } =
-    createChallengeDto;
+      createChallengeDto;
 
     const targetValue = parseInt(createChallengeDto.target.toString(), 10);
 
@@ -277,9 +277,9 @@ export class GroupService {
 
   async createGoal(createGoalDto: CreateGoalDto, groupId: number): Promise<Goal> {
     const { title, description, start_date, end_date, statusId, categoryId } = createGoalDto;
-  
+
     const targetValue = parseInt(createGoalDto.target_value.toString(), 10);
-  
+
     return this.prisma.goal.create({
       data: {
         title,
@@ -294,7 +294,7 @@ export class GroupService {
       },
     });
   }
-  
+
   async createEvent(createEventDto: CreateEventDto, groupId: number): Promise<Event> {
     const { title, description, date, location, fk_Category } =
       createEventDto;
@@ -317,11 +317,11 @@ export class GroupService {
         fk_GroupId: groupId
       },
       include: {
-        participants: true 
+        participants: true
       }
     });
   }
-  
+
 
   async getEventComments(eventId: number) {
     try {
@@ -330,7 +330,7 @@ export class GroupService {
           eventId: eventId,
         },
         include: {
-          createdBy: true, 
+          createdBy: true,
         },
         orderBy: {
           createdAt: 'desc',
@@ -402,7 +402,7 @@ export class GroupService {
         challengeId,
       },
     });
-  
+
     if (existingParticipation) {
       await this.prisma.challengeParticipation.delete({
         where: {
@@ -428,14 +428,14 @@ export class GroupService {
         challengeId,
       },
     });
-  
+
     return {
       isParticipating: !!existingParticipation,
     };
   }
 
   async getGoals(groupId: number): Promise<Goal[]> {
-    return this.prisma.goal.findMany({
+    const goals = await this.prisma.goal.findMany({
       where: {
         fk_Groupid: groupId,
       },
@@ -452,6 +452,54 @@ export class GroupService {
         },
       },
     });
+
+    const updatedGoals = await Promise.all(goals.map(async (goal) => {
+      const progress = await this.calculateProgress(groupId, goal.target_value);
+      return {
+        ...goal,
+        progress,
+      };
+    }));
+
+    return updatedGoals;
+  }
+  async calculateProgress(groupId: number, requiredSteps: number) {
+    const groupUsers = await this.prisma.group.findUnique({
+      where: {
+        id: groupId
+      },
+      include: {
+        groupMembers: true
+      }
+    })
+
+    const userIds = groupUsers.groupMembers.map(user => {
+      return user.userId
+    })
+
+
+
+    userIds.push(groupUsers.mentorId);
+
+    let stepcount = 0;
+
+    await Promise.all(userIds.map(async (id) => {
+      const userActivities = await this.prisma.activityEntry.findMany({
+        where: {
+          fk_Userid: id
+        }
+      });
+      userActivities.forEach(activity => {
+        stepcount += activity.steps;
+      });
+    }));
+
+    const progress = stepcount / requiredSteps * 100;
+    if (progress > 100) {
+      return 100;
+    }
+
+    return progress
   }
 
   async getChallenges(groupId: number): Promise<Challenge[]> {
@@ -472,18 +520,18 @@ export class GroupService {
         id: challengeId,
       },
     });
-  
+
     if (!challenge) {
       throw new Error(`Challenge with ID ${challengeId} not found.`);
     }
-  
+
     const existingParticipation = await this.prisma.challengeParticipation.findFirst({
       where: {
         userId: userId,
         challengeId: challengeId,
       },
     });
-  
+
     if (existingParticipation) {
       // Jei challenge jau ivykdytas, daugiau nenaujint ivykdymo datos
       const isCompleted = existingParticipation.progress >= challenge.target;
@@ -494,7 +542,7 @@ export class GroupService {
         data: {
           progress,
           completionDate: isCompleted ? existingParticipation.completionDate :
-           progress >= challenge.target ? new Date() : null,
+            progress >= challenge.target ? new Date() : null,
         },
       });
     } else {
@@ -520,9 +568,9 @@ export class GroupService {
     });
   }
 
-  
-  async getGroupInfo(groupId: number){
-    try{
+
+  async getGroupInfo(groupId: number) {
+    try {
       const groupInfo = await this.prisma.group.findUnique({
         where: {
           id: groupId,
@@ -548,8 +596,8 @@ export class GroupService {
       });
       return groupInfo;
     }
-    catch (error){
+    catch (error) {
       console.log(error);
-    }    
+    }
   }
 }

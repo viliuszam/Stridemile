@@ -542,7 +542,7 @@ export default () => {
             <p className='mb-3 text-xs text-gray-600'>Percentage of total achievements completed</p>
             <div className='flex my-auto place-items-center'>
               <p className='flex text-center text-gray-500 text-5xl font-bold'>
-                {((points.userPoints / points.totalPoints) * 100).toFixed(0)} <i className="fa-solid fa-percent"></i>
+                {points.totalPoints ? ((points.userPoints / points.totalPoints) * 100).toFixed(0) : 0} <i className="fa-solid fa-percent"></i>
               </p>
               <PieChart
               slotProps={{ legend: { hidden: true } }}

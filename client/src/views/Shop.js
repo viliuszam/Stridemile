@@ -24,13 +24,13 @@ export default () => {
                 Authorization: `Bearer ${token}`
             }
         })
-          .then(response => {
-            setItems(response.data);
-          })
-          .catch(error => {
-            console.error('Error fetching shop items: ', error);
-          });
-      }, []);
+            .then(response => {
+                setItems(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching shop items: ', error);
+            });
+    }, []);
 
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
@@ -40,14 +40,14 @@ export default () => {
                 Authorization: `Bearer ${token}`
             }
         })
-          .then(response => {
-            setUserItems(response.data);
-          })
-          .catch(error => {
-            console.error('Error fetching shop items: ', error);
-          });
-      }, []);
-    
+            .then(response => {
+                setUserItems(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching shop items: ', error);
+            });
+    }, []);
+
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
 
@@ -56,12 +56,12 @@ export default () => {
                 Authorization: `Bearer ${token}`
             }
         })
-          .then(response => {
-            setPoints(response.data);
-          })
-          .catch(error => {
-            console.error('Error fetching points: ', error);
-          });
+            .then(response => {
+                setPoints(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching points: ', error);
+            });
     }, []);
 
     const percentage = (points.userPoints / points.totalPoints) * 100;

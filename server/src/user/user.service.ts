@@ -133,6 +133,7 @@ export class UserService {
   async getTop10UsersByPoints(userId: number) {
     const usersWithPoints = await this.prisma.user.findMany({
       select: {
+        id: true,
         username: true,
         profile_picture: true,
         colourHex: true,

@@ -29,6 +29,45 @@ const InviteForm = () => {
 
   const [userLocations, setUserLocations] = useState([]);
 
+
+  const [locationBuffer, setLocationBuffer] = useState({});
+  const [lastInterpolationTime, setLastInterpolationTime] = useState(null);
+  const interpolationInterval = 50;
+
+  const interpolatePosition = (prevPos, currPos, t) => {
+    if (!prevPos) return currPos;
+  
+    const lat = prevPos.latitude + (currPos.latitude - prevPos.latitude) * t;
+    const lng = prevPos.longitude + (currPos.longitude - prevPos.longitude) * t;
+  
+    return { latitude: lat, longitude: lng };
+  };
+
+  useEffect(() => {
+    const interpolateLocations = () => {
+      const now = Date.now();
+      const timeSinceLastInterpolation = lastInterpolationTime ? now - lastInterpolationTime : 0;
+      const deltaTime = Math.min(timeSinceLastInterpolation, interpolationInterval) / interpolationInterval;
+  
+      setUserLocations((prevLocations) => {
+        const updatedLocations = { ...prevLocations };
+  
+        for (const [userId, currPos] of Object.entries(locationBuffer)) {
+          const prevPos = prevLocations[userId] || null;
+          const interpolatedPos = interpolatePosition(prevPos, currPos, deltaTime);
+          updatedLocations[userId] = interpolatedPos;
+        }
+  
+        return updatedLocations;
+      });
+  
+      setLastInterpolationTime(now);
+      requestAnimationFrame(interpolateLocations);
+    };
+  
+    interpolateLocations();
+  }, [locationBuffer, lastInterpolationTime]);
+
   useEffect(() => {
     // Darant mapa, detalesne user info parodymui galima gaut is groupInfo.groupMembers
     // Also yra endpointas su lastSeen informacija - users/:userId/last-seen
@@ -55,7 +94,7 @@ const InviteForm = () => {
       if (data.group == groupId) {
         console.log("Received userLocation:", data.group, groupId);
 
-        setUserLocations((prevState) => ({
+        setLocationBuffer((prevState) => ({
           ...prevState,
           [data.userId]: {
             latitude: data.location.latitude,
@@ -642,13 +681,18 @@ const InviteForm = () => {
             {groupInfo.groupMembers.length === 0 ? (
               <p>No members.</p>
             ) : (
-              <div className='grid grid-cols-3 gap-4'>
-                {groupInfo.groupMembers.map((member) => (
-                  <div key={member.user.id} className='text-center'>
-                    <img className='mx-auto w-10 h-10 rounded-full' src={member.user.profile_picture} alt={member.user.username} />
-                    <p className='text-xs'>{member.user.username}</p>
-                  </div>
-                ))}
+              <div className=''>
+                {groupInfo.groupMembers.map((member, i) => {
+                  console.log(member)
+                  if (i < 2)
+                    return (
+                      <div key={member.user.id} className='text-center inline-block'>
+                        <ProfileIcon username={member.user.username} imageUrl={member.user.profile_picture} userId={member.userId} />
+                        <p className='text-xs'>{member.user.username}</p>
+                      </div>
+                    )
+                }
+                )}
               </div>
             )}
 
@@ -665,11 +709,10 @@ const InviteForm = () => {
                   className="markercluster-map w-full h-60 z-0 rounded-xl border-[1px] border-gray-100 overflow-auto"
                   center={[55.1663, 23.8513]}
                   zoom={6}
-                  minZoom={6}
-                  maxZoom={6}
+                  
                   ref={setMap}
                   zoomControl={false}
-                  //dragging={false}
+                //dragging={false}
                 >
                   <ResizeMap />
                   <TileLayer

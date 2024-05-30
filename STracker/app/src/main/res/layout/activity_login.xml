@@ -64,6 +64,17 @@
             android:textAlignment="center"
             android:textColor="@android:color/black" />
 
+        <CheckBox
+            android:id="@+id/shareLocationCheckbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/passwordEditText"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="75dp"
+            android:text="Share location to your groups"
+            android:textColor="@android:color/black" />
+
         <Button
             android:id="@+id/loginButton"
             android:layout_width="150dp"
@@ -71,7 +82,7 @@
             android:layout_below="@id/passwordEditText"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="110dp"
             android:background="@drawable/btn_bg"
             android:text="Login"
             android:textAlignment="center" />

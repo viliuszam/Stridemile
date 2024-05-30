@@ -134,7 +134,7 @@ const Profile = (props) => {
           <CustomTabPanel value={value} index={0}>
             <div className='mb-3 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>
               <div className='flex'>
-                <img className="my-auto w-24 h-24 object-cover rounded" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Ludovic_and_Lauren_%288425515069%29.jpg/640px-Ludovic_and_Lauren_%288425515069%29.jpg" />
+                <img className="my-auto w-24 h-24 object-cover rounded" src={require("../images/event.jpg")} />
                 <div className='mx-4'>
 
                   <div className='mb-1 flex text-xs text-gray-400'>
@@ -179,7 +179,7 @@ const Profile = (props) => {
 
             <div className='mb-3 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>
               <div className='flex'>
-                <img className="my-auto w-24 h-24 object-cover rounded" src="https://media.istockphoto.com/id/1266413326/vector/vector-challenge-sign-pop-art-comic-speech-bubble-with-expression-text-competition-bright.jpg?s=612x612&w=0&k=20&c=eYOQaCn7WvMAEo5ZxVHVVQ-pcNT8HZ-yPeTjueuXi28=" />
+                <img className="my-auto w-24 h-24 object-cover rounded" src={require("../images/challenge.jpg")} />
                 <div className='mx-4'>
 
                   <div className='mb-1 flex text-xs text-gray-400'>
@@ -218,7 +218,7 @@ const Profile = (props) => {
 
             <div className='mb-3 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>
               <div className='flex'>
-                <img className="my-auto w-24 h-24 object-cover rounded" src="https://www.speexx.com/wp-content/uploads/goal-setting-basics.jpg" />
+                <img className="my-auto w-24 h-24 object-cover rounded" src={require("../images/goal.jpg")} />
                 <div className='mx-4'>
 
                   <div className='mb-1 flex text-xs text-gray-400'>

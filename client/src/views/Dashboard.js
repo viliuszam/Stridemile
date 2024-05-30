@@ -2,7 +2,8 @@ import '../styles/Home.css';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, Link, useOutletContext } from "react-router-dom";
+import { useParams, Link, useOutletContext, Navigate } from "react-router-dom";
+import { isLoggedIn } from "../classes/Auth";
 
 export default () => {
   const { groupId } = useParams();
@@ -355,7 +356,7 @@ export default () => {
 
   const percentage = (points.userPoints / points.totalPoints) * 100;
 
-  return (
+  return isLoggedIn() ? (
     <div className='container'>
 
       <div className='mt-10 flex'>
@@ -579,5 +580,7 @@ export default () => {
       </div>
 
     </div>
+  ) : (
+    <Navigate to='/login' />
   );
 };

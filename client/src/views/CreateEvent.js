@@ -1,4 +1,4 @@
-import { useOutletContext, useParams } from "react-router-dom";
+import { useOutletContext, useParams, Navigate } from "react-router-dom";
 import { useState, useEffect } from 'react'
 import { AlertTypes } from "../styles/modules/AlertStyles";
 import axios from 'axios';
@@ -16,6 +16,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { grey, red } from "@mui/material/colors";
+import { isLoggedIn } from "../classes/Auth";
 
 export default () => {
   const { groupId } = useParams();
@@ -107,7 +108,7 @@ export default () => {
     });
   }
 
-  return (
+  return isLoggedIn() ? (
     <div className="w-full">
    
     <div className="container sm:flex pt-12">
@@ -202,5 +203,7 @@ export default () => {
       </div>
     </div>
     </div>
+  ) : (
+    <Navigate to='/login' />
   );
 };

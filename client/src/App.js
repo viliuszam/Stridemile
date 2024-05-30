@@ -17,7 +17,6 @@ import Login from './views/Login'
 import Register from './views/Register'
 import PasswordRecovery from "./views/PasswordRecovery";
 import PasswordChange from "./views/PasswordChange";
-import HomePage from "./views/HomePage";
 import Achievements from "./views/Achievements";
 import GroupPage from "./views/Group";
 import CreateGroup from "./views/CreateGroup";
@@ -44,6 +43,7 @@ import ShopItem from "./views/ShopItem";
 import AllChats from "./views/AllChats";
 import Chat from "./views/Chat";
 import CreateMessage from "./views/CreateMessage";
+import MobileApp from "./views/MobileApp";
 
 export default function App() {
   const [appReady, setAppReady] = useState(false)
@@ -98,6 +98,7 @@ export default function App() {
         <Route path="/health-tracking" element={<HealthTracking />} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/about-us" element={<AboutUs />} />
+        <Route path="/mobile-app" element={<MobileApp />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/reviews" element={<Reviews />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
@@ -120,7 +121,6 @@ export default function App() {
         <Route path="/groups/:token" element={<GroupInvitation />} />
       </Route>
 
-      <Route path="/HomePage" element={<HomePage />} />
       <Route path="/*" element={<PageNotFound />} />
     </Routes>
   );

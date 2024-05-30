@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameEditText;
     private EditText passwordEditText;
+    private CheckBox shareLocationCheckbox;
     private Button loginButton;
 
     // Authentication service
@@ -64,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
 
         usernameEditText = findViewById(R.id.usernameEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
+        shareLocationCheckbox = findViewById(R.id.shareLocationCheckbox);
         loginButton = findViewById(R.id.loginButton);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                 String password = passwordEditText.getText().toString().trim();
 
                 // Authentication logic
-                login(username, password);
+                login(username, password, shareLocationCheckbox.isChecked());
 
             }
         });
@@ -82,17 +85,20 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    private void login(String username, String password) {
+    private void login(String username, String password, boolean shareLocation) {
         LoginRequest loginRequest = new LoginRequest(username, password);
 
         authService.login(loginRequest).enqueue(new Callback<AuthTokenResponse>() {
+            SharedPreferences.Editor editor = getSharedPreferences("auth", MODE_PRIVATE).edit();
             @Override
             public void onResponse(Call<AuthTokenResponse> call, Response<AuthTokenResponse> response) {
+                editor.putBoolean("shareLocation", shareLocation);
+                editor.apply();
+
                 if (response.isSuccessful()) {
                     AuthTokenResponse authTokenResponse = response.body();
                     String accessToken = authTokenResponse.getAccess_token();
 
-                    SharedPreferences.Editor editor = getSharedPreferences("auth", MODE_PRIVATE).edit();
                     editor.putString("access_token", accessToken);
                     editor.putString("username", username);
                     editor.apply();
@@ -124,6 +130,8 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<AuthTokenResponse> call, Throwable t) {
+                editor.putBoolean("shareLocation", false);
+                editor.apply();
                 showPopupNotification("Login failed.");
             }
         });

@@ -29,6 +29,45 @@ const InviteForm = () => {
 
   const [userLocations, setUserLocations] = useState([]);
 
+
+  const [locationBuffer, setLocationBuffer] = useState({});
+  const [lastInterpolationTime, setLastInterpolationTime] = useState(null);
+  const interpolationInterval = 50;
+
+  const interpolatePosition = (prevPos, currPos, t) => {
+    if (!prevPos) return currPos;
+  
+    const lat = prevPos.latitude + (currPos.latitude - prevPos.latitude) * t;
+    const lng = prevPos.longitude + (currPos.longitude - prevPos.longitude) * t;
+  
+    return { latitude: lat, longitude: lng };
+  };
+
+  useEffect(() => {
+    const interpolateLocations = () => {
+      const now = Date.now();
+      const timeSinceLastInterpolation = lastInterpolationTime ? now - lastInterpolationTime : 0;
+      const deltaTime = Math.min(timeSinceLastInterpolation, interpolationInterval) / interpolationInterval;
+  
+      setUserLocations((prevLocations) => {
+        const updatedLocations = { ...prevLocations };
+  
+        for (const [userId, currPos] of Object.entries(locationBuffer)) {
+          const prevPos = prevLocations[userId] || null;
+          const interpolatedPos = interpolatePosition(prevPos, currPos, deltaTime);
+          updatedLocations[userId] = interpolatedPos;
+        }
+  
+        return updatedLocations;
+      });
+  
+      setLastInterpolationTime(now);
+      requestAnimationFrame(interpolateLocations);
+    };
+  
+    interpolateLocations();
+  }, [locationBuffer, lastInterpolationTime]);
+
   useEffect(() => {
     // Darant mapa, detalesne user info parodymui galima gaut is groupInfo.groupMembers
     // Also yra endpointas su lastSeen informacija - users/:userId/last-seen
@@ -55,7 +94,7 @@ const InviteForm = () => {
       if (data.group == groupId) {
         console.log("Received userLocation:", data.group, groupId);
 
-        setUserLocations((prevState) => ({
+        setLocationBuffer((prevState) => ({
           ...prevState,
           [data.userId]: {
             latitude: data.location.latitude,
@@ -403,7 +442,7 @@ const InviteForm = () => {
               {events.map(event => (
                 <div key={event.id} className='flex mb-8 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>
                   <div className="w-24 h-24">
-                    <img className="w-full h-full object-cover rounded" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Ludovic_and_Lauren_%288425515069%29.jpg/640px-Ludovic_and_Lauren_%288425515069%29.jpg" alt="Event" />
+                    <img className="w-full h-full object-cover rounded" src={require("../images/event.jpg")} alt="Event" />
                   </div>
                   <div className='mx-4 flex-1'>
                     <div className='mb-1 flex text-xs text-gray-400'>
@@ -475,7 +514,7 @@ const InviteForm = () => {
             <div>
               {challenges.map(challenge => (
                 <div key={challenge.id} className='flex mb-3 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>
-                  <img className="my-auto w-24 h-24 object-cover rounded" src="https://media.istockphoto.com/id/1266413326/vector/vector-challenge-sign-pop-art-comic-speech-bubble-with-expression-text-competition-bright.jpg?s=612x612&w=0&k=20&c=eYOQaCn7WvMAEo5ZxVHVVQ-pcNT8HZ-yPeTjueuXi28=" />
+                  <img className="my-auto w-24 h-24 object-cover rounded" src={require("../images/challenge.jpg")} />
                   <div className='mx-4 flex-1'>
                     <div className='mb-1 flex text-xs text-gray-400'>
                       <p>Challenge</p>
@@ -525,7 +564,7 @@ const InviteForm = () => {
             <div>
               {goals.map(goal => (
                 <div key={goal.id} className='flex mb-3 p-4 w-full bg-gray-50 rounded-xl border-[1px] border-gray-100'>
-                  <img className="my-auto w-24 h-24 object-cover rounded" src="https://www.speexx.com/wp-content/uploads/goal-setting-basics.jpg" />
+                  <img className="my-auto w-24 h-24 object-cover rounded" src={require("../images/goal.jpg")} />
                   <div className='mx-4'>
 
                     <div className='mb-1 flex text-xs text-gray-400'>
@@ -670,8 +709,7 @@ const InviteForm = () => {
                   className="markercluster-map w-full h-60 z-0 rounded-xl border-[1px] border-gray-100 overflow-auto"
                   center={[55.1663, 23.8513]}
                   zoom={6}
-                  minZoom={6}
-                  maxZoom={6}
+                  
                   ref={setMap}
                   zoomControl={false}
                 //dragging={false}

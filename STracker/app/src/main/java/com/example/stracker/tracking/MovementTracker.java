@@ -74,23 +74,25 @@ public class MovementTracker {
         scheduler.scheduleWithFixedDelay(this::postMovementData, POLLING_INTERVAL, POLLING_INTERVAL, TimeUnit.SECONDS);
         scheduler.scheduleWithFixedDelay(this::sendTimeUpdate, 1, 1, TimeUnit.SECONDS);
         //scheduler.scheduleWithFixedDelay(this::trackLocation, 300, 300, TimeUnit.MILLISECONDS);
-        startLocationUpdates();
+        if(shouldShareLocation()){
+            startLocationUpdates();
+        }
     }
 
     private final LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
-            double latitude = location.getLatitude();
-            double longitude = location.getLongitude();
-            // Send user location data
-            JSONObject locationData = new JSONObject();
-            try {
-                locationData.put("latitude", latitude);
-                locationData.put("longitude", longitude);
-                webSocketService.sendUserLocation(locationData);
-            } catch (JSONException e) {
-                Log.e(this.getClass().getSimpleName(), "Error creating location data", e);
-            }
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+                // Send user location data
+                JSONObject locationData = new JSONObject();
+                try {
+                    locationData.put("latitude", latitude);
+                    locationData.put("longitude", longitude);
+                    webSocketService.sendUserLocation(locationData);
+                } catch (JSONException e) {
+                    Log.e(this.getClass().getSimpleName(), "Error creating location data", e);
+                }
         }
     };
 
@@ -98,6 +100,7 @@ public class MovementTracker {
     private void startLocationUpdates() {
         // Kai kuriuose tel. pagal nutylejima isjungtas GPS sekimas fone, reikia pakeist per nustatymus,
         // net pirma kart paleidus aplikacija neduoda requestint sekimo fone (bent jau pas mane)
+        /*
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_BACKGROUND_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions((Activity) context,
@@ -105,6 +108,8 @@ public class MovementTracker {
                     1002);
             return;
         }
+        \
+         */
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         try {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 300L, 0F, locationListener);
@@ -237,6 +242,11 @@ public class MovementTracker {
 
     public float getStepLength() {
         return 0.762f;
+    }
+
+    private boolean shouldShareLocation() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("auth", Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean("shareLocation", false);
     }
 
     private String getAccessToken() {

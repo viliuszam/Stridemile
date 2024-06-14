@@ -26,6 +26,14 @@ export class UserController {
     return this.userService.getLastSeenLocation(userId);
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @Get('getByUsername/:username')
+  async getByUsername(@Param('username') username: string) {
+    return this.userService.getByUsername(username);
+  }
+
+
+
   @Get(':id')
   async getUserById(@Param('id') id: string) {
     try {

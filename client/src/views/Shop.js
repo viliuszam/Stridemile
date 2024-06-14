@@ -114,14 +114,14 @@ export default () => {
             <hr className="ml-6 mr-6 mt-4 mb-4" ></hr>
             <p className="text-sm">{item.price} points</p>
             <div className="bg-gray-200 rounded-full h-1 ml-6 mr-6 mb-4 dark:bg-gray-700 mt-6">
-                <div className="bg-[#61E9B1] h-1 rounded-full dark:bg-blue-500" style={{ width: `${item.progress}%` }}></div>
+                <div className="bg-[#61E9B1] h-1 rounded-full dark:bg-blue-500" style={{ width: `${points.userPoints / item.price * 100 > 100 ? 100 : points.userPoints / item.price * 100}%` }}></div>
             </div>
             <p className="text-sm">
                 
                 {item.purchased ? (
                     `Purchased: ${item.date}`
                 ) : (
-                    ((item.price <= getUser().points) ? <div className="text-[#61E9B1]">Enough!</div>
+                    ((item.price <= points.userPoints) ? <div className="text-[#61E9B1]">Enough!</div>
                     : <div>Lacking points</div>)
                 )}
             </p>

@@ -7,74 +7,74 @@ const prisma = new PrismaClient();
 async function seed() {
   try {
 
-        await prisma.activityType.createMany({
-          data: [
-            { id: 1, name: 'stretching' },
-            { id: 2, name: 'balancing' },
-            { id: 3, name: 'stabilising' },
-            { id: 4, name: 'crossift' },
-            { id: 5, name: 'cycling' },
-            { id: 6, name: 'jogging' },
-            { id: 7, name: 'kickboxing' },
-            { id: 8, name: 'pain_management' },
-            { id: 9, name: 'healthy_eating' },
-            { id: 10, name: 'meal_planning' },
-          ],
-        });
+    await prisma.activityType.createMany({
+      data: [
+        { id: 1, name: 'stretching' },
+        { id: 2, name: 'balancing' },
+        { id: 3, name: 'stabilising' },
+        { id: 4, name: 'crossift' },
+        { id: 5, name: 'cycling' },
+        { id: 6, name: 'jogging' },
+        { id: 7, name: 'kickboxing' },
+        { id: 8, name: 'pain_management' },
+        { id: 9, name: 'healthy_eating' },
+        { id: 10, name: 'meal_planning' },
+      ],
+    });
 
-        await prisma.eventCategory.createMany({
-          data: [
-            { id: 1, name: 'fitness_workout' },
-            { id: 2, name: 'nutrition_workshop' },
-            { id: 3, name: 'wellness_retreat' },
-            { id: 4, name: 'sports' },
-            { id: 5, name: 'health_seminar' },
-            { id: 6, name: 'medical_screening' },
-            { id: 7, name: 'medical_talk' },
-            { id: 8, name: 'rehabilitation_program' },
-          ],
-        });
+    await prisma.eventCategory.createMany({
+      data: [
+        { id: 1, name: 'fitness_workout' },
+        { id: 2, name: 'nutrition_workshop' },
+        { id: 3, name: 'wellness_retreat' },
+        { id: 4, name: 'sports' },
+        { id: 5, name: 'health_seminar' },
+        { id: 6, name: 'medical_screening' },
+        { id: 7, name: 'medical_talk' },
+        { id: 8, name: 'rehabilitation_program' },
+      ],
+    });
 
-        await prisma.goalCategory.createMany({
-          data: [
-            { id: 1, name: 'fitness' },
-            { id: 2, name: 'nutrition' },
-            { id: 3, name: 'weight_management' },
-            { id: 4, name: 'wellness' },
-            { id: 5, name: 'lifestyle_change' },
-            { id: 6, name: 'physical_activity' },
-            { id: 7, name: 'social_engagement' },
-            { id: 8, name: 'skill_development' },
-          ],
-        });
-    
-        await prisma.goalStatus.createMany({
-          data: [
-            { id: 1, name: 'in_progress' },
-            { id: 2, name: 'completed' },
-            { id: 3, name: 'failed' },
-            { id: 4, name: 'pending' },
-            { id: 5, name: 'cancelled' },
-            { id: 6, name: 'on_hold' },
-          ],
-        });
-    
-        await prisma.groupVisibility.createMany({
-          data: [
-            { id: 1, name: 'public' },
-            { id: 2, name: 'private' },
-          ],
-        });
-    
-        await prisma.invitationStatus.createMany({
-          data: [
-            { id: 1, name: 'pending' },
-            { id: 2, name: 'accepted' },
-            { id: 3, name: 'declined' },
-            { id: 4, name: 'expired' },
-            { id: 5, name: 'cancelled' },
-          ],
-        });
+    await prisma.goalCategory.createMany({
+      data: [
+        { id: 1, name: 'fitness' },
+        { id: 2, name: 'nutrition' },
+        { id: 3, name: 'weight_management' },
+        { id: 4, name: 'wellness' },
+        { id: 5, name: 'lifestyle_change' },
+        { id: 6, name: 'physical_activity' },
+        { id: 7, name: 'social_engagement' },
+        { id: 8, name: 'skill_development' },
+      ],
+    });
+
+    await prisma.goalStatus.createMany({
+      data: [
+        { id: 1, name: 'in_progress' },
+        { id: 2, name: 'completed' },
+        { id: 3, name: 'failed' },
+        { id: 4, name: 'pending' },
+        { id: 5, name: 'cancelled' },
+        { id: 6, name: 'on_hold' },
+      ],
+    });
+
+    await prisma.groupVisibility.createMany({
+      data: [
+        { id: 1, name: 'public' },
+        { id: 2, name: 'private' },
+      ],
+    });
+
+    await prisma.invitationStatus.createMany({
+      data: [
+        { id: 1, name: 'pending' },
+        { id: 2, name: 'accepted' },
+        { id: 3, name: 'declined' },
+        { id: 4, name: 'expired' },
+        { id: 5, name: 'cancelled' },
+      ],
+    });
 
     await prisma.personGender.createMany({
       data: [
@@ -473,7 +473,7 @@ async function seed() {
         },
       ],
     });
-    
+
     // Groups
     await prisma.group.createMany({
       data: [
@@ -484,7 +484,7 @@ async function seed() {
           banner_url: 'http://localhost:3333/uploads/bannerimages/basketbannerfa5cbcb7-e6d1-49f8-9666-b16c4b1fe5d1.jpg',
           visibilityId: 1,
           mentorId: 11
-        },        
+        },
         {
           name: 'Runners United',
           description: 'Casual runners going on casual runs.',
@@ -492,7 +492,7 @@ async function seed() {
           banner_url: 'http://localhost:3333/uploads/bannerimages/runbannerb2786d97-eaf1-476b-a9de-5d995526ea50.jpg',
           visibilityId: 1,
           mentorId: 12
-        },        
+        },
         {
           name: 'Marathon Legends',
           description: 'Professional runners going on long runs.',
@@ -500,7 +500,7 @@ async function seed() {
           banner_url: 'http://localhost:3333/uploads/bannerimages/marathonbannerff7c335d-6c0c-495d-9753-adaa33f81f59.jpg',
           visibilityId: 1,
           mentorId: 13
-        },       
+        },
         {
           name: 'Kaunas Tennis Club',
           description: 'A local tennis club for players from Kaunas.',
@@ -596,16 +596,16 @@ async function seed() {
     await prisma.goal.createMany({
       data: [
         {
-            title: '10 consecutive three-pointers',
-            description: 'Score 10 shots in a row from the three-point field goal.',
-            start_date: new Date('2024-03-28T11:36:56.000Z'),
-            end_date: new Date('2024-12-28T11:37:06.000Z'),
-            target_value: 10,
-            current_value: 0,
-            fk_Groupid: 1,
-            fk_Goalstatusid: 1,
-            fk_Goalcategoryid: 6
-        }, 
+          title: '10 consecutive three-pointers',
+          description: 'Score 10 shots in a row from the three-point field goal.',
+          start_date: new Date('2024-03-28T11:36:56.000Z'),
+          end_date: new Date('2024-12-28T11:37:06.000Z'),
+          target_value: 10,
+          current_value: 0,
+          fk_Groupid: 1,
+          fk_Goalstatusid: 1,
+          fk_Goalcategoryid: 6
+        },
         {
           title: '5K Weekly Challenge',
           description: 'Complete a 5-kilometer run every week for a month.',
@@ -811,13 +811,13 @@ async function seed() {
     await prisma.event.createMany({
       data: [
         {
-            title: '5v5 Friendly Team Game',
-            description: 'Randomly picked team members, friendly basketball game.',
-            date: new Date('2024-04-09T12:00:00.000Z'),
-            location: 'Radvilėnų pl. 19, Kaunas',
-            fk_Category: 4,
-            fk_GroupId: 1
-        }, 
+          title: '5v5 Friendly Team Game',
+          description: 'Randomly picked team members, friendly basketball game.',
+          date: new Date('2024-04-09T12:00:00.000Z'),
+          location: 'Radvilėnų pl. 19, Kaunas',
+          fk_Category: 4,
+          fk_GroupId: 1
+        },
         {
           title: 'Casual Saturday Morning Run',
           description: 'Join us for a casual morning run around the city.',
@@ -848,7 +848,7 @@ async function seed() {
           date: new Date('2024-06-15T08:00:00.000Z'),
           location: 'Central Park, New York',
           fk_Category: 1,
-          fk_GroupId: 1 
+          fk_GroupId: 1
         },
         {
           title: '5K Fun Run for Charity',
@@ -864,14 +864,14 @@ async function seed() {
           date: new Date('2024-08-10T07:30:00.000Z'),
           location: 'City Park, Chicago',
           fk_Category: 3,
-          fk_GroupId: 3 
+          fk_GroupId: 3
         },
         {
           title: 'Beach Volleyball Tournament',
           description: 'Compete in a fun-filled beach volleyball tournament with friends and family.',
           date: new Date('2024-09-05T10:00:00.000Z'),
           location: 'Santa Monica Beach, California',
-          fk_Category: 5, 
+          fk_Category: 5,
           fk_GroupId: 4
         },
         {
@@ -888,7 +888,7 @@ async function seed() {
           date: new Date('2024-11-18T18:00:00.000Z'),
           location: 'Dance Studio, Miami',
           fk_Category: 7,
-          fk_GroupId: 6 
+          fk_GroupId: 6
         },
         {
           title: 'Hiking Expedition: Summiting Mount Everest',
@@ -896,31 +896,31 @@ async function seed() {
           date: new Date('2024-12-08T07:00:00.000Z'),
           location: 'Himalayas, Nepal',
           fk_Category: 2,
-          fk_GroupId: 7 
+          fk_GroupId: 7
         },
         {
           title: 'Swimming Relay Race',
           description: 'Join us for a thrilling swimming relay race at the community pool. Teams of all ages welcome!',
           date: new Date('2025-01-25T13:00:00.000Z'),
           location: 'Community Pool, Seattle',
-          fk_Category: 5, 
-          fk_GroupId: 8 
+          fk_Category: 5,
+          fk_GroupId: 8
         },
         {
           title: 'Rock Climbing Workshop',
           description: 'Learn the ropes of rock climbing with our expert instructors. Suitable for beginners!',
           date: new Date('2025-02-15T11:00:00.000Z'),
           location: 'Indoor Climbing Gym, Denver',
-          fk_Category: 3, 
-          fk_GroupId: 9 
+          fk_Category: 3,
+          fk_GroupId: 9
         },
         {
           title: 'Soccer Skills Clinic for Kids',
           description: 'Kids can improve their soccer skills with our fun and interactive skills clinic. Ages 6-12.',
           date: new Date('2025-03-20T14:00:00.000Z'),
           location: 'Soccer Field, Dallas',
-          fk_Category: 6, 
-          fk_GroupId: 10 
+          fk_Category: 6,
+          fk_GroupId: 10
         }
       ],
     });
@@ -966,7 +966,7 @@ async function seed() {
           start_date: new Date('2024-04-01T00:00:00.000Z'),
           end_date: new Date('2024-04-30T23:59:59.999Z'),
           target: 10000,
-          fk_Groupid: 3 
+          fk_Groupid: 3
         },
         {
           title: '100 Push-Up Challenge',
@@ -974,7 +974,7 @@ async function seed() {
           start_date: new Date('2024-05-01T00:00:00.000Z'),
           end_date: new Date('2024-05-31T23:59:59.999Z'),
           target: 100,
-          fk_Groupid: 2 
+          fk_Groupid: 2
         },
         {
           title: '30-Day Plank Challenge',
@@ -982,7 +982,7 @@ async function seed() {
           start_date: new Date('2024-06-01T00:00:00.000Z'),
           end_date: new Date('2024-06-30T23:59:59.999Z'),
           target: 30,
-          fk_Groupid: 4 
+          fk_Groupid: 4
         },
         {
           title: 'Couch to 5K Challenge',
@@ -990,7 +990,7 @@ async function seed() {
           start_date: new Date('2024-07-01T00:00:00.000Z'),
           end_date: new Date('2024-07-31T23:59:59.999Z'),
           target: 5000,
-          fk_Groupid: 1 
+          fk_Groupid: 1
         },
         {
           title: '100-Mile Cycling Challenge',
@@ -998,7 +998,7 @@ async function seed() {
           start_date: new Date('2024-08-01T00:00:00.000Z'),
           end_date: new Date('2024-08-31T23:59:59.999Z'),
           target: 100,
-          fk_Groupid: 5 
+          fk_Groupid: 5
         },
         {
           title: '50-Mile Running Challenge',
@@ -1014,7 +1014,7 @@ async function seed() {
           start_date: new Date('2024-10-01T00:00:00.000Z'),
           end_date: new Date('2024-10-31T23:59:59.999Z'),
           target: 100,
-          fk_Groupid: 7 
+          fk_Groupid: 7
         },
         {
           title: '200-Meter Swimming Sprint Challenge',
@@ -1022,7 +1022,7 @@ async function seed() {
           start_date: new Date('2024-11-01T00:00:00.000Z'),
           end_date: new Date('2024-11-30T23:59:59.999Z'),
           target: 200,
-          fk_Groupid: 8 
+          fk_Groupid: 8
         },
         {
           title: '30-Day Jump Rope Challenge',
@@ -1030,7 +1030,7 @@ async function seed() {
           start_date: new Date('2024-12-01T00:00:00.000Z'),
           end_date: new Date('2024-12-31T23:59:59.999Z'),
           target: 30,
-          fk_Groupid: 9 
+          fk_Groupid: 9
         },
         {
           title: 'Handstand Challenge',
@@ -1038,7 +1038,7 @@ async function seed() {
           start_date: new Date('2025-01-01T00:00:00.000Z'),
           end_date: new Date('2025-01-31T23:59:59.999Z'),
           target: 1,
-          fk_Groupid: 10 
+          fk_Groupid: 10
         },
         {
           title: '100-Mile Cycling Tour Challenge',
@@ -1046,7 +1046,7 @@ async function seed() {
           start_date: new Date('2025-02-01T00:00:00.000Z'),
           end_date: new Date('2025-02-28T23:59:59.999Z'),
           target: 100,
-          fk_Groupid: 11 
+          fk_Groupid: 11
         },
         {
           title: 'Spartan Race Training Challenge',
@@ -1118,243 +1118,243 @@ async function seed() {
     // Health statistics
     await prisma.statistics.createMany({
       data: [
-      {
-        sleep_duration: "7",
-        calories_intake: "1600",
-        macroelements_intake: "1200",
-        water_intake: "2.1",
-        weight: "86",
-        fk_UserId: 1,
-        date: new Date()
-      },
-      {
-        sleep_duration: "9",
-        calories_intake: "1600",
-        macroelements_intake: "1200",
-        water_intake: "1.2",
-        weight: "59",
-        fk_UserId: 2,
-        date: new Date()
-      },
-      {
-        sleep_duration: "6",
-        calories_intake: "1600",
-        macroelements_intake: "1200",
-        water_intake: "2",
-        weight: "74",
-        fk_UserId: 3,
-        date: new Date()
-      },
-      {
-        sleep_duration: "6.5",
-        calories_intake: "1600",
-        macroelements_intake: "1200",
-        water_intake: "1.7",
-        weight: "77",
-        fk_UserId: 4,
-        date: new Date()
-      },
-      {
-        sleep_duration: "8",
-        calories_intake: "1600",
-        macroelements_intake: "1200",
-        water_intake: "1.6",
-        weight: "91",
-        fk_UserId: 5,
-        date: new Date()
-      },
-      {
-        sleep_duration: "7",
-        calories_intake: "1600",
-        macroelements_intake: "1200",
-        water_intake: "2.1",
-        weight: "86",
-        fk_UserId: 1,
-        date: new Date()
-      },
-      // User 2
-      {
-        sleep_duration: "8",
-        calories_intake: "1800",
-        macroelements_intake: "1300",
-        water_intake: "2.0",
-        weight: "82",
-        fk_UserId: 2,
-        date: new Date()
-      },
-      // User 3
-      {
-        sleep_duration: "6",
-        calories_intake: "1500",
-        macroelements_intake: "1100",
-        water_intake: "2.2",
-        weight: "78",
-        fk_UserId: 3,
-        date: new Date()
-      },
-      // User 4
-      {
-        sleep_duration: "7",
-        calories_intake: "1700",
-        macroelements_intake: "1250",
-        water_intake: "2.5",
-        weight: "84",
-        fk_UserId: 4,
-        date: new Date()
-      },
-      // User 5
-      {
-        sleep_duration: "7",
-        calories_intake: "1600",
-        macroelements_intake: "1200",
-        water_intake: "2.1",
-        weight: "86",
-        fk_UserId: 5,
-        date: new Date()
-      },
-      // User 6
-      {
-        sleep_duration: "8",
-        calories_intake: "1800",
-        macroelements_intake: "1300",
-        water_intake: "2.0",
-        weight: "82",
-        fk_UserId: 6,
-        date: new Date()
-      },
-      // User 7
-      {
-        sleep_duration: "6",
-        calories_intake: "1500",
-        macroelements_intake: "1100",
-        water_intake: "2.2",
-        weight: "78",
-        fk_UserId: 7,
-        date: new Date()
-      },
-      // User 8
-      {
-        sleep_duration: "7",
-        calories_intake: "1700",
-        macroelements_intake: "1250",
-        water_intake: "2.5",
-        weight: "84",
-        fk_UserId: 8,
-        date: new Date()
-      },
-      // User 9
-      {
-        sleep_duration: "7",
-        calories_intake: "1600",
-        macroelements_intake: "1200",
-        water_intake: "2.1",
-        weight: "86",
-        fk_UserId: 9,
-        date: new Date()
-      },
-      // User 10
-      {
-        sleep_duration: "8",
-        calories_intake: "1800",
-        macroelements_intake: "1300",
-        water_intake: "2.0",
-        weight: "82",
-        fk_UserId: 10,
-        date: new Date()
-      },
-      // User 11
-      {
-        sleep_duration: "6",
-        calories_intake: "1500",
-        macroelements_intake: "1100",
-        water_intake: "2.2",
-        weight: "78",
-        fk_UserId: 11,
-        date: new Date()
-      },
-      // User 12
-      {
-        sleep_duration: "7",
-        calories_intake: "1700",
-        macroelements_intake: "1250",
-        water_intake: "2.5",
-        weight: "84",
-        fk_UserId: 12,
-        date: new Date()
-      },
-      // User 13
-      {
-        sleep_duration: "7",
-        calories_intake: "1600",
-        macroelements_intake: "1200",
-        water_intake: "2.1",
-        weight: "86",
-        fk_UserId: 13,
-        date: new Date()
-      },
-    ]
+        {
+          sleep_duration: "7",
+          calories_intake: "1600",
+          macroelements_intake: "1200",
+          water_intake: "2.1",
+          weight: "86",
+          fk_UserId: 1,
+          date: new Date()
+        },
+        {
+          sleep_duration: "9",
+          calories_intake: "1600",
+          macroelements_intake: "1200",
+          water_intake: "1.2",
+          weight: "59",
+          fk_UserId: 2,
+          date: new Date()
+        },
+        {
+          sleep_duration: "6",
+          calories_intake: "1600",
+          macroelements_intake: "1200",
+          water_intake: "2",
+          weight: "74",
+          fk_UserId: 3,
+          date: new Date()
+        },
+        {
+          sleep_duration: "6.5",
+          calories_intake: "1600",
+          macroelements_intake: "1200",
+          water_intake: "1.7",
+          weight: "77",
+          fk_UserId: 4,
+          date: new Date()
+        },
+        {
+          sleep_duration: "8",
+          calories_intake: "1600",
+          macroelements_intake: "1200",
+          water_intake: "1.6",
+          weight: "91",
+          fk_UserId: 5,
+          date: new Date()
+        },
+        {
+          sleep_duration: "7",
+          calories_intake: "1600",
+          macroelements_intake: "1200",
+          water_intake: "2.1",
+          weight: "86",
+          fk_UserId: 1,
+          date: new Date()
+        },
+        // User 2
+        {
+          sleep_duration: "8",
+          calories_intake: "1800",
+          macroelements_intake: "1300",
+          water_intake: "2.0",
+          weight: "82",
+          fk_UserId: 2,
+          date: new Date()
+        },
+        // User 3
+        {
+          sleep_duration: "6",
+          calories_intake: "1500",
+          macroelements_intake: "1100",
+          water_intake: "2.2",
+          weight: "78",
+          fk_UserId: 3,
+          date: new Date()
+        },
+        // User 4
+        {
+          sleep_duration: "7",
+          calories_intake: "1700",
+          macroelements_intake: "1250",
+          water_intake: "2.5",
+          weight: "84",
+          fk_UserId: 4,
+          date: new Date()
+        },
+        // User 5
+        {
+          sleep_duration: "7",
+          calories_intake: "1600",
+          macroelements_intake: "1200",
+          water_intake: "2.1",
+          weight: "86",
+          fk_UserId: 5,
+          date: new Date()
+        },
+        // User 6
+        {
+          sleep_duration: "8",
+          calories_intake: "1800",
+          macroelements_intake: "1300",
+          water_intake: "2.0",
+          weight: "82",
+          fk_UserId: 6,
+          date: new Date()
+        },
+        // User 7
+        {
+          sleep_duration: "6",
+          calories_intake: "1500",
+          macroelements_intake: "1100",
+          water_intake: "2.2",
+          weight: "78",
+          fk_UserId: 7,
+          date: new Date()
+        },
+        // User 8
+        {
+          sleep_duration: "7",
+          calories_intake: "1700",
+          macroelements_intake: "1250",
+          water_intake: "2.5",
+          weight: "84",
+          fk_UserId: 8,
+          date: new Date()
+        },
+        // User 9
+        {
+          sleep_duration: "7",
+          calories_intake: "1600",
+          macroelements_intake: "1200",
+          water_intake: "2.1",
+          weight: "86",
+          fk_UserId: 9,
+          date: new Date()
+        },
+        // User 10
+        {
+          sleep_duration: "8",
+          calories_intake: "1800",
+          macroelements_intake: "1300",
+          water_intake: "2.0",
+          weight: "82",
+          fk_UserId: 10,
+          date: new Date()
+        },
+        // User 11
+        {
+          sleep_duration: "6",
+          calories_intake: "1500",
+          macroelements_intake: "1100",
+          water_intake: "2.2",
+          weight: "78",
+          fk_UserId: 11,
+          date: new Date()
+        },
+        // User 12
+        {
+          sleep_duration: "7",
+          calories_intake: "1700",
+          macroelements_intake: "1250",
+          water_intake: "2.5",
+          weight: "84",
+          fk_UserId: 12,
+          date: new Date()
+        },
+        // User 13
+        {
+          sleep_duration: "7",
+          calories_intake: "1600",
+          macroelements_intake: "1200",
+          water_intake: "2.1",
+          weight: "86",
+          fk_UserId: 13,
+          date: new Date()
+        },
+      ]
     });
 
     // Activity entries
     await prisma.activityEntry.createMany({
       data: [
-      {
-        fk_Userid: 1,
-        steps: 372,
-        distance: 284.988,
-        start_time: '2024-03-28T11:36:46.000Z',
-        end_time: '2024-03-28T11:36:56.000Z'
-      },
-      {
-        fk_Userid: 1,
-        steps: 373,
-        distance: 284.988,
-        start_time: '2024-03-28T11:36:56.000Z',
-        end_time: '2024-03-28T11:37:06.000Z'
-      },
-      {
-        fk_Userid: 1,
-        steps: 372,
-        distance: 284.988,
-        start_time: '2024-03-28T11:37:06.000Z',
-        end_time: '2024-03-28T11:37:16.000Z'
-      },
-      {
-        fk_Userid: 1,
-        steps: 372,
-        distance: 284.988,
-        start_time: '2024-03-28T11:37:16.000Z',
-        end_time: '2024-03-28T11:37:26.000Z'
-      },
-      {
-        fk_Userid: 2,
-        steps: 372,
-        distance: 284.988,
-        start_time: '2024-03-28T11:37:16.000Z',
-        end_time: '2024-03-28T11:37:26.000Z'
-      },
-      {
-        fk_Userid: 3,
-        steps: 372,
-        distance: 284.988,
-        start_time: '2024-03-28T11:37:16.000Z',
-        end_time: '2024-03-28T11:37:26.000Z'
-      },
-      {
-        fk_Userid: 4,
-        steps: 372,
-        distance: 284.988,
-        start_time: '2024-03-28T11:37:16.000Z',
-        end_time: '2024-03-28T11:37:26.000Z'
-      },
-      {
-        fk_Userid: 5,
-        steps: 372,
-        distance: 284.988,
-        start_time: '2024-03-28T11:37:16.000Z',
-        end_time: '2024-03-28T11:37:26.000Z'
-      },
-    ]
+        {
+          fk_Userid: 1,
+          steps: 372,
+          distance: 284.988,
+          start_time: '2024-03-28T11:36:46.000Z',
+          end_time: '2024-03-28T11:36:56.000Z'
+        },
+        {
+          fk_Userid: 1,
+          steps: 373,
+          distance: 284.988,
+          start_time: '2024-03-28T11:36:56.000Z',
+          end_time: '2024-03-28T11:37:06.000Z'
+        },
+        {
+          fk_Userid: 1,
+          steps: 372,
+          distance: 284.988,
+          start_time: '2024-03-28T11:37:06.000Z',
+          end_time: '2024-03-28T11:37:16.000Z'
+        },
+        {
+          fk_Userid: 1,
+          steps: 372,
+          distance: 284.988,
+          start_time: '2024-03-28T11:37:16.000Z',
+          end_time: '2024-03-28T11:37:26.000Z'
+        },
+        {
+          fk_Userid: 2,
+          steps: 372,
+          distance: 284.988,
+          start_time: '2024-03-28T11:37:16.000Z',
+          end_time: '2024-03-28T11:37:26.000Z'
+        },
+        {
+          fk_Userid: 3,
+          steps: 372,
+          distance: 284.988,
+          start_time: '2024-03-28T11:37:16.000Z',
+          end_time: '2024-03-28T11:37:26.000Z'
+        },
+        {
+          fk_Userid: 4,
+          steps: 372,
+          distance: 284.988,
+          start_time: '2024-03-28T11:37:16.000Z',
+          end_time: '2024-03-28T11:37:26.000Z'
+        },
+        {
+          fk_Userid: 5,
+          steps: 372,
+          distance: 284.988,
+          start_time: '2024-03-28T11:37:16.000Z',
+          end_time: '2024-03-28T11:37:26.000Z'
+        },
+      ]
     });
 
     console.log('Seed data inserted successfully');

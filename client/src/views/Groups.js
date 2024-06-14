@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { isLoggedIn } from '../classes/Auth';
 import GroupCard from '../components/group/GroupListCard';
+import config from '../config';
 
 const Home = () => {
   const [publicGroups, setPublicGroups] = useState([]);
@@ -43,7 +44,7 @@ const Home = () => {
 
   const fetchPublicGroups = async () => {
     try {
-      const response = await axios.get('http://localhost:3333/groups/publicGroups');
+      const response = await axios.get(`${config.API_URL}/groups/publicGroups`);
       setPublicGroups(response.data);
     } catch (error) {
       console.error('Error fetching public groups:', error);
@@ -58,7 +59,7 @@ const Home = () => {
     }
 
     try {
-      const response = await axios.get('http://localhost:3333/groups/userGroups', {
+      const response = await axios.get(`${config.API_URL}/groups/userGroups`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

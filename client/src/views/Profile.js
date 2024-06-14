@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { isLoggedIn } from "../classes/Auth";
 import axios from 'axios';
+import config from '../config';
 
 const getMapsUrl = (loc) => {
   return `https://www.google.com/maps/place/${loc}/`
@@ -32,7 +33,7 @@ const Profile = (props) => {
   React.useEffect(() => {
     const token = localStorage.getItem('accessToken');
 
-    axios.get(`http://localhost:3333/users/getByUsername/${username}`, {
+    axios.get(`${config.API_URL}/users/getByUsername/${username}`, {
         headers: {
             Authorization: `Bearer ${token}`
         }

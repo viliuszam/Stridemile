@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { AlertTypes } from "../styles/modules/AlertStyles";
 import axios from 'axios';
 import { isLoggedIn } from "../classes/Auth";
+import config from "../config";
 
 export default () => {
   const { groupId } = useParams();
@@ -24,7 +25,7 @@ export default () => {
       return;
     }
 
-    axios.get(`http://localhost:3333/groups/group/${groupId}`, {
+    axios.get(`${config.API_URL}/groups/group/${groupId}`, {
       headers: {
           Authorization: `Bearer ${accessToken}`
       }
@@ -42,7 +43,7 @@ export default () => {
         console.error('Error fetching group details:', error);
       });
 
-    axios.get('http://localhost:3333/visibility-options')
+    axios.get(`${config.API_URL}/visibility-options`)
       .then(response => {
         setVisibilityOptions(response.data);
       })
@@ -77,7 +78,7 @@ export default () => {
       console.log(entry);
     }
     
-      axios.post(`http://localhost:3333/groups/edit-group/${groupId}`, formData, {
+      axios.post(`${config.API_URL}/groups/edit-group/${groupId}`, formData, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'multipart/form-data'

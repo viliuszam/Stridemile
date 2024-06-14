@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { AlertTypes } from "../styles/modules/AlertStyles";
 import axios from 'axios';
 import { isLoggedIn } from "../classes/Auth";
+import config from "../config";
 
 export default () => {
   const { setAlert } = useOutletContext(); // from Auth layout
@@ -22,7 +23,7 @@ export default () => {
   const passwordRecovery = () => {
     if(!validate()) return
 
-    axios.post('http://localhost:3333/auth/forgotPass', {
+    axios.post(`${config.API_URL}/auth/forgotPass`, {
       email: email,
     })
       .then(function (response) {

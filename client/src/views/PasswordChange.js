@@ -2,6 +2,7 @@ import { useOutletContext, Link, useParams } from "react-router-dom";
 import { useState } from 'react'
 import { AlertTypes } from "../styles/modules/AlertStyles";
 import axios from 'axios';
+import config from "../config";
 
 export default () => {
   const { setAlert } = useOutletContext(); // from Auth layout
@@ -33,7 +34,7 @@ export default () => {
   const passwordRecovery = () => {
     if(!validate()) return
 
-    axios.post('http://localhost:3333/auth/passReset', {
+    axios.post(`${config.API_URL}/auth/passReset`, {
       newPassword: newPassword,
     }, {
       headers: {

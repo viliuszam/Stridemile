@@ -18,6 +18,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { grey, red } from "@mui/material/colors";
 import { pickersLayoutClasses } from '@mui/x-date-pickers/PickersLayout';
 import { isLoggedIn } from "../classes/Auth";
+import config from "../config";
 
 export default () => {
   const { groupId } = useParams();
@@ -52,7 +53,7 @@ export default () => {
 
   useEffect(() => {
     // Fetch visibility options from the server
-    axios.get('http://localhost:3333/category-options/goal')
+    axios.get(`${config.API_URL}/category-options/goal`)
       .then(response => {
         setCategoryOptions(response.data);
       })
@@ -63,7 +64,7 @@ export default () => {
 
   useEffect(() => {
     // Fetch visibility options from the server
-    axios.get('http://localhost:3333/status-options')
+    axios.get(`${config.API_URL}/status-options`)
       .then(response => {
         setStatusOptions(response.data);
       })
@@ -114,7 +115,7 @@ export default () => {
       categoryId: parseInt(selectedCategory)
     };
 
-    axios.post(`http://localhost:3333/groups/${groupId}/createGoal`, requestData, {
+    axios.post(`${config.API_URL}/groups/${groupId}/createGoal`, requestData, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json'

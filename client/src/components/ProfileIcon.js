@@ -2,8 +2,7 @@ import { Avatar, Popover } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
-
+import config from '../config';
 
 export default function ProfileIcon({ imageUrl, username, userId, iconSize }) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -21,7 +20,7 @@ export default function ProfileIcon({ imageUrl, username, userId, iconSize }) {
   const open = Boolean(anchorEl);
 
   const getUserPopupData = async () => {
-    await axios.get(`http://localhost:3333/users/popup/${userId}`, {
+    await axios.get(`${config.API_URL}/users/popup/${userId}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`
       }

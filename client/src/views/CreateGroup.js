@@ -5,6 +5,7 @@ import axios from 'axios';
 import NavBar from "../components/NavBar";
 import { Link } from "react-router-dom";
 import { isLoggedIn } from "../classes/Auth";
+import config from "../config";
 
 export default () => {
   const { setAlert } = useOutletContext();
@@ -20,7 +21,7 @@ export default () => {
 
   useEffect(() => {
     // Fetch visibility options from the server
-    axios.get('http://localhost:3333/visibility-options')
+    axios.get(`${config.API_URL}/visibility-options`)
       .then(response => {
         setVisibilityOptions(response.data);
       })
@@ -54,7 +55,7 @@ export default () => {
     for (let entry of formData.entries()) {
       console.log(entry);
     }
-    axios.post('http://localhost:3333/groups/createGroup', formData, {
+    axios.post(`${config.API_URL}/groups/createGroup`, formData, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'multipart/form-data'

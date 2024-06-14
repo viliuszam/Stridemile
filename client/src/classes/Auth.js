@@ -1,9 +1,10 @@
 import { createToken, getToken, removeToken } from "./AccessToken"
 import { setUser, removeUser, getUser } from "./User"
 import axios from "axios"
+import config from "../config"
 
 const fetchUserData = async (accessToken) => {
-    return axios.get(`http://localhost:3333/users/me`, {
+    return axios.get(`${config.API_URL}/users/me`, {
         headers: {
           Authorization: `Bearer ${accessToken}`
         }

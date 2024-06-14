@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useOutletContext, useParams, useLocation } from "react-router-dom";
 import { AlertTypes } from "../styles/modules/AlertStyles";
+import config from '../config';
 
 const GroupInvitation = () => {
   const { setAlert } = useOutletContext();
@@ -18,7 +19,7 @@ const GroupInvitation = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3333/groups/${token}`);
+        const response = await axios.get(`${config.API_URL}/groups/${token}`);
         const { data } = response.data;
         const { group, user } = data;
         setGroupName(group.name);
@@ -34,7 +35,7 @@ const GroupInvitation = () => {
 
   const handleJoinClick = async () => {
     try {
-      const response = await axios.post('http://localhost:3333/groups/joinGroup', { token });
+      const response = await axios.post(`${config.API_URL}/groups/joinGroup`, { token });
     
       const { statusCode, message } = response.data;
   

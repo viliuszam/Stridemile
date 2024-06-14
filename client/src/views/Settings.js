@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { MuiColorInput } from 'mui-color-input'
 import { getUser, updateUser } from '../classes/User';
+import config from '../config';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -87,7 +88,7 @@ export default function Settings() {
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
 
-    axios.get('http://localhost:3333/rewards/unlockedColours', {
+    axios.get(`${config.API_URL}/rewards/unlockedColours`, {
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -103,7 +104,7 @@ export default function Settings() {
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
 
-    axios.get('http://localhost:3333/rewards/unlockedEmojies', {
+    axios.get(`${config.API_URL}/rewards/unlockedEmojies`, {
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -124,7 +125,7 @@ export default function Settings() {
       return;
     }
   
-    axios.post('http://localhost:3333/auth/passChange', {
+    axios.post(`${config.API_URL}/auth/passChange`, {
       oldPassword: currentPassword,
       newPassword: password,
     }, {
@@ -161,7 +162,7 @@ export default function Settings() {
       return;
     }
 
-    axios.post('http://localhost:3333/rewards/applyCustomisation', { hexColour: hexColor, emoji: userEmoji }, {
+    axios.post(`${config.API_URL}/rewards/applyCustomisation`, { hexColour: hexColor, emoji: userEmoji }, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json'
@@ -188,7 +189,7 @@ export default function Settings() {
   
     const newName = name;
   
-    axios.post('http://localhost:3333/users/change-username', { username: newName }, {
+    axios.post(`${config.API_URL}/users/change-username`, { username: newName }, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json'

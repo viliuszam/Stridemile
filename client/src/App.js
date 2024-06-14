@@ -44,6 +44,7 @@ import AllChats from "./views/AllChats";
 import Chat from "./views/Chat";
 import CreateMessage from "./views/CreateMessage";
 import MobileApp from "./views/MobileApp";
+import config from "./config";
 
 export default function App() {
   const [appReady, setAppReady] = useState(false)
@@ -52,7 +53,7 @@ export default function App() {
   useEffect(() => {
     // Check if user is logged-in withinserver
     if (getUser()) {
-      axios.get(`http://localhost:3333/users/me`, {
+      axios.get(`${config.API_URL}/users/me`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`
         }
@@ -84,6 +85,12 @@ export default function App() {
       </Route>
 
       <Route element={<MainLayout />}>
+        <Route path="/contact-us" element={<ContactUs />} />
+        <Route path="/about-us" element={<AboutUs />} />
+        <Route path="/mobile-app" element={<MobileApp />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="/reviews" element={<Reviews />} />
+        <Route path="/groups" element={<Groups />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile/:username" element={<Profile />} />
         <Route path="/group/:groupId" element={<GroupPage />} />
@@ -93,14 +100,8 @@ export default function App() {
         <Route path="/create-event/:groupId" element={<CreateEvent />} />
         <Route path="/create-goal/:groupId" element={<CreateGoal />} />
         <Route path="/create-challenge/:groupId" element={<CreateChallenge />} />
-        <Route path="/groups" element={<Groups />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/health-tracking" element={<HealthTracking />} />
-        <Route path="/contact-us" element={<ContactUs />} />
-        <Route path="/about-us" element={<AboutUs />} />
-        <Route path="/mobile-app" element={<MobileApp />} />
-        <Route path="/faq" element={<FAQ />} />
-        <Route path="/reviews" element={<Reviews />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/shop-item/:itemId" element={<ShopItem />} />

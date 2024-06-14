@@ -3,7 +3,7 @@ import axios from 'axios';
 import { AlertTypes } from "../styles/modules/AlertStyles";
 import { isLoggedIn } from "../classes/Auth";
 import { Navigate, useOutletContext } from "react-router-dom";
-
+import config from '../config';
 
 const CreateMessage = ({ currentUser, history }) => {
   const { setAlert } = useOutletContext();
@@ -21,7 +21,7 @@ const CreateMessage = ({ currentUser, history }) => {
     }
 
     try {
-      const response = await axios.get('http://localhost:3333/users/all-users', {
+      const response = await axios.get(`${config.API_URL}/users/all-users`, {
         headers: {
           'Authorization': `Bearer ${accessToken}`
         }

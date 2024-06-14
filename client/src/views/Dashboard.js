@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, Link, useOutletContext, Navigate } from "react-router-dom";
 import { isLoggedIn } from "../classes/Auth";
+import config from '../config'; 
 
 export default () => {
   const { groupId } = useParams();
@@ -21,7 +22,7 @@ export default () => {
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
 
-    axios.get('http://localhost:3333/achievements/points', {
+    axios.get(`${config.API_URL}/achievements/points`, {
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -39,7 +40,7 @@ export default () => {
     const fetchGroupInfo = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await axios.get(`http://localhost:3333/groups/group/${groupId}`, {
+        const response = await axios.get(`${config.API_URL}/groups/group/${groupId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -53,7 +54,7 @@ export default () => {
     const fetchGoals = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await axios.get(`http://localhost:3333/groups/getAllGroupsGoals`, {
+        const response = await axios.get(`${config.API_URL}/groups/getAllGroupsGoals`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -72,7 +73,7 @@ export default () => {
 
   const handleShowChallengeParticipants = async (challengeId) => {
     try {
-      const response = await axios.get(`http://localhost:3333/groups/${challengeId}/challenge-participants`);
+      const response = await axios.get(`${config.API_URL}/groups/${challengeId}/challenge-participants`);
       setChallengeParticipants((prevState) => ({
         ...prevState,
         [challengeId]: response.data,
@@ -85,7 +86,7 @@ export default () => {
   const fetchEvents = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await axios.get(`http://localhost:3333/groups/getAllGroupsEvents`, {
+      const response = await axios.get(`${config.API_URL}/groups/getAllGroupsEvents`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -111,7 +112,7 @@ export default () => {
   const fetchChallenges = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await axios.get(`http://localhost:3333/groups/getAllGroupsChallenges`, {
+      const response = await axios.get(`${config.API_URL}/groups/getAllGroupsChallenges`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -135,7 +136,7 @@ export default () => {
   const fetchEventComments = async (eventId) => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await axios.get(`http://localhost:3333/groups/${eventId}/event-comments`, {
+      const response = await axios.get(`${config.API_URL}/groups/${eventId}/event-comments`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -153,7 +154,7 @@ export default () => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.post(
-        `http://localhost:3333/groups/${eventId}/post-comment`,
+        `${config.API_URL}/groups/${eventId}/post-comment`,
         { content: commentContent },
         {
           headers: {
@@ -176,7 +177,7 @@ export default () => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.post(
-        `http://localhost:3333/groups/${eventId}/event-participate`,
+        `${config.API_URL}/groups/${eventId}/event-participate`,
         {},
         {
           headers: {
@@ -194,7 +195,7 @@ export default () => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.post(
-        `http://localhost:3333/groups/${challengeId}/challenge-participate`,
+        `${config.API_URL}/groups/${challengeId}/challenge-participate`,
         {},
         {
           headers: {
@@ -213,7 +214,7 @@ export default () => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.post(
-        `http://localhost:3333/groups/${eventId}/event-cancel-participation`,
+        `${config.API_URL}/groups/${eventId}/event-cancel-participation`,
         {},
         {
           headers: {
@@ -231,7 +232,7 @@ export default () => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.post(
-        `http://localhost:3333/groups/${challengeId}/challenge-cancel-participation`,
+        `${config.API_URL}/groups/${challengeId}/challenge-cancel-participation`,
         {},
         {
           headers: {
@@ -250,7 +251,7 @@ export default () => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.get(
-        `http://localhost:3333/groups/${eventId}/user-event-participation`,
+        `${config.API_URL}/groups/${eventId}/user-event-participation`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -268,7 +269,7 @@ export default () => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.get(
-        `http://localhost:3333/groups/${eventId}/user-challenge-participation`,
+        `${config.API_URL}/groups/${eventId}/user-challenge-participation`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -285,7 +286,7 @@ export default () => {
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
   
-    axios.post('http://localhost:3333/rewards/update', {}, {
+    axios.post(`${config.API_URL}/rewards/update`, {}, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -301,7 +302,7 @@ export default () => {
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
 
-    axios.get('http://localhost:3333/activity/monthlySteps', {
+    axios.get(`${config.API_URL}/activity/monthlySteps`, {
         headers: {
             Authorization: `Bearer ${token}`
         }
@@ -317,7 +318,7 @@ export default () => {
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
 
-    axios.get('http://localhost:3333/activity/dailysteps', {
+    axios.get(`${config.API_URL}/activity/dailysteps`, {
         headers: {
             Authorization: `Bearer ${token}`
         }

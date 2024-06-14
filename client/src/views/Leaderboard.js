@@ -7,6 +7,7 @@ import { Avatar } from '@mui/material';
 import { ApplyNicknameEmoji, ApplyNicknameEmojiFromUsername } from '../classes/Reward';
 import { isLoggedIn } from "../classes/Auth";
 import ProfileIcon from '../components/ProfileIcon';
+import config from '../config';
 
 const UpdatedNickname = ApplyNicknameEmoji()
 
@@ -15,7 +16,7 @@ export default () => {
   const [leaderboard, setLeaderboard] = useState([])
 
   useEffect(() => {
-    axios.get('http://localhost:3333/users/leaderboard/top10', {
+    axios.get(`${config.API_URL}/users/leaderboard/top10`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

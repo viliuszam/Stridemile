@@ -9,6 +9,7 @@ import anime from "animejs";
 import style from '../styles/Achievements.css'
 import { getUser } from "../classes/User";
 import { Button } from "@mui/material";
+import config from "../config";
 
 export default () => {
 
@@ -19,7 +20,7 @@ export default () => {
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
 
-        axios.get('http://localhost:3333/shop-item/all', {
+        axios.get(`${config.API_URL}/shop-item/all`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -35,7 +36,7 @@ export default () => {
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
 
-        axios.get('http://localhost:3333/shop-item/getMyItems', {
+        axios.get(`${config.API_URL}/shop-item/getMyItems`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -51,7 +52,7 @@ export default () => {
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
 
-        axios.get('http://localhost:3333/achievements/points', {
+        axios.get(`${config.API_URL}/achievements/points`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -75,7 +76,7 @@ export default () => {
         const token = localStorage.getItem('accessToken');
         const userP = points.userPoints;
         axios.post(
-          'http://localhost:3333/shop-item/buy', 
+          `${config.API_URL}/shop-item/buy`, 
           { itemId, itemPrice, userP },
           {
             headers: {

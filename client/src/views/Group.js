@@ -10,6 +10,7 @@ import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import ProfileIcon from '../components/ProfileIcon';
+import config from '../config';
 
 const getMapsUrl = (loc) => {
   return `https://www.google.com/maps/place/${loc}/`
@@ -72,7 +73,7 @@ const InviteForm = () => {
     // Darant mapa, detalesne user info parodymui galima gaut is groupInfo.groupMembers
     // Also yra endpointas su lastSeen informacija - users/:userId/last-seen
     const accessToken = localStorage.getItem('accessToken');
-    const socket = io('http://192.168.1.101:3333', {
+    const socket = io(config.SOCKET_IO_URL, {
       transportOptions: {
         polling: {
           extraHeaders: {
@@ -122,7 +123,7 @@ const InviteForm = () => {
     const fetchGroupInfo = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await axios.get(`http://localhost:3333/groups/group/${groupId}`, {
+        const response = await axios.get(`${config.API_URL}/groups/group/${groupId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -136,7 +137,7 @@ const InviteForm = () => {
     const fetchGoals = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await axios.get(`http://localhost:3333/groups/${groupId}/goals`, {
+        const response = await axios.get(`${config.API_URL}/groups/${groupId}/goals`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -155,7 +156,7 @@ const InviteForm = () => {
 
   const handleShowChallengeParticipants = async (challengeId) => {
     try {
-      const response = await axios.get(`http://localhost:3333/groups/${challengeId}/challenge-participants`);
+      const response = await axios.get(`${config.API_URL}/groups/${challengeId}/challenge-participants`);
       setChallengeParticipants((prevState) => ({
         ...prevState,
         [challengeId]: response.data,
@@ -168,7 +169,7 @@ const InviteForm = () => {
   const fetchEvents = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await axios.get(`http://localhost:3333/groups/${groupId}/events`, {
+      const response = await axios.get(`${config.API_URL}/groups/${groupId}/events`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -194,7 +195,7 @@ const InviteForm = () => {
   const fetchChallenges = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await axios.get(`http://localhost:3333/groups/${groupId}/challenges`, {
+      const response = await axios.get(`${config.API_URL}/groups/${groupId}/challenges`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -218,7 +219,7 @@ const InviteForm = () => {
   const fetchEventComments = async (eventId) => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await axios.get(`http://localhost:3333/groups/${eventId}/event-comments`, {
+      const response = await axios.get(`${config.API_URL}/groups/${eventId}/event-comments`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -236,7 +237,7 @@ const InviteForm = () => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.post(
-        `http://localhost:3333/groups/${eventId}/post-comment`,
+        `${config.API_URL}/groups/${eventId}/post-comment`,
         { content: commentContent },
         {
           headers: {
@@ -259,7 +260,7 @@ const InviteForm = () => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.post(
-        `http://localhost:3333/groups/${eventId}/event-participate`,
+        `${config.API_URL}/groups/${eventId}/event-participate`,
         {},
         {
           headers: {
@@ -277,7 +278,7 @@ const InviteForm = () => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.post(
-        `http://localhost:3333/groups/${challengeId}/challenge-participate`,
+        `${config.API_URL}/groups/${challengeId}/challenge-participate`,
         {},
         {
           headers: {
@@ -296,7 +297,7 @@ const InviteForm = () => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.post(
-        `http://localhost:3333/groups/${eventId}/event-cancel-participation`,
+        `${config.API_URL}/groups/${eventId}/event-cancel-participation`,
         {},
         {
           headers: {
@@ -314,7 +315,7 @@ const InviteForm = () => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.post(
-        `http://localhost:3333/groups/${challengeId}/challenge-cancel-participation`,
+        `${config.API_URL}/groups/${challengeId}/challenge-cancel-participation`,
         {},
         {
           headers: {
@@ -333,7 +334,7 @@ const InviteForm = () => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.get(
-        `http://localhost:3333/groups/${eventId}/user-event-participation`,
+        `${config.API_URL}/groups/${eventId}/user-event-participation`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -351,7 +352,7 @@ const InviteForm = () => {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await axios.get(
-        `http://localhost:3333/groups/${eventId}/user-challenge-participation`,
+        `${config.API_URL}/groups/${eventId}/user-challenge-participation`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -379,7 +380,7 @@ const InviteForm = () => {
       }
 
       const response = await axios.post(
-        'http://localhost:3333/groups/sendInvitation',
+        `${config.API_URL}/groups/sendInvitation`,
         {
           groupId: parseInt(groupId),
           userEmail: email,
@@ -472,7 +473,7 @@ const InviteForm = () => {
                         </button>
                       ) : (
                         <button
-                          className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded mt-2'
+                          className='bg-[#61E9B1] hover:bg-[#4edba1] text-black text-gray-800 py-1 px-3 rounded mt-2'
                           onClick={() => handleEventParticipate(event.id)}
                         >
                           Participate
@@ -494,7 +495,7 @@ const InviteForm = () => {
                           onChange={(e) => setCommentContent(e.target.value)}
                         />
                         <button
-                          className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded'
+                          className='bg-[#61E9B1] hover:bg-[#4edba1] text-black text-gray-800 py-1 px-3 rounded'
                           onClick={() => handlePostComment(event.id)}
                         >
                           Post
@@ -542,7 +543,7 @@ const InviteForm = () => {
                       </button>
                     ) : (
                       <button
-                        className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded mt-2'
+                        className='bg-[#61E9B1] hover:bg-[#4edba1] text-black text-gray-800 py-1 px-3 rounded mt-2'
                         onClick={() => handleChallengeParticipate(challenge.id)}
                       >
                         Participate
@@ -581,12 +582,12 @@ const InviteForm = () => {
 
 
                     <div className='flex text-sm text-gray-400'>
-                      <p className='mr-auto'>0%</p>
-                      <p className='text-xs'>50%</p>
-                      <p className='ml-auto'>100%</p>
+                      <p className='mr-auto'>15</p>
+                      <p className='text-xs'>15%</p>
+                      <p className='ml-auto'>100</p>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
-                      <div className="bg-[#61E9B1] h-1.5 rounded-full" style={{ width: goal.progress }}></div>
+                      <div className="bg-[#61E9B1] h-1.5 rounded-full" style={{ width: "15%" }}></div>
                     </div>
 
                     <div className='flex text-xs text-gray-400'>
@@ -683,7 +684,6 @@ const InviteForm = () => {
             ) : (
               <div className=''>
                 {groupInfo.groupMembers.map((member, i) => {
-                  console.log(member)
                   if (i < 2)
                     return (
                       <div key={member.user.id} className='text-center inline-block'>
@@ -709,7 +709,7 @@ const InviteForm = () => {
                   className="markercluster-map w-full h-60 z-0 rounded-xl border-[1px] border-gray-100 overflow-auto"
                   center={[55.1663, 23.8513]}
                   zoom={6}
-                  
+
                   ref={setMap}
                   zoomControl={false}
                 //dragging={false}
@@ -720,8 +720,8 @@ const InviteForm = () => {
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                   />
 
-                  {Object.entries(userLocations).map(([userId, location]) => (
-                    <Marker className='cursor-none' position={[location.latitude, location.longitude]} icon={new L.Icon({
+                  {Object.entries(userLocations).map(([userId, location], i) => (
+                    <Marker key={userId} className='cursor-none' position={[location.latitude, location.longitude]} icon={new L.Icon({
                       iconUrl: require('../images/mapIcon.png'),
                       iconSize: [22, 22],
                     })}>

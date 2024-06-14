@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { AlertTypes } from "../styles/modules/AlertStyles";
 import axios from 'axios';
 import { isLoggedIn } from "../classes/Auth";
+import config from "../config";
 
 export default () => {
   const { setAlert } = useOutletContext(); // from Auth layout
@@ -48,7 +49,7 @@ export default () => {
     formData.append('password', password);
     formData.append('file', profileImage);
 
-    axios.post('http://localhost:3333/auth/signup', formData, {
+    axios.post(`${config.API_URL}/auth/signup`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }

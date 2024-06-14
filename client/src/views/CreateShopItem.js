@@ -5,6 +5,7 @@ import axios from 'axios';
 import NavBar from "../components/NavBar";
 import { Link } from "react-router-dom";
 import { isLoggedIn } from "../classes/Auth";
+import config from "../config";
 
 export default () => {
   const { setAlert } = useOutletContext();
@@ -18,7 +19,7 @@ export default () => {
   const [imageFile, setImageFile] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:3333/shop-item/categories')
+    axios.get(`${config.API_URL}/shop-item/categories`)
       .then(response => {
         setCategoryOptions(response.data);
       })
@@ -52,7 +53,7 @@ export default () => {
     console.log(itemDescription);
     console.log(itemPrice);
     console.log(selectedCategory);
-    axios.post('http://localhost:3333/shop-item/create', formData, {
+    axios.post(`${config.API_URL}/shop-item/create`, formData, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'multipart/form-data'

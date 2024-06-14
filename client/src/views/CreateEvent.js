@@ -17,6 +17,7 @@ import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { grey, red } from "@mui/material/colors";
 import { isLoggedIn } from "../classes/Auth";
+import config from "../config";
 
 export default () => {
   const { groupId } = useParams();
@@ -48,7 +49,7 @@ export default () => {
 
   useEffect(() => {
     // Fetch visibility options from the server
-    axios.get('http://localhost:3333/category-options/event')
+    axios.get(`${config.API_URL}/category-options/event`)
       .then(response => {
         setCategoryOptions(response.data);
       })
@@ -92,7 +93,7 @@ export default () => {
       fk_Category: parseInt(selectedCategory)
     };
 
-    axios.post(`http://localhost:3333/groups/${groupId}/createEvent`, requestData, {
+    axios.post(`${config.API_URL}/groups/${groupId}/createEvent`, requestData, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json'

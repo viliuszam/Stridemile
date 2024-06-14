@@ -7,6 +7,7 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import { isLoggedIn } from "../classes/Auth";
 import anime from "animejs";
 import style from '../styles/Achievements.css'
+import config from "../config";
 
 export default () => {
 
@@ -17,7 +18,7 @@ export default () => {
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
 
-        axios.get('http://localhost:3333/achievements/all', {
+        axios.get(`${config.API_URL}/achievements/all`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -33,7 +34,7 @@ export default () => {
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
 
-        axios.get('http://localhost:3333/achievements/userAchievements', {
+        axios.get(`${config.API_URL}/achievements/userAchievements`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -49,7 +50,7 @@ export default () => {
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
 
-        axios.get('http://localhost:3333/achievements/points', {
+        axios.get(`${config.API_URL}/achievements/points`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

@@ -18,6 +18,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { grey, red } from "@mui/material/colors";
 import { pickersLayoutClasses } from '@mui/x-date-pickers/PickersLayout';
 import { isLoggedIn } from "../classes/Auth";
+import config from "../config";
 
 export default () => {
   const { groupId } = useParams();
@@ -82,7 +83,7 @@ export default () => {
       end_date: endDate
     };
 
-    axios.post(`http://localhost:3333/groups/${groupId}/createChallenge`, requestData, {
+    axios.post(`${config.API_URL}/groups/${groupId}/createChallenge`, requestData, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json'

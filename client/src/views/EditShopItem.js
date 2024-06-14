@@ -5,6 +5,7 @@ import axios from 'axios';
 import NavBar from "../components/NavBar";
 import { Link } from "react-router-dom";
 import { isLoggedIn } from "../classes/Auth";
+import config from "../config";
 
 export default () => {
   const { setAlert } = useOutletContext();
@@ -21,7 +22,7 @@ export default () => {
 
   useEffect(() => {
     // Fetch visibility options from the server
-    axios.get('http://localhost:3333/shop-item/categories')
+    axios.get(`${config.API_URL}/shop-item/categories`)
       .then(response => {
         setCategoryOptions(response.data);
       })
@@ -51,7 +52,7 @@ export default () => {
     formData.append('category', selectedCategory);
     formData.append('price', itemPrice);
     formData.append('imageFile', imageFile);
-    axios.patch(`http://localhost:3333/shop-item/edit/${itemId}`, formData, {
+    axios.patch(`${config.API_URL}/shop-item/edit/${itemId}`, formData, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'multipart/form-data'

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import config from '../config';
 
 function InvitationPage() {
   const { token } = useParams();
@@ -7,7 +8,7 @@ function InvitationPage() {
 
   const handleJoinClick = async () => {
     try {
-      const response = await fetch('http://localhost:3333/groups/joinGroup', {
+      const response = await fetch(`${config.API_URL}/groups/joinGroup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

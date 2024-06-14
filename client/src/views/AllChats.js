@@ -6,6 +6,7 @@ import NavBar from "../components/NavBar";
 import { Link } from "react-router-dom";
 import { isLoggedIn } from "../classes/Auth";
 import ProfileIcon from "../components/ProfileIcon";
+import config from "../config";
 
 export default () => {
   const {setAlert } = useOutletContext();
@@ -34,7 +35,7 @@ export default () => {
     }
   
     try {
-      const response = await axios.get('http://localhost:3333/users/me', {
+      const response = await axios.get(`${config.API_URL}/users/me`, {
         headers: {
           'Authorization': `Bearer ${accessToken}`
         }
@@ -53,7 +54,7 @@ export default () => {
       return;
     }
   
-    axios.get('http://localhost:3333/chats/all-chats', {
+    axios.get(`${config.API_URL}/chats/all-chats`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
@@ -63,7 +64,7 @@ export default () => {
       const chatsWithUserData = await Promise.all(
         chatsData.map(async chat => {
           try {
-            const userResponse = await axios.get(`http://localhost:3333/users/${chat.senderId}`, {
+            const userResponse = await axios.get(`${config.API_URL}/users/${chat.senderId}`, {
               headers: {
                 'Authorization': `Bearer ${accessToken}`
               }

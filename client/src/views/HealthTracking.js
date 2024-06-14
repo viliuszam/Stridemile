@@ -5,6 +5,7 @@ import personBody from '../images/person-body.png'
 import { AlertTypes } from "../styles/modules/AlertStyles";
 import axios from 'axios';
 import { isLoggedIn } from "../classes/Auth";
+import config from '../config';
 
 const HealthTracking = () => {
   const { setAlert } = useOutletContext();
@@ -71,7 +72,7 @@ const HealthTracking = () => {
           return;
         }
         
-        const response = await axios.get('http://localhost:3333/health-tracking/getStats', {
+        const response = await axios.get(`${config.API_URL}/health-tracking/getStats`, {
           headers: {
               Authorization: `Bearer ${accessToken}`
           }
@@ -108,7 +109,7 @@ const HealthTracking = () => {
       weight: parseFloat(formData.weight) // Assuming weight is numeric
     };
 
-    axios.post('http://localhost:3333/health-tracking/createStats', formData, {
+    axios.post(`${config.API_URL}/health-tracking/createStats`, formData, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json'
@@ -132,7 +133,7 @@ const HealthTracking = () => {
           return;
         }
 
-        await axios.delete(`http://localhost:3333/health-tracking/deleteStats/${id}`, {
+        await axios.delete(`${config.API_URL}/health-tracking/deleteStats/${id}`, {
           headers: {
               Authorization: `Bearer ${accessToken}`
           }

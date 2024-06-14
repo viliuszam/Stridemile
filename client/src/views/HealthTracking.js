@@ -304,7 +304,7 @@ const HealthTracking = () => {
         </div>
 
         <button type='submit' className='bg-[#61E9B1] border-[1px] border-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black p-3 text-sm border border-solid border-[#61E9B1] block w-full mb-3 p-3 text-center border-[1px] rounded-lg'>
-        <i class="fa-solid fa-notes-medical"></i> Submit
+        <i className="fa-solid fa-notes-medical"></i> Submit
         </button>
       </form>
 

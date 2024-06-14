@@ -92,8 +92,8 @@ export default () => {
                 <div className="">
                     <div className="max-w-64">
                     <h2 className="font-semibold pb-1">{item.title}</h2>
-                    <p className="text-sm"><i class="fa-solid fa-layer-group"></i> Category: {item.category}</p>
-                    <p className="text-sm"><i class="fa-solid fa-money-check-dollar"></i> Price: {item.price} points</p>
+                    <p className="text-sm"><i className="fa-solid fa-layer-group"></i> Category: {item.category}</p>
+                    <p className="text-sm"><i className="fa-solid fa-money-check-dollar"></i> Price: {item.price} points</p>
                     </div>
                 </div>
                 <hr className="mt-4 mb-4 mx-8" ></hr>

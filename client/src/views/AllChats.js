@@ -137,7 +137,7 @@ export default () => {
 
         <Link to="/create-message">
           <button className="w-full mb-3 p-3 bg-[#61E9B1] border-[1px] border-[#61E9B1] rounded-lg hover:bg-[#4edba1]">
-            <i class="fa-solid fa-message"></i> Create a new message
+            <i className="fa-solid fa-message"></i> Create a new message
           </button>
         </Link>
       </div>

@@ -35,11 +35,11 @@ export default () => {
                   <p className="pl-4 pb-2 font-semibold">Dan</p>
                   <p className="pl-4">Very helpful system for health tracking. Helped me a lot!</p>
                   <div className="pl-4 pt-2">
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
                   </div>
                 </div>
               </div>
@@ -49,11 +49,11 @@ export default () => {
                   <p className="pl-4 pb-2 font-semibold">Jack</p>
                   <p className="pl-4">I was motivated to engage in group activities, therefore, became healthier.</p>
                   <div className="pl-4 pt-2">
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
                   </div>
                 </div>
               </div>
@@ -63,11 +63,11 @@ export default () => {
                   <p className="pl-4 pb-2 font-semibold">Rick</p>
                   <p className="pl-4">Awesome product, however, too litle events for yoga. Still awesome though!</p>
                   <div className="pl-4 pt-2">
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-regular fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-regular fa-star text-[#61E9B1]"></i>
                   </div>
                 </div>
               </div>
@@ -77,11 +77,11 @@ export default () => {
                   <p className="pl-4 pb-2 font-semibold">Jessica</p>
                   <p className="pl-4">Joining groups really helps to improve physical activity levels. Recommend.</p>
                   <div className="pl-4 pt-2">
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
                   </div>
                 </div>
               </div>
@@ -91,11 +91,11 @@ export default () => {
                   <p className="pl-4 pb-2 font-semibold">Meghan</p>
                   <p className="pl-4">Started living healthier and happier life after using this system.</p>
                   <div className="pl-4 pt-2">
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
                   </div>
                 </div>
               </div>
@@ -105,11 +105,11 @@ export default () => {
                   <p className="pl-4 pb-2 font-semibold">Gabriel</p>
                   <p className="pl-4">Unbelievable community... One huge thanks!</p>
                   <div className="pl-4 pt-2">
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
-                    <i class="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
+                    <i className="fa-sharp fa-solid fa-star text-[#61E9B1]"></i>
                   </div>
                 </div>
               </div>
@@ -119,7 +119,7 @@ export default () => {
             <p className="pb-6 text-center">We are waiting for more reviews. Click the button below and contact us!</p>
             <div className="flex"><Link to="/contact-us" className="bg-[#61E9B1] border-[1px] border-[#61E9B1] hover:bg-[#4edba1] rounded-lg text-black py-3 px-6 text-sm border border-solid border-[#61E9B1] mx-auto flex">
               Contact us
-              <i class="fa-solid fa-envelope pl-2 pt-1"></i>
+              <i className="fa-solid fa-envelope pl-2 pt-1"></i>
             </Link></div>
             <div>
                 

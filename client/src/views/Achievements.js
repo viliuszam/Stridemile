@@ -110,8 +110,8 @@ export default () => {
         <div className="flex">
         <div className="w-full grid grid-cols-3 gap-4 pl-5 pr-5">
 
-        {achievements.map((achievement) => (
-            <div className="flip-card h-80">
+        {achievements.map((achievement, i) => (
+            <div key={i} className="flip-card h-80">
                 <div className="flip-card-inner h-full w-full">
                     <div className="flip-card-front absolute h-full w-full bg-white rounded-xl mt-3 text-center pt-5 pb-5 bg-gray-50 border border-solid border-green-400">
                         <div className="rounded-4xl pb-3 flex">
@@ -183,8 +183,8 @@ export default () => {
             <div className="text-black text-center font-semibold pb-5 pt-6">
                  Points earned
             </div>
-            {userAchievements.map((achievement) => (
-                    <div>
+            {userAchievements.map((achievement, i) => (
+                    <div key={i}>
                         <div className="flex">
                             <p><i className="fa-solid fa-bell"></i></p><p className="pl-2"> <b> {achievement.title}</b> </p>
                             <p className="text-[#61E9B1] pl-2"> +{achievement.points} points</p>

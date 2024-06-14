@@ -150,7 +150,7 @@ export default () => {
                 {userItems.map((item) => (
                         <div>
                             <div className="flex">
-                                <p><i class="fa-solid fa-cart-shopping"></i></p><p className="pl-2"> <b> {item.title}</b> </p>
+                                <p><i className="fa-solid fa-cart-shopping"></i></p><p className="pl-2"> <b> {item.title}</b> </p>
                                 <p className="text-[#61E9B1] pl-2"> -{item.points} points</p>
                             </div>
                             <p className="pl-6">({item.date})</p>

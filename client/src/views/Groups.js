@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { isLoggedIn } from '../classes/Auth';
-import GroupCard from '../components/group/GroupCard';
+import GroupCard from '../components/group/GroupListCard';
 
 const Home = () => {
   const [publicGroups, setPublicGroups] = useState([]);

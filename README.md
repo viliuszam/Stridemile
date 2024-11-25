@@ -1,4 +1,4 @@
-# K378-BISPIS
+# Stridemile
 
 ## A system to track and incentivize physical wellness
 

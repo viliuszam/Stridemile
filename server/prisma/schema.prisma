@@ -6,6 +6,8 @@
 
 //npx prisma migrate dev --name initial_database
 //npx prisma migrate deploy
+//npx prisma migrate reset // resets db
+// npx prisma migrate reset --skip-seed // // resets db without inserting seed records
 
 generator client {
   provider = "prisma-client-js"
@@ -17,23 +19,13 @@ datasource db {
 }
 
 model Announcement {
-  title      String?
-  message    String?
-  date_time  DateTime?
-  id         Int      @id @default(autoincrement())
+  title     String?
+  message   String?
+  date_time DateTime?
+  id        Int        @id @default(autoincrement())
   reminders Reminder[]
 
   @@map("announcements")
-}
-
-model Organization {
-  name                 String?
-  responsible_employee String?
-  department           String?
-  id                   Int      @id @default(autoincrement())
-  events Event[]
-
-  @@map("organizations")
 }
 
 model Role {
@@ -41,9 +33,9 @@ model Role {
   description   String?
   creation_date DateTime?
   is_active     Boolean?
-  id            Int      @id @default(autoincrement())
-  //user User[]
-  permission Permission[]
+  id            Int          @id @default(autoincrement())
+  user          User[]
+  permission    Permission[]
 
   @@map("roles")
 }
@@ -56,22 +48,25 @@ model ActivityType {
 }
 
 model EventCategory {
-  id   Int    @id @default(autoincrement())
-  name String
+  id     Int     @id @default(autoincrement())
+  events Event[]
+  name   String
 
   @@map("event_categories")
 }
 
 model GoalCategory {
-  id   Int    @id @default(autoincrement())
-  name String
+  goals Goal[]
+  id    Int    @id @default(autoincrement())
+  name  String
 
   @@map("goal_categories")
 }
 
 model GoalStatus {
-  id   Int    @id @default(autoincrement())
-  name String
+  goals Goal[]
+  id    Int    @id @default(autoincrement())
+  name  String
 
   @@map("goal_statuses")
 }
@@ -98,33 +93,48 @@ model PersonGender {
 }
 
 model Event {
-  title           String?
-  description     String?
-  date            DateTime?
-  location        String?
-  id              Int      @id @default(autoincrement())
-  fk_Organization Int     
-  organization    Organization @relation(fields: [fk_Organization], references: [id])
-  category        Int?     // Scalar field representing the foreign key to EventCategory
-  activities Activity[]
-  groupEvents GroupEvent[]
+  title         String?
+  description   String?
+  date          DateTime?
+  location      String?
+  id            Int            @id @default(autoincrement())
+  fk_Category   Int
+  category      EventCategory  @relation(fields: [fk_Category], references: [id])
+  eventComments EventComment[]
+  activities    Activity[]
+  fk_GroupId    Int
+  group         Group          @relation(fields: [fk_GroupId], references: [id])
+  participants  User[]         @relation("EventParticipants")
 
   @@map("events")
 }
 
 model Group {
-  member_count  Int?
-  type          String?
-  name          String?
-  description   String?
-  id            Int      @id @default(autoincrement())
-  visibility    Int?     // Scalar field representing the foreign key to GroupVisibility
-  invitations Invitation[]
-  groupEvents GroupEvent[]
-  goals Goal[]
-  challenges Challenge[]
+  name         String?
+  description  String?
+  image_url    String?
+  banner_url   String?
+  id           Int           @id @default(autoincrement())
+  visibilityId Int?
+  invitations  Invitation[]
+  events       Event[]
+  groupMembers GroupMember[]
+  goals        Goal[]
+  challenges   Challenge[]
+  mentorId     Int?
+  mentor       User?         @relation(fields: [mentorId], references: [id])
 
   @@map("groups")
+}
+
+model GroupMember {
+  id      Int   @id @default(autoincrement())
+  groupId Int
+  userId  Int
+  group   Group @relation(fields: [groupId], references: [id])
+  user    User  @relation(fields: [userId], references: [id])
+
+  @@map("group_members")
 }
 
 model Permission {
@@ -133,86 +143,177 @@ model Permission {
   is_active   Boolean?
   id          Int      @id @default(autoincrement())
   role        Role     @relation(fields: [fk_Roleid], references: [id])
-  fk_Roleid   Int      
+  fk_Roleid   Int
 
   @@map("permissions")
 }
 
 model User {
-  username         String? @unique
-  password         String?
-  email            String? @unique
-  birthDate        DateTime?
-  gender           String?
-  address          String?
-  phoneNumber      String?
-  profile_picture  String?
+  username          String?   @unique
+  password          String?
+  email             String?   @unique
+  birthDate         DateTime?
+  gender            String?
+  address           String?
+  phoneNumber       String?
+  profile_picture   String?
   registration_date DateTime?
 
-  id               Int      @id @default(autoincrement())
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  hash String
-  resetPassToken String @default("")
+  id             Int      @id @default(autoincrement())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  hash           String
+  resetPassToken String   @default("")
+  isResetValid   Boolean  @default(false)
+  colourHex      String   @default("#000000")
+  emoji          String   @default("")
 
-  //role             Role?     @relation(fields: [fk_Roleid], references: [id])
-  role              String?
-  //fk_Roleid        Int     
-  persons Person[]
-  mentors Mentor[]
-  administrators Administrator[]
+  role                    Role?                    @relation(fields: [fk_Roleid], references: [id])
+  fk_Roleid               Int                      @default(3)
+  mentors                 Mentor[]
+  groupMembers            GroupMember[]
+  administrators          Administrator[]
+  activityEntries         ActivityEntry[]
+  persons                 Person[]
+  groups                  Group[]
+  invitations             Invitation[]
+  statistics              Statistics[]
+  completedAchievements   AchievementsOnUsers[]
+  colourRewards           ColourRewardsOnUsers[]
+  challengeParticipations ChallengeParticipation[]
+  eventComments           EventComment[]
+  events                  Event[]                  @relation("EventParticipants")
+  emojiRewards            EmojiRewardsOnUsers[]
+  boughtItems             ShopItem[]
+  lastLocation            LastLocation?
 
   @@map("users")
 }
 
+model LastLocation {
+  id         Int      @id @default(autoincrement())
+  userId     Int      @unique
+  longitude  Float
+  latitude   Float
+  lastSeenAt DateTime
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+model ChallengeParticipation {
+  id             Int       @id @default(autoincrement())
+  user           User      @relation(fields: [userId], references: [id])
+  userId         Int
+  challenge      Challenge @relation(fields: [challengeId], references: [id])
+  challengeId    Int
+  progress       Int       @default(0)
+  completionDate DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model ColourReward {
+  id             Int                    @id @default(autoincrement())
+  pointsRequired Int
+  colourHex      String
+  colourName     String
+  users          ColourRewardsOnUsers[]
+
+  @@map("colour_rewards")
+}
+
+model EmojiReward {
+  id                  Int                   @id @default(autoincrement())
+  pointsRequired      Int
+  emoji               String
+  EmojiRewardsOnUsers EmojiRewardsOnUsers[]
+
+  @@map("emoji_rewards")
+}
+
+model EmojiRewardsOnUsers {
+  user          User        @relation(fields: [userId], references: [id])
+  userId        Int
+  emojiReward   EmojiReward @relation(fields: [emojiRewardId], references: [id])
+  emojiRewardId Int
+
+  @@id([userId, emojiRewardId])
+  @@map("emoji_rewards_on_users")
+}
+
+model ColourRewardsOnUsers {
+  user           User         @relation(fields: [userId], references: [id])
+  userId         Int
+  colourReward   ColourReward @relation(fields: [colourRewardId], references: [id])
+  colourRewardId Int
+
+  @@id([userId, colourRewardId])
+  @@map("colour_rewards_on_users")
+}
+
+model AchievementsOnUsers {
+  user          User        @relation(fields: [userId], references: [id])
+  userId        Int
+  achievement   Achievement @relation(fields: [achievementId], references: [id])
+  achievementId Int
+  completedAt   DateTime    @default(now())
+
+  @@id([userId, achievementId])
+  @@map("achievements_on_users")
+}
+
 model Administrator {
-  role        String?
-  permissions String?
+  role         String?
+  permissions  String?
   access_level Int?
-  last_login  DateTime?
-  id          Int      @id @default(autoincrement())
-  user        User     @relation(fields: [id], references: [id])
+  last_login   DateTime?
+  id           Int       @id @default(autoincrement())
+  user         User      @relation(fields: [id], references: [id])
 
   @@map("administrators")
 }
 
+model ActivityEntry {
+  id         Int       @id @default(autoincrement())
+  fk_Userid  Int
+  user       User      @relation(fields: [fk_Userid], references: [id])
+  steps      Int?
+  distance   Float?
+  start_time DateTime?
+  end_time   DateTime?
+
+  @@map("activity_entries")
+}
+
 model Challenge {
-  title       String?
-  description String?
-  start_date  DateTime?
-  end_date    DateTime?
-  id          Int      @id @default(autoincrement())
-  group       Group    @relation(fields: [fk_Groupid], references: [id])
-  fk_Groupid  Int     
+  title                  String?
+  description            String?
+  start_date             DateTime?
+  end_date               DateTime?
+  target                 Int
+  id                     Int                      @id @default(autoincrement())
+  group                  Group                    @relation(fields: [fk_Groupid], references: [id])
+  fk_Groupid             Int
+  ChallengeParticipation ChallengeParticipation[]
 
   @@map("challenges")
 }
 
 model Goal {
-  description  String?
-  title        String?
-  start_date   DateTime?
-  end_date     DateTime?
-  target_value String?
-  current_value String?
-  progress     String?
-  id           Int      @id @default(autoincrement())
-  group        Group    @relation(fields: [fk_Groupid], references: [id])
-  fk_Groupid   Int      
-  status    Int?     // Scalar field representing the foreign key to GoalStatus
-  category    Int?     // Scalar field representing the foreign key to GoalCategory
+  description       String?
+  title             String?
+  start_date        DateTime?
+  end_date          DateTime?
+  target_value      Int
+  current_value     Int
+  id                Int          @id @default(autoincrement())
+  group             Group        @relation(fields: [fk_Groupid], references: [id])
+  fk_Groupid        Int
+  status            GoalStatus   @relation(fields: [fk_Goalstatusid], references: [id])
+  fk_Goalstatusid   Int
+  category          GoalCategory @relation(fields: [fk_Goalcategoryid], references: [id])
+  fk_Goalcategoryid Int
 
   @@map("goals")
-}
-
-model GroupEvent {
-  id       Int     @id @default(autoincrement())
-  event    Event   @relation(fields: [fk_Eventid], references: [id])
-  fk_Eventid Int  
-  group    Group   @relation(fields: [fk_Groupid], references: [id])
-  fk_Groupid Int  
-
-  @@map("group_events")
 }
 
 model Mentor {
@@ -220,10 +321,10 @@ model Mentor {
   experience     String?
   specialization String?
   certification  String?
-  id             Int      @id @default(autoincrement())
-  user           User     @relation(fields: [id], references: [id])
-  persons Person[]
-  activities Activity[]
+  id             Int        @id @default(autoincrement())
+  user           User       @relation(fields: [id], references: [id])
+  persons        Person[]
+  activities     Activity[]
 
   @@map("mentors")
 }
@@ -232,12 +333,12 @@ model Activity {
   name         String?
   duration     Int?
   type         Int?
-  id           Int      @id @default(autoincrement())
-  mentor       Mentor   @relation(fields: [fk_Mentorid], references: [id])
-  fk_Mentorid  Int     
-  event        Event    @relation(fields: [fk_Eventid], references: [id])
-  fk_Eventid   Int     
-  activityType Int?     // Scalar field representing the foreign key
+  id           Int     @id @default(autoincrement())
+  mentor       Mentor  @relation(fields: [fk_Mentorid], references: [id])
+  fk_Mentorid  Int
+  event        Event   @relation(fields: [fk_Eventid], references: [id])
+  fk_Eventid   Int
+  activityType Int? // Scalar field representing the foreign key
 
   @@map("activities")
 }
@@ -250,80 +351,117 @@ model Person {
   age           Int?
   date_of_birth DateTime?
   phone_number  String?
-  id            Int      @id @default(autoincrement())
-  mentor        Mentor?  @relation(fields: [fk_Mentorid], references: [id])
-  fk_Mentorid   Int?    
-  gender        Int?     // Scalar field representing the foreign key to PersonGender
-  user          User     @relation(fields: [id], references: [id])
-  statistics Statistics[]
-  reminders Reminder[]
-  invitations Invitation[]
-  achievements Achievement[]
+  id            Int        @id @default(autoincrement())
+  mentor        Mentor?    @relation(fields: [fk_Mentorid], references: [id])
+  fk_Mentorid   Int?
+  gender        Int? // Scalar field representing the foreign key to PersonGender
+  user          User       @relation(fields: [id], references: [id])
+  reminders     Reminder[]
 
   @@map("persons")
 }
 
 model Achievement {
-  title         String?
-  description   String?
-  date_achieved DateTime?
-  points_count  Int?
-  id            Int      @id @default(autoincrement())
-  person        Person   @relation(fields: [fk_Personid], references: [id])
-  fk_Personid   Int      
+  id                   Int                   @id @default(autoincrement())
+  title                String                @unique
+  description          String?
+  steps_required       Int?
+  time_required_s      Int?
+  logs_required        Int?
+  daily_steps_required Int?
+  points               Int
+  users                AchievementsOnUsers[]    
 
   @@map("achievements")
 }
 
 model Invitation {
-  date_sent      DateTime?
-  date_responded DateTime?
-  message        String?
-  status         Int?
-  id             Int      @id @default(autoincrement())
-  group          Group    @relation(fields: [fk_Groupid], references: [id])
-  fk_Groupid     Int      
-  person         Person   @relation(fields: [fk_Personid], references: [id])
-  fk_Personid    Int      
-  invitationStatus  Int?
+  date_sent        DateTime? @default(now())
+  date_responded   DateTime?
+  expiryDuration   Int       @default(60)
+  token            String    @default("")
+  id               Int       @id @default(autoincrement())
+  group            Group     @relation(fields: [fk_GroupId], references: [id])
+  fk_GroupId       Int
+  user             User      @relation(fields: [fk_UserId], references: [id])
+  fk_UserId        Int
+  invitationStatus Int?      @default(1)
 
   @@map("invitations")
 }
 
 model Reminder {
-  title       String?
-  description String?
-  date_time   DateTime?
-  id          Int      @id @default(autoincrement())
-  person      Person   @relation(fields: [fk_Personid], references: [id])
-  fk_Personid Int     
-  announcement Announcement @relation(fields: [fk_Announcementid], references: [id])
-  fk_Announcementid Int      
+  title             String?
+  description       String?
+  date_time         DateTime?
+  id                Int          @id @default(autoincrement())
+  person            Person       @relation(fields: [fk_Personid], references: [id])
+  fk_Personid       Int
+  announcement      Announcement @relation(fields: [fk_Announcementid], references: [id])
+  fk_Announcementid Int
 
   @@map("reminders")
 }
 
 model Statistics {
-  date            DateTime?
-  weight          Float?
-  calories_intake String?
+  date                 DateTime?
+  weight               String?
+  calories_intake      String?
   macroelements_intake String?
-  water_intake    String?
-  sleep_duration  Int?
-  id              Int      @id @default(autoincrement())
-  person          Person   @relation(fields: [fk_Personid], references: [id])
-  fk_Personid     Int     
-  trackingRecords TrackingRecord[]
+  water_intake         String?
+  sleep_duration       String?
+  id                   Int              @id @default(autoincrement())
+  user                 User             @relation(fields: [fk_UserId], references: [id])
+  fk_UserId            Int
+  trackingRecords      TrackingRecord[]
 
   @@map("statistics")
 }
 
+model Chat {
+  id         Int      @id @default(autoincrement())
+  senderId   Int
+  receiverId Int
+  message    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
 model TrackingRecord {
-  date        DateTime?
-  metric_data String?
-  id          Int      @id @default(autoincrement())
-  statistics  Statistics @relation(fields: [fk_Statisticsid], references: [id])
-  fk_Statisticsid Int   
+  date            DateTime?
+  metric_data     String?
+  id              Int        @id @default(autoincrement())
+  statistics      Statistics @relation(fields: [fk_Statisticsid], references: [id])
+  fk_Statisticsid Int
 
   @@map("tracking_records")
+}
+
+model EventComment {
+  id        Int      @id @default(autoincrement())
+  content   String?
+  createdAt DateTime @default(now())
+  createdBy User     @relation(fields: [userId], references: [id])
+  userId    Int
+  event     Event    @relation(fields: [eventId], references: [id])
+  eventId   Int
+
+  @@map("event_comments")
+}
+
+enum ShopCategories {
+  CUSTUMISATION
+  HEALTH
+}
+
+model ShopItem {
+  id          Int            @id @default(autoincrement())
+  title       String
+  description String
+  price       Decimal
+  boughtAt    DateTime       @updatedAt
+  category    ShopCategories
+  image_url   String
+  User        User?          @relation(fields: [userId], references: [id])
+  userId      Int?
 }

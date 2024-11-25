@@ -1,11 +1,13 @@
-import { useOutletContext, Link } from "react-router-dom";
+import { useOutletContext, Link, useParams } from "react-router-dom";
 import { useState } from 'react'
 import { AlertTypes } from "../styles/modules/AlertStyles";
 import axios from 'axios';
+import config from "../config";
 
 export default () => {
   const { setAlert } = useOutletContext(); // from Auth layout
 
+  const {token}=useParams();
   // User data inputs
   const [newPassword, setNewPassword] = useState('')
   const [rePassword, setRePassword] = useState('')
@@ -32,16 +34,27 @@ export default () => {
   const passwordRecovery = () => {
     if(!validate()) return
 
-    axios.post('http://localhost:3333/auth/forgotPass', {
+    axios.post(`${config.API_URL}/auth/passReset`, {
       newPassword: newPassword,
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
     })
       .then(function (response) {
         setAlert({ text: 'Password is changed successfully', type: AlertTypes.success })
       })
       .catch(function (error) {
         console.log(error)
-        setAlert({ text: `An error has occurred (${error.message})`, type: AlertTypes.error })
-      }); 
+        if(error.response.data.message == "Password could not be updated"){
+          setAlert({ text: 'Password could not be updated', type: AlertTypes.error });
+        }else if(error.response && error.response.status === 401){
+          setAlert({ text: 'Link has expired', type: AlertTypes.error });
+        }else{
+          setAlert({ text: `An error has occurred (${error.message})`, type: AlertTypes.error })
+        }
+      });
   }
 
   return (
@@ -55,7 +68,7 @@ export default () => {
       </div>
 
       <div className="mb-3">
-        <div className="text-base mb-2">Reapeat password</div>
+        <div className="text-base mb-2">Repeat password</div>
         <input value={rePassword} onChange={(e) => setRePassword(e.target.value)} type="password" placeholder="Password" className="w-full p-3 border-[1px] border-gray-400 rounded-lg" />
       </div>
 

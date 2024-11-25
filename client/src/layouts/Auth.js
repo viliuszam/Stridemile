@@ -17,7 +17,7 @@ export default () => {
 
       <div className="m-auto sm:w-[26rem]">
 
-        <Alert text={alert.text} type={alert.type} />
+        <Alert text={alert.text} type={alert.type} setAlert={setAlert} />
 
         <div className="mx-auto p-10 bg-white rounded] rounded-lg">
             <Outlet context={{ setAlert }} />

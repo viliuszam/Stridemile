@@ -1,7 +1,9 @@
-import { useOutletContext, Link } from "react-router-dom";
+import { useOutletContext, Link, Navigate } from "react-router-dom";
 import { useState } from 'react'
 import { AlertTypes } from "../styles/modules/AlertStyles";
 import axios from 'axios';
+import { isLoggedIn } from "../classes/Auth";
+import config from "../config";
 
 export default () => {
   const { setAlert } = useOutletContext(); // from Auth layout
@@ -21,7 +23,7 @@ export default () => {
   const passwordRecovery = () => {
     if(!validate()) return
 
-    axios.post('http://localhost:3333/auth/forgotPass', {
+    axios.post(`${config.API_URL}/auth/forgotPass`, {
       email: email,
     })
       .then(function (response) {
@@ -29,11 +31,15 @@ export default () => {
       })
       .catch(function (error) {
         console.log(error)
-        setAlert({ text: `An error has occurred (${error.message})`, type: AlertTypes.error })
+        if(error.response.data.message == "Email does not exist"){
+          setAlert({ text: 'Email does not exist', type: AlertTypes.error });
+        }else{
+          setAlert({ text: `An error has occurred (${error.message})`, type: AlertTypes.error })
+        }
       }); 
   }
 
-  return (
+  return !isLoggedIn() ? (
     <div>
       <h1 className="text-2xl text-center font-medium">Password recovery</h1>
       <hr className="my-6" />
@@ -53,5 +59,7 @@ export default () => {
       <i className="fa-solid fa-user-plus"></i> Log in
       </Link>
     </div>
+  ) : (
+    <Navigate to='/' />
   );
 };
